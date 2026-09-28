@@ -683,13 +683,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
               rBox.setAttribute('data-expanded', 'true');
               rBox.innerHTML = `
-                <div style="font-size: 0.8125rem; line-height: 1.6;">
-                  <strong style="display: block; margin-bottom: 4px; color: var(--navy-900);">ASME / ASTM Technical Attribute Trace:</strong>
-                  <div style="display: flex; flex-direction: column; gap: 3px;">
-                    <div><span style="color: #059669; font-weight: 800;">✓ Material Grade:</span> ASTM A312 TP304 composition verified (Austenitic)</div>
-                    <div><span style="color: #059669; font-weight: 800;">✓ Size / Diameter:</span> 2.00 IN (Imperial) = 50.8mm = DN50 per ASME B36.19M</div>
-                    <div><span style="color: #059669; font-weight: 800;">✓ Pressure Rating:</span> Schedule 40 (SCH 40) uniform across plants</div>
-                    <div><span style="color: #059669; font-weight: 800;">✓ Standard Alignment:</span> 100% compliant with Bureau of Indian Standards (BIS) / ISO 8000</div>
+                <div style="font-size: 0.8125rem; line-height: 1.6; margin-top: 6px;">
+                  <strong style="display: block; margin-bottom: 6px; color: var(--navy-900);">ASME / ASTM Technical Attribute Trace:</strong>
+                  <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Material Grade:</strong> ASTM A312 TP304 composition verified (Austenitic)</div>
+                    <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Size / Diameter:</strong> 2.00 IN (Imperial) = 50.8mm = DN50 per ASME B36.19M</div>
+                    <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Pressure Rating:</strong> Schedule 40 (SCH 40) uniform across plants</div>
+                    <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Standard Alignment:</strong> 100% compliant with BIS / ISO 8000 Master Data Syntax</div>
                   </div>
                 </div>
               `;
