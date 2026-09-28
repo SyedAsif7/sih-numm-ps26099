@@ -2446,6 +2446,18 @@ body.theme-dark .dsb-number {
   transition: background 0.15s ease;
 }
 .btn-hqc-approve:hover { background: var(--teal-700); }
+.btn-hqc-review {
+  background: #f59e0b;
+  color: #ffffff;
+  border: 1px solid #d97706;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-hqc-review:hover { background: #d97706; }
 .btn-hqc-reject {
   background: transparent;
   color: var(--red-600);
@@ -2532,6 +2544,7 @@ body.theme-dark .dsb-number {
   border-radius: 4px;
 }
 .audit-action-pill.act-app { background: #dcfce7; color: #15803d; }
+.audit-action-pill.act-review { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
 .audit-action-pill.act-rej { background: #fee2e2; color: #b91c1c; }
 
 /* Tab 4: ROI Calculator */
@@ -3750,6 +3763,16 @@ body.theme-dark .dsb-number {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pair-mapping-summary.approved-record-active {
+  background: var(--bg-surface);
+  border: 1.5px solid #10b981;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12);
+}
+body.theme-dark .pair-mapping-summary.approved-record-active {
+  border-color: #059669;
+  box-shadow: 0 4px 16px rgba(5, 150, 105, 0.2);
 }
 .mapping-row {
   display: flex;

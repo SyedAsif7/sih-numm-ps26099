@@ -114,11 +114,11 @@ app.get('/api/hitl/queue', (req, res) => {
 // 6. Process HITL action (APPROVE / REJECT)
 app.post('/api/hitl/action', (req, res) => {
   try {
-    const { queueId, action, notes, officer } = req.body;
+    const { queueId, action, notes, officer, proposedNummCode, candidatePair } = req.body;
     if (!queueId || !action) {
       return res.status(400).json({ error: "queueId and action required" });
     }
-    const result = catalogService.processHitlAction({ queueId, action, notes, officer });
+    const result = catalogService.processHitlAction({ queueId, action, notes, officer, proposedNummCode, candidatePair });
     res.json(result);
   } catch (err) {
     res.status(400).json({ error: err.message });

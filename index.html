@@ -41,8 +41,8 @@
           </div>
           <div class="nav-gov-text">
             <span class="nav-gov-india">NUMM PLATFORM &bull; SIH 2026</span>
-            <span class="nav-mopng">National Unified Material Master</span>
-            <span class="nav-attribution-sub">MoPNG &amp; CPCL &bull; PS 26099</span>
+            <span class="nav-mopng">Material Harmonization Decision-Support Platform</span>
+            <span class="nav-attribution-sub">MoPNG &amp; CPCL &bull; PS 26099 (AI Recommends &bull; Officers Approve)</span>
           </div>
         </div>
       </div>
@@ -150,7 +150,7 @@
 
         <!-- High-Impact Subtitle -->
         <p class="hero-subtitle">
-          <strong>National Unified Material Master (NUMM):</strong> An enterprise AI platform for discovering, standardizing, and harmonizing functionally equivalent materials across CPSEs without disrupting legacy SAP/ERP operations.
+          <strong>Material Harmonization Decision-Support Platform:</strong> An enterprise decision-support system for discovering and harmonizing equivalent materials across CPSEs. AI recommends matches with explainable engineering specifications, while authorized materials officers validate and approve them to assign Common Material Codes.
         </p>
 
         <!-- Action CTAs -->
@@ -559,7 +559,7 @@
 
             <!-- 5 Actual Industrial Category Presets -->
             <div class="pair-preset-chips" id="pairPresetChips">
-              <button class="chip-preset-case active" data-case="valves">Case 1: Valves (SS BALL VLV 2" 150# vs Ball Valve DN50)</button>
+              <button class="chip-preset-case active" data-case="valves">Case 1: Valves (VLV BALL SS 2IN 150# vs Ball Valve | SS | DN50)</button>
               <button class="chip-preset-case" data-case="pipes">Case 2: Pipes (ASTM A106 vs A53/B36.10M)</button>
               <button class="chip-preset-case" data-case="bearings">Case 3: Bearings (SKF 6205-2RS vs 25x52x15)</button>
               <button class="chip-preset-case" data-case="motors">Case 4: Motors (15kW IE3 vs 20HP B3)</button>
@@ -579,7 +579,7 @@
                     <option value="HPCL">HPCL (Visakh Refinery - SAP S/4HANA)</option>
                   </select>
                 </div>
-                <textarea id="pairInputA" class="pair-textarea" rows="3" placeholder="Enter raw material description for Entity A...">SS BALL VLV 2" 150#</textarea>
+                <textarea id="pairInputA" class="pair-textarea" rows="3" placeholder="Enter raw material description for Entity A...">VLV BALL SS 2IN 150#</textarea>
               </div>
 
               <div class="pair-input-col">
@@ -593,7 +593,7 @@
                     <option value="HPCL">HPCL (Visakh Refinery - SAP S/4HANA)</option>
                   </select>
                 </div>
-                <textarea id="pairInputB" class="pair-textarea" rows="3" placeholder="Enter raw material description for Entity B...">Ball Valve, Stainless Steel, DN50, Class 150</textarea>
+                <textarea id="pairInputB" class="pair-textarea" rows="3" placeholder="Enter raw material description for Entity B...">Ball Valve | Stainless Steel | DN50 | Class 150</textarea>
               </div>
             </div>
 
@@ -610,10 +610,10 @@
                 <div class="pair-xai-title">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                   <span>Explainable AI (XAI) Engineering Rationale</span>
-                  <span class="chc-pill tag-live" id="pairMatchPctBadge">100% Match Confidence</span>
+                  <span class="chc-pill tag-live" id="pairMatchPctBadge">98% Match Confidence</span>
                 </div>
                 <p class="pair-xai-desc" id="pairXaiRationaleText">
-                  High-confidence physical equivalence: Dimension matches (DN50 / 2" NB per ASME B36.10M), metallurgy aligns (ASTM A106 Gr B dual-certified with A53 Gr B), and pressure class matches (SCH 40).
+                  High-confidence physical equivalence: AI recognizes 2 inch ≈ DN50 per ASME B16.34. Both specifications share identical austenitic stainless steel metallurgy (SS) and ASME Class 150 pressure rating.
                 </p>
               </div>
 
@@ -632,15 +632,16 @@
                 </tbody>
               </table>
 
-              <!-- Step 3: Human-in-the-Loop Governance Action -->
+              <!-- Step 3: Human-in-the-Loop Governance Action (Decision-Support) -->
               <div class="pair-hitl-gate-bar" id="pairHitlGateBar">
                 <div>
-                  <strong style="color: #854d0e; font-size: 0.875rem;">Human Review Checkpoint (HITL Governance):</strong>
-                  <p style="color: #713f12; font-size: 0.78125rem; margin: 2px 0 0 0;" id="pairHitlReviewerNotice">Sign-off required before committing to National Catalog and ERP sync tables.</p>
+                  <strong style="color: #854d0e; font-size: 0.875rem;">Officer Decision Checkpoint (HITL Governance):</strong>
+                  <p style="color: #713f12; font-size: 0.78125rem; margin: 2px 0 0 0;" id="pairHitlReviewerNotice">Authorized Materials Officer decision required to commit mapping to National Master Catalog.</p>
                 </div>
-                <div style="display: flex; gap: 8px;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                   <button class="btn-hqc-approve" id="btnApprovePairDemo" style="padding: 8px 16px;">&check; Approve &amp; Assign Common Code</button>
-                  <button class="btn-hqc-reject" id="btnRejectPairDemo" style="padding: 8px 16px;">&times; Flag / Reject</button>
+                  <button class="btn-hqc-review" id="btnNeedsReviewPairDemo" style="padding: 8px 16px; background: #d97706; border-color: #b45309; color: #ffffff;">&#9888; Needs Review (Testing)</button>
+                  <button class="btn-hqc-reject" id="btnRejectPairDemo" style="padding: 8px 16px;">&times; Reject Mismatch</button>
                 </div>
               </div>
 
@@ -1596,6 +1597,60 @@
 
       <div class="gov-modal-footer">
         <button class="btn-gov-confirm" id="btnConfirmRejectAction" style="background: #e11d48; border-color: #be123c;">Submit Flag &amp; Record in Audit Trail</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Needs Review & Physical Testing Feedback Modal -->
+  <div class="modal-backdrop" id="modalNeedsReviewBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalNeedsReviewTitle" style="display: none;">
+    <div class="gov-auth-modal" style="max-width: 540px;">
+      <div class="gov-modal-header" style="background: #fef3c7; border-color: #fde68a;">
+        <div class="gov-modal-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div>
+            <h3 id="modalNeedsReviewTitle" style="color: #92400e;">Flag for Engineering Review &amp; Physical Testing</h3>
+            <p style="color: #b45309;">Candidate pair flagged for metallurgical / yard validation</p>
+          </div>
+        </div>
+        <button class="btn-close-modal" id="btnCloseNeedsReviewModal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="gov-modal-body">
+        <p style="font-size: 0.8125rem; color: #475569; margin: 0 0 12px 0;">
+          Select the physical verification or testing requirement before assigning a common material code:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.8125rem;">
+          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; padding: 8px; border: 1px solid var(--border-subtle); border-radius: 6px; background: #ffffff;">
+            <input type="radio" name="needsReviewReason" value="PMI Testing: Positive Material Identification required for metallurgy grade verification." checked style="margin-top: 3px;">
+            <span><strong>PMI Testing:</strong> Positive Material Identification (Spectroscopy) required to verify alloy grade.</span>
+          </label>
+          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; padding: 8px; border: 1px solid var(--border-subtle); border-radius: 6px; background: #ffffff;">
+            <input type="radio" name="needsReviewReason" value="Hydrostatic Testing: Pressure shell test certificate verification required." style="margin-top: 3px;">
+            <span><strong>Hydrostatic Testing:</strong> Pressure shell test certificate check required prior to inter-plant sharing.</span>
+          </label>
+          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; padding: 8px; border: 1px solid var(--border-subtle); border-radius: 6px; background: #ffffff;">
+            <input type="radio" name="needsReviewReason" value="Dimensional Inspection: Ultrasonic wall thickness and face-to-face geometry check." style="margin-top: 3px;">
+            <span><strong>Dimensional Inspection:</strong> Ultrasonic wall thickness and face-to-face connection check.</span>
+          </label>
+          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; padding: 8px; border: 1px solid var(--border-subtle); border-radius: 6px; background: #ffffff;">
+            <input type="radio" name="needsReviewReason" value="Operating Envelope: Process review for sour gas / H2S service compatibility." style="margin-top: 3px;">
+            <span><strong>Operating Envelope:</strong> Process engineering sign-off for sour gas / corrosive fluid service.</span>
+          </label>
+          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; padding: 8px; border: 1px solid var(--border-subtle); border-radius: 6px; background: #ffffff;">
+            <input type="radio" name="needsReviewReason" value="CUSTOM" style="margin-top: 3px;">
+            <span><strong>Custom testing observation:</strong> Specify instructions below.</span>
+          </label>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <label for="needsReviewCustomNotes" style="display: block; font-size: 0.75rem; font-weight: 700; color: #475569; margin-bottom: 4px;">Laboratory / Inspection Directive:</label>
+          <textarea id="needsReviewCustomNotes" class="pair-textarea" rows="2" placeholder="Specify plant inspection directive, sample location, or testing standard..."></textarea>
+        </div>
+      </div>
+
+      <div class="gov-modal-footer">
+        <button class="btn-gov-confirm" id="btnConfirmNeedsReviewAction" style="background: #d97706; border-color: #b45309;">Flag for Inspection &amp; Record in Audit Trail</button>
       </div>
     </div>
   </div>

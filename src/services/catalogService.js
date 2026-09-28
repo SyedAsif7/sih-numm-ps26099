@@ -75,7 +75,7 @@ class CatalogService {
   }
 
   // Process human-in-the-loop governance decision
-  processHitlAction({ queueId, action, notes, officer = "Er. S. Venkatraman (Executive Director - Materials, CPCL)" }) {
+  processHitlAction({ queueId, action, notes, officer = "Er. S. Venkatraman (Executive Director - Materials, CPCL)", proposedNummCode, candidatePair }) {
     let itemIndex = this.hitlQueue.findIndex(q => q.queueId === queueId);
     let item;
 
@@ -84,12 +84,12 @@ class CatalogService {
       item = {
         queueId,
         status: "PENDING",
-        proposedNummCode: "NUMM-VLV-SS-DN50-CL150",
-        candidatePair: {
-          itemA: { legacyCode: "MAT-CPCL-2001", cpse: "CPCL (Refinery)", description: "SS BALL VLV 2\" 150#" },
-          itemB: { legacyCode: "MAT-IOCL-8842", cpse: "IOCL (Panipat)", description: "Ball Valve, Stainless Steel, DN50, Class 150" }
+        proposedNummCode: proposedNummCode || "NUMM-VLV-SS-DN50-CL150",
+        candidatePair: candidatePair || {
+          itemA: { legacyCode: "CPCL-VLV-1042", cpse: "CPCL (Refinery)", description: "VLV BALL SS 2IN 150#" },
+          itemB: { legacyCode: "IOCL-M-88210", cpse: "IOCL (Panipat)", description: "Ball Valve | Stainless Steel | DN50 | Class 150" }
         },
-        confidenceScore: 1.0,
+        confidenceScore: 0.98,
         aiRationale: notes || "Live Pair Harmonization approved via Chief Materials Officer sign-off."
       };
       this.hitlQueue.push(item);
@@ -153,19 +153,50 @@ class CatalogService {
           `${item.candidatePair?.itemA?.legacyCode || 'REC-A'} (${item.candidatePair?.itemA?.cpse || 'CPSE-A'})`,
           `${item.candidatePair?.itemB?.legacyCode || 'REC-B'} (${item.candidatePair?.itemB?.cpse || 'CPSE-B'})`
         ],
-        action: "FLAGGED_FOR_ENGINEERING_REVIEW",
+        action: "REJECTED_MISMATCH",
         officer,
         confidence: `${Math.round((item.confidenceScore || 0.8) * 100)}%`,
-        status: "Flagged for Physical Inspection",
+        status: "Rejected by Materials Officer",
         notes: notes || "Rejected by domain specialist due to operational parameter mismatch."
       });
 
       return {
         success: true,
-        message: `Candidate pair flagged for engineering clarification. No changes committed.`,
+        message: `Candidate pair rejected due to parameter mismatch. No changes committed to master catalog.`,
         auditRef,
         queueId,
         action
+      };
+    } else if (action === "NEEDS_REVIEW") {
+      item.status = "NEEDS_REVIEW";
+      item.reviewedBy = officer;
+      item.reviewedAt = timestamp;
+
+      this.auditLog.unshift({
+        auditRef,
+        timestamp,
+        nummCode: item.proposedNummCode || "PENDING_LAB_VERIFICATION",
+        legacyCodes: [
+          `${item.candidatePair?.itemA?.legacyCode || 'REC-A'} (${item.candidatePair?.itemA?.cpse || 'CPSE-A'})`,
+          `${item.candidatePair?.itemB?.legacyCode || 'REC-B'} (${item.candidatePair?.itemB?.cpse || 'CPSE-B'})`
+        ],
+        action: "FLAGGED_FOR_ENGINEERING_REVIEW",
+        officer,
+        confidence: `${Math.round((item.confidenceScore || 0.96) * 100)}%`,
+        status: "Pending Physical Testing / Lab Inspection",
+        notes: notes || "Flagged by Materials Officer: Physical PMI metallurgy testing & dimensional tolerance inspection required."
+      });
+
+      return {
+        success: true,
+        message: `Candidate pair flagged for engineering review and physical inspection.`,
+        auditRef,
+        queueId,
+        action,
+        updatedStats: {
+          pendingValidation: this.getHitlQueue().length,
+          potentialDuplicates: this.stats.baseDuplicatesCount
+        }
       };
     }
 
@@ -187,7 +218,9 @@ class CatalogService {
     return {
       materialsAnalysed: this.stats.baseMaterialsCount + this.materials.length - INITIAL_MATERIALS.length,
       potentialDuplicates: this.stats.baseDuplicatesCount,
+      duplicatesDetected: this.stats.baseDuplicatesCount,
       equivalentGroups: harmonizedClustersCount,
+      recordsHarmonized: harmonizedClustersCount,
       pendingValidation: pendingHitlCount,
       accuracyConfidence: "96.4%",
       traceabilitySync: "100%",

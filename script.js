@@ -212,6 +212,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroDuplicates) heroDuplicates.textContent = data.potentialDuplicates.toLocaleString();
       }
 
+      // Re-fetch sync if numbers are already animated
+      if (numbersAnimated) {
+        const heroAnalysed = document.getElementById('heroStatAnalysed');
+        const heroDuplicates = document.getElementById('heroStatDuplicates');
+        const dashAnalysed = document.getElementById('dashStatAnalysed');
+        const dashDuplicates = document.getElementById('dashStatDuplicates');
+        const dashGroups = document.getElementById('dashStatGroups');
+        const dashPending = document.getElementById('dashStatPending');
+
+        if (heroAnalysed) heroAnalysed.textContent = data.materialsAnalysed.toLocaleString() + '+';
+        if (heroDuplicates) heroDuplicates.textContent = data.potentialDuplicates.toLocaleString();
+        if (dashAnalysed) dashAnalysed.textContent = data.materialsAnalysed.toLocaleString();
+        if (dashDuplicates) dashDuplicates.textContent = data.potentialDuplicates.toLocaleString();
+        if (dashGroups) dashGroups.textContent = data.equivalentGroups.toLocaleString();
+        if (dashPending) dashPending.textContent = data.pendingValidation.toString();
+      }
+
       // Static text updates
       const heroConfidence = document.getElementById('heroStatConfidence');
       const heroSavings = document.getElementById('heroStatSavings');
@@ -663,33 +680,43 @@ document.addEventListener('DOMContentLoaded', () => {
   const pairPresetCases = {
     valves: {
       cpseA: "CPCL",
-      recordA: 'SS BALL VLV 2" 150#',
+      recordA: 'VLV BALL SS 2IN 150#',
+      legacyA: 'CPCL-VLV-1042',
       cpseB: "IOCL",
-      recordB: 'Ball Valve, Stainless Steel, DN50, Class 150'
+      recordB: 'Ball Valve | Stainless Steel | DN50 | Class 150',
+      legacyB: 'IOCL-M-88210'
     },
     pipes: {
       cpseA: "CPCL",
       recordA: "PIPE CS SMLS SCH 40 2 INCH ASTM A106 GR B",
+      legacyA: "CPCL-PIP-4091",
       cpseB: "IOCL",
-      recordB: '2" NB CS SEAMLESS PIPE SCH40 ASTM A53/A106B SMLS'
+      recordB: '2" NB CS SEAMLESS PIPE SCH40 ASTM A53/A106B SMLS',
+      legacyB: "IOCL-P-55012"
     },
     bearings: {
       cpseA: "HPCL",
       recordA: "DEEP GROOVE BALL BEARING 6205-2RS1 SKF 25X52X15MM C3",
+      legacyA: "HPCL-BRG-8821",
       cpseB: "CPCL",
-      recordB: "BEARING RADIAL BALL 25MM BORE 52MM OD RUBBER SEALED 6205"
+      recordB: "BEARING RADIAL BALL 25MM BORE 52MM OD RUBBER SEALED 6205",
+      legacyB: "CPCL-BRG-3310"
     },
     motors: {
       cpseA: "IOCL",
       recordA: "3 PHASE INDUCTION MOTOR 15KW 415V 1450RPM 4 POLE FOOT MTD IE3",
+      legacyA: "IOCL-MOT-9912",
       cpseB: "CPCL",
-      recordB: "15 KW SQUIRREL CAGE INDUCTION MOTOR 415V 1500 RPM B3 FRAME TEFC"
+      recordB: "15 KW SQUIRREL CAGE INDUCTION MOTOR 415V 1500 RPM B3 FRAME TEFC",
+      legacyB: "CPCL-MOT-1004"
     },
     cables: {
       cpseA: "ONGC",
       recordA: "XLPE POWER CABLE 3.5C X 185 SQ MM AL ARMOURED 1.1KV IS 7098",
+      legacyA: "ONGC-CBL-6712",
       cpseB: "GAIL",
-      recordB: "1100V 3.5 CORE 185SQMM ALUMINIUM CONDUCTOR ARMORED CABLE"
+      recordB: "1100V 3.5 CORE 185SQMM ALUMINIUM CONDUCTOR ARMORED CABLE",
+      legacyB: "GAIL-CBL-4401"
     }
   };
 
@@ -803,26 +830,44 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mapRawA) mapRawA.textContent = `"${recA}"`;
         if (mapRawB) mapRawB.textContent = `"${recB}"`;
 
-        // Reset HITL gate bar
+        // Reset HITL gate bar with all 3 enterprise actions
         if (pairHitlGateBar) {
           pairHitlGateBar.style.background = '#fefce8';
           pairHitlGateBar.style.borderColor = '#fef08a';
           pairHitlGateBar.innerHTML = `
             <div>
-              <strong style="color: #854d0e; font-size: 0.875rem;">Human Review Checkpoint (HITL Governance):</strong>
+              <strong style="color: #854d0e; font-size: 0.875rem;">Officer Decision Checkpoint (HITL Governance):</strong>
               <p style="color: #713f12; font-size: 0.78125rem; margin: 2px 0 0 0;">
-                Reviewer: <strong>${escapeHtml(currentOfficer.name)}</strong> (${escapeHtml(currentOfficer.role)}). Sign-off required to commit into National Master Catalog.
+                Reviewer: <strong>${escapeHtml(currentOfficer.name)}</strong> (${escapeHtml(currentOfficer.role)}). Sign-off required to commit mapping to National Master Catalog.
               </p>
             </div>
-            <div style="display: flex; gap: 8px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <button class="btn-hqc-approve" id="btnApprovePairDemo" style="padding: 8px 16px;">&check; Approve &amp; Assign Common Code</button>
-              <button class="btn-hqc-reject" id="btnRejectPairDemo" style="padding: 8px 16px;">&times; Flag / Reject</button>
+              <button class="btn-hqc-review" id="btnNeedsReviewPairDemo" style="padding: 8px 16px; background: #d97706; border-color: #b45309; color: #ffffff;">&#9888; Needs Review (Testing)</button>
+              <button class="btn-hqc-reject" id="btnRejectPairDemo" style="padding: 8px 16px;">&times; Reject Mismatch</button>
             </div>
           `;
 
-          // Re-attach approve/reject handlers
+          // Re-attach 3-way decision handlers
           document.getElementById('btnApprovePairDemo')?.addEventListener('click', () => {
             handlePairApproval(data);
+          });
+          document.getElementById('btnNeedsReviewPairDemo')?.addEventListener('click', () => {
+            openNeedsReviewModal("PAIR-DEMO-VALVE", (directive) => {
+              if (pairHitlGateBar) {
+                pairHitlGateBar.style.background = '#fef3c7';
+                pairHitlGateBar.style.borderColor = '#fde68a';
+                pairHitlGateBar.innerHTML = `
+                  <div style="color: #92400e; font-size: 0.875rem;">
+                    <strong>&#9888; Candidate Pair Flagged for Engineering &amp; Yard Testing</strong>
+                    <p style="margin: 2px 0 0 0; font-size: 0.78125rem;">
+                      Directive: <em>"${escapeHtml(directive)}"</em> &bull; Actioned by <strong>${escapeHtml(currentOfficer.name)}</strong> (${escapeHtml(currentOfficer.role)}).
+                    </p>
+                  </div>
+                  <span class="sec-badge-tag" style="background: #fde68a; color: #92400e; border-color: #d97706;">Testing Mandated</span>
+                `;
+              }
+            });
           });
           document.getElementById('btnRejectPairDemo')?.addEventListener('click', () => {
             openRejectModal("PAIR-DEMO-VALVE", (reason) => {
@@ -831,12 +876,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 pairHitlGateBar.style.borderColor = '#fecdd3';
                 pairHitlGateBar.innerHTML = `
                   <div style="color: #9f1239; font-size: 0.875rem;">
-                    <strong>&times; Candidate Pair Flagged for Engineering Review</strong>
+                    <strong>&times; Candidate Pair Rejected (Parameter Mismatch)</strong>
                     <p style="margin: 2px 0 0 0; font-size: 0.78125rem;">
                       Reason: <em>"${escapeHtml(reason)}"</em> &bull; Flagged by <strong>${escapeHtml(currentOfficer.name)}</strong> (${escapeHtml(currentOfficer.role)}).
                     </p>
                   </div>
-                  <span class="sec-badge-tag" style="background: #ffe4e6; color: #9f1239; border-color: #fda4af;">Flagged for Review</span>
+                  <span class="sec-badge-tag" style="background: #ffe4e6; color: #9f1239; border-color: #fda4af;">Rejected</span>
                 `;
               }
             });
@@ -866,6 +911,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!data) return;
     if (!checkOfficerPermission('APPROVE')) return;
 
+    const cA = data.recordA?.cpse || "CPCL";
+    const cB = data.recordB?.cpse || "IOCL";
+    const rawA = data.recordA?.raw || 'VLV BALL SS 2IN 150#';
+    const rawB = data.recordB?.raw || 'Ball Valve | Stainless Steel | DN50 | Class 150';
+    const legacyA = data.recordA?.legacyCode || "CPCL-VLV-1042";
+    const legacyB = data.recordB?.legacyCode || "IOCL-M-88210";
+
     try {
       const res = await fetch('/api/hitl/action', {
         method: 'POST',
@@ -873,8 +925,13 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({
           queueId: "PAIR-DEMO-" + Math.floor(1000 + Math.random() * 9000),
           action: "APPROVE",
-          notes: `Verified physical equivalence between ${data.recordA.cpse} and ${data.recordB.cpse}. Assigned ${data.canonicalNummCode}.`,
-          officer: `${currentOfficer.name} (${currentOfficer.role}, ${currentOfficer.cpse})`
+          notes: `Verified physical equivalence between ${cA} and ${cB}. Assigned ${data.canonicalNummCode}.`,
+          officer: `${currentOfficer.name} (${currentOfficer.role}, ${currentOfficer.cpse})`,
+          proposedNummCode: data.canonicalNummCode,
+          candidatePair: {
+            itemA: { legacyCode: legacyA, cpse: cA, description: rawA },
+            itemB: { legacyCode: legacyB, cpse: cB, description: rawB }
+          }
         })
       });
       const result = await res.json();
@@ -893,9 +950,74 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
       }
 
-      // Visual decrement on potential duplicates KPI counter
+      // Render Dedicated Unified Common Record & ERP Interoperability Card
+      const pairMappingSummary = document.getElementById('pairMappingSummary');
+      if (pairMappingSummary) {
+        pairMappingSummary.classList.add('approved-record-active');
+        pairMappingSummary.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px; margin-bottom: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #10b981; color: #ffffff; font-size: 0.8125rem; font-weight: 900;">&check;</span>
+                <strong style="color: #065f46; font-size: 0.9375rem;">OFFICIALLY COMMITTED TO NATIONAL UNIFIED MASTER CATALOG</strong>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 0.78125rem; margin: 0;">
+                Both legacy records mapped bidirectionally to a single authoritative NUMM identity. Local CPSE ERPs continue operating without disruption while cross-enterprise procurement is unlocked.
+              </p>
+            </div>
+            <div style="text-align: right;">
+              <span class="numm-code-display" style="font-size: 1.05rem; padding: 6px 14px; background: #ecfdf5; border: 1px solid #6ee7b7; color: #065f46; border-radius: 6px; letter-spacing: 0.5px;">${escapeHtml(data.canonicalNummCode)}</span>
+              <span style="display: block; font-size: 0.71875rem; color: #059669; font-weight: 700; margin-top: 4px;">Universal Common Material Code (Active)</span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+            <div class="mapping-row" style="background: var(--bg-surface); border-left: 4px solid #0284c7;">
+              <div>
+                <span style="font-weight: 800; color: #0284c7; display: block; font-size: 0.78125rem;">${escapeHtml(cA)} (SAP S/4HANA &bull; RFC / IDoc MATMAS05)</span>
+                <code style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--navy-900); font-weight: 700;">Legacy Code: ${escapeHtml(legacyA)}</code>
+                <span style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px;">&ldquo;${escapeHtml(rawA)}&rdquo;</span>
+              </div>
+              <div style="text-align: right;">
+                <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; background: #e0f2fe; color: #0369a1; font-weight: 800; font-size: 0.71875rem; border: 1px solid #bae6fd;">Mapped &amp; Synced</span>
+                <span style="display: block; font-family: var(--font-mono); font-size: 0.71875rem; color: var(--text-muted); margin-top: 2px;">Sync ID: ERP-RFC-CPCL-1042</span>
+              </div>
+            </div>
+
+            <div class="mapping-row" style="background: var(--bg-surface); border-left: 4px solid #d97706;">
+              <div>
+                <span style="font-weight: 800; color: #d97706; display: block; font-size: 0.78125rem;">${escapeHtml(cB)} (Oracle ERP Cloud &bull; FBDI / REST Ingestion)</span>
+                <code style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--navy-900); font-weight: 700;">Legacy Code: ${escapeHtml(legacyB)}</code>
+                <span style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px;">&ldquo;${escapeHtml(rawB)}&rdquo;</span>
+              </div>
+              <div style="text-align: right;">
+                <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; background: #fef3c7; color: #92400e; font-weight: 800; font-size: 0.71875rem; border: 1px solid #fde68a;">Mapped &amp; Synced</span>
+                <span style="display: block; font-family: var(--font-mono); font-size: 0.71875rem; color: var(--text-muted); margin-top: 2px;">Sync ID: ERP-REST-IOCL-88210</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; background: #ecfdf5; border-radius: 6px; padding: 10px 14px; font-size: 0.75rem; color: #065f46;">
+            <div>
+              <strong>Audit Stamp:</strong> <code style="font-family: var(--font-mono); font-weight: 800;">${result.auditRef || 'VAL-2026-LIVE'}</code> &bull;
+              <strong>Certifying Officer:</strong> ${escapeHtml(currentOfficer.name)} (${escapeHtml(currentOfficer.role)})
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <a href="/api/export/csv" download="NUMM_Unified_Export.csv" class="btn-copy-code" style="text-decoration: none; padding: 4px 8px; font-size: 0.71875rem;">
+                <span>Download CSV Sync</span>
+              </a>
+              <a href="/api/export/json" download="NUMM_Unified_Export.json" class="btn-copy-code" style="text-decoration: none; padding: 4px 8px; font-size: 0.71875rem;">
+                <span>Download JSON Schema</span>
+              </a>
+            </div>
+          </div>
+        `;
+      }
+
+      // Visual updates on KPIs
       const heroDuplicates = document.getElementById('heroStatDuplicates');
       const dashDuplicates = document.getElementById('dashStatDuplicates');
+      const dashGroups = document.getElementById('dashStatGroups');
       const heroSavings = document.getElementById('heroStatSavings');
       const calcWorkingCapital = document.getElementById('calcWorkingCapital');
 
@@ -911,6 +1033,12 @@ document.addEventListener('DOMContentLoaded', () => {
         dashDuplicates.classList.add('kpi-pulse-updated');
         setTimeout(() => dashDuplicates.classList.remove('kpi-pulse-updated'), 1400);
       }
+      if (dashGroups) {
+        const cur = parseInt(dashGroups.textContent.replace(/[^0-9]/g, '')) || 2117;
+        dashGroups.textContent = (cur + 1).toLocaleString();
+        dashGroups.classList.add('kpi-pulse-updated');
+        setTimeout(() => dashGroups.classList.remove('kpi-pulse-updated'), 1400);
+      }
       if (heroSavings) {
         heroSavings.textContent = '₹97.24 Cr';
         heroSavings.classList.add('kpi-pulse-updated');
@@ -922,12 +1050,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
       showToast(`✓ Master Code Committed: ${data.canonicalNummCode}. Duplicate reduced (9,342 → 9,341). ₹85 Lakhs capital unlocked!`, 'success', 4000);
       loadHitlQueue();
+      loadAuditTrail();
       loadAnalytics();
 
     } catch (err) {
       showToast('Approval error: ' + err.message, 'alert');
     }
   }
+
+  // Initial wire-up for pre-loaded Tab 2 demo pair actions
+  const defaultValveData = {
+    canonicalNummCode: "NUMM-VLV-SS-DN50-CL150",
+    recordA: { cpse: "CPCL", raw: 'VLV BALL SS 2IN 150#', legacyCode: "CPCL-VLV-1042" },
+    recordB: { cpse: "IOCL", raw: 'Ball Valve | Stainless Steel | DN50 | Class 150', legacyCode: "IOCL-M-88210" }
+  };
+
+  document.getElementById('btnApprovePairDemo')?.addEventListener('click', () => {
+    handlePairApproval(defaultValveData);
+  });
+  document.getElementById('btnNeedsReviewPairDemo')?.addEventListener('click', () => {
+    openNeedsReviewModal("PAIR-DEMO-VALVE", (directive) => {
+      if (pairHitlGateBar) {
+        pairHitlGateBar.style.background = '#fef3c7';
+        pairHitlGateBar.style.borderColor = '#fde68a';
+        pairHitlGateBar.innerHTML = `
+          <div style="color: #92400e; font-size: 0.875rem;">
+            <strong>&#9888; Candidate Pair Flagged for Engineering &amp; Yard Testing</strong>
+            <p style="margin: 2px 0 0 0; font-size: 0.78125rem;">
+              Directive: <em>"${escapeHtml(directive)}"</em> &bull; Actioned by <strong>${escapeHtml(currentOfficer.name)}</strong> (${escapeHtml(currentOfficer.role)}).
+            </p>
+          </div>
+          <span class="sec-badge-tag" style="background: #fde68a; color: #92400e; border-color: #d97706;">Testing Mandated</span>
+        `;
+      }
+    });
+  });
+  document.getElementById('btnRejectPairDemo')?.addEventListener('click', () => {
+    openRejectModal("PAIR-DEMO-VALVE", (reason) => {
+      if (pairHitlGateBar) {
+        pairHitlGateBar.style.background = '#fff1f2';
+        pairHitlGateBar.style.borderColor = '#fecdd3';
+        pairHitlGateBar.innerHTML = `
+          <div style="color: #9f1239; font-size: 0.875rem;">
+            <strong>&times; Candidate Pair Rejected (Parameter Mismatch)</strong>
+            <p style="margin: 2px 0 0 0; font-size: 0.78125rem;">
+              Reason: <em>"${escapeHtml(reason)}"</em> &bull; Flagged by <strong>${escapeHtml(currentOfficer.name)}</strong> (${escapeHtml(currentOfficer.role)}).
+            </p>
+          </div>
+          <span class="sec-badge-tag" style="background: #ffe4e6; color: #9f1239; border-color: #fda4af;">Rejected</span>
+        `;
+      }
+    });
+  });
 
   // =========================================================================
   // 5. TAB 3: DYNAMIC HITL QUEUE & SKELETON LOADING
@@ -998,8 +1172,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <div class="hqc-actions">
               <button class="btn-hqc-approve" data-qid="${item.queueId}">&check; Approve &amp; Commit</button>
+              <button class="btn-hqc-review" data-qid="${item.queueId}">&#9888; Flag for Review</button>
               <button class="btn-hqc-details" data-qid="${item.queueId}">&#128065; Technical Trace</button>
-              <button class="btn-hqc-reject" data-qid="${item.queueId}">&times; Flag / Reject</button>
+              <button class="btn-hqc-reject" data-qid="${item.queueId}">&times; Reject</button>
             </div>
           </div>
         `;
@@ -1012,6 +1187,13 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
           const qid = btn.getAttribute('data-qid');
           processHitlDecision(qid, 'APPROVE');
+        });
+      });
+
+      dynamicHitlQueueList.querySelectorAll('.btn-hqc-review').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const qid = btn.getAttribute('data-qid');
+          openNeedsReviewModal(qid);
         });
       });
 
@@ -1108,6 +1290,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Needs Review & Physical Testing Modal Controller
+  let pendingNeedsReviewItem = null;
+
+  const modalNeedsReviewBackdrop = document.getElementById('modalNeedsReviewBackdrop');
+  const btnCloseNeedsReviewModal = document.getElementById('btnCloseNeedsReviewModal');
+  const btnConfirmNeedsReviewAction = document.getElementById('btnConfirmNeedsReviewAction');
+  const needsReviewCustomNotes = document.getElementById('needsReviewCustomNotes');
+
+  function openNeedsReviewModal(queueId, callback) {
+    pendingNeedsReviewItem = { queueId, callback };
+    if (modalNeedsReviewBackdrop) {
+      modalNeedsReviewBackdrop.style.display = 'flex';
+      modalNeedsReviewBackdrop.classList.add('active');
+    }
+  }
+
+  function closeNeedsReviewModal() {
+    pendingNeedsReviewItem = null;
+    if (modalNeedsReviewBackdrop) {
+      modalNeedsReviewBackdrop.style.display = 'none';
+      modalNeedsReviewBackdrop.classList.remove('active');
+    }
+    if (needsReviewCustomNotes) needsReviewCustomNotes.value = '';
+  }
+
+  if (btnCloseNeedsReviewModal) {
+    btnCloseNeedsReviewModal.addEventListener('click', closeNeedsReviewModal);
+  }
+  if (modalNeedsReviewBackdrop) {
+    modalNeedsReviewBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalNeedsReviewBackdrop) closeNeedsReviewModal();
+    });
+  }
+
+  if (btnConfirmNeedsReviewAction) {
+    btnConfirmNeedsReviewAction.addEventListener('click', async () => {
+      if (!pendingNeedsReviewItem) return;
+      const selectedRadio = document.querySelector('input[name="needsReviewReason"]:checked');
+      let reasonText = selectedRadio ? selectedRadio.value : "Physical testing & verification required.";
+      const customNotes = needsReviewCustomNotes ? needsReviewCustomNotes.value.trim() : "";
+      if (customNotes) {
+        reasonText = reasonText === "CUSTOM" ? customNotes : `${reasonText} [Directive: ${customNotes}]`;
+      }
+
+      const { queueId, callback } = pendingNeedsReviewItem;
+      closeNeedsReviewModal();
+
+      await processHitlDecision(queueId, 'NEEDS_REVIEW', reasonText);
+      if (callback) callback(reasonText);
+    });
+  }
+
   async function processHitlDecision(queueId, action, notes = '') {
     if (action === 'APPROVE' && !checkOfficerPermission('APPROVE')) return;
 
@@ -1128,9 +1362,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (action === 'APPROVE') {
           showToast(`✓ Approved: ${result.auditRef} committed to Unified Catalog`, 'success', 3000);
 
-          // Decrement duplicate counter smoothly
+          // Decrement duplicate counter smoothly and increment records harmonized
           const heroDuplicates = document.getElementById('heroStatDuplicates');
           const dashDuplicates = document.getElementById('dashStatDuplicates');
+          const dashGroups = document.getElementById('dashStatGroups');
           const heroSavings = document.getElementById('heroStatSavings');
           const calcWorkingCapital = document.getElementById('calcWorkingCapital');
 
@@ -1146,6 +1381,12 @@ document.addEventListener('DOMContentLoaded', () => {
             dashDuplicates.classList.add('kpi-pulse-updated');
             setTimeout(() => dashDuplicates.classList.remove('kpi-pulse-updated'), 1400);
           }
+          if (dashGroups) {
+            const cur = parseInt(dashGroups.textContent.replace(/[^0-9]/g, '')) || 2117;
+            dashGroups.textContent = (cur + 1).toLocaleString();
+            dashGroups.classList.add('kpi-pulse-updated');
+            setTimeout(() => dashGroups.classList.remove('kpi-pulse-updated'), 1400);
+          }
           if (heroSavings) {
             heroSavings.textContent = '₹97.24 Cr';
             heroSavings.classList.add('kpi-pulse-updated');
@@ -1154,8 +1395,10 @@ document.addEventListener('DOMContentLoaded', () => {
           if (calcWorkingCapital) {
             calcWorkingCapital.textContent = '₹ 97.24 Cr';
           }
+        } else if (action === 'NEEDS_REVIEW') {
+          showToast(`⚠ Flagged for Testing: ${queueId} directed for metallurgical/physical inspection`, 'alert', 3500);
         } else {
-          showToast(`✗ Flagged: ${queueId} marked for review with note: "${notes || 'Parameter variation'}"`, 'alert', 3500);
+          showToast(`✗ Rejected: ${queueId} recorded as mismatch: "${notes || 'Parameter variation'}"`, 'alert', 3500);
         }
 
         const card = document.getElementById(`card-${queueId}`);
@@ -1195,9 +1438,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let html = '';
       data.logs.forEach(log => {
-        const isApproved = log.action === 'APPROVED_AND_COMMITTED';
-        const actClass = isApproved ? 'act-app' : 'act-rej';
-        const actText = isApproved ? '&check; APPROVED' : '&times; FLAGGED';
+        let actClass = 'act-app';
+        let actText = '&check; APPROVED';
+
+        if (log.action === 'APPROVED_AND_COMMITTED') {
+          actClass = 'act-app';
+          actText = '&check; APPROVED';
+        } else if (log.action === 'FLAGGED_FOR_ENGINEERING_REVIEW') {
+          actClass = 'act-review';
+          actText = '&#9888; REVIEW REQ';
+        } else {
+          actClass = 'act-rej';
+          actText = '&times; REJECTED';
+        }
 
         html += `
           <tr>
