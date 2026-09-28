@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PS 26099 | National Unified Material Master (NUMM) — CPCL &amp; MoPNG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-light">
+
+  <!-- Floating Toast Notification System -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- National Tri-Color Accent Ribbon -->
+  <div class="national-tricolor-ribbon" aria-hidden="true"></div>
+
+  <!-- Sticky Institutional Navigation Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="numm-brand-wrapper">
+          <div class="numm-platform-crest" aria-hidden="true">
+            <svg width="38" height="38" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 3L42 13.5V34.5L24 45L6 34.5V13.5L24 3Z" fill="url(#crestGradNav)" stroke="#38bdf8" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M24 12V24M24 24L34 30M24 24L14 30" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="24" cy="24" r="4.5" fill="#34d399" stroke="#ffffff" stroke-width="1.8"/>
+              <circle cx="24" cy="12" r="3" fill="#38bdf8"/>
+              <circle cx="34" cy="30" r="3" fill="#38bdf8"/>
+              <circle cx="14" cy="30" r="3" fill="#38bdf8"/>
+              <defs>
+                <linearGradient id="crestGradNav" x1="6" y1="3" x2="42" y2="45" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#022c5e"/>
+                  <stop offset="0.5" stop-color="#00695c"/>
+                  <stop offset="1" stop-color="#041b37"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="nav-gov-text">
+            <span class="nav-gov-india">NUMM PLATFORM &bull; SIH 2026</span>
+            <span class="nav-mopng">National Unified Material Master</span>
+            <span class="nav-attribution-sub">MoPNG &amp; CPCL &bull; PS 26099</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav-links" aria-label="Section navigation">
+        <a href="#problem-section" class="nav-icon-link" aria-label="The Problem" title="The Problem">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <span class="nav-tooltip">The Problem</span>
+        </a>
+        <a href="#intelligence-section" class="nav-icon-link" aria-label="The Intelligence" title="The Intelligence">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          <span class="nav-tooltip">The Intelligence</span>
+        </a>
+        <a href="#workbench-section" class="nav-icon-link" aria-label="Live AI Workbench" title="Live AI Workbench">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+          <span class="nav-tooltip">Live AI Workbench</span>
+        </a>
+        <a href="#hitl-section" class="nav-icon-link" aria-label="HITL Governance" title="HITL Governance">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <polyline points="16 11 18 13 22 9"/>
+          </svg>
+          <span class="nav-tooltip">HITL Governance</span>
+        </a>
+        <a href="#dashboard-section" class="nav-icon-link" aria-label="Dashboard &amp; Benefits" title="Dashboard &amp; Benefits">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="9" rx="1"/>
+            <rect x="14" y="3" width="7" height="5" rx="1"/>
+            <rect x="14" y="12" width="7" height="9" rx="1"/>
+            <rect x="3" y="16" width="7" height="5" rx="1"/>
+          </svg>
+          <span class="nav-tooltip">Dashboard &amp; Benefits</span>
+        </a>
+        <a href="#tech-section" class="nav-icon-link" aria-label="Tech Stack" title="Tech Stack">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+          <span class="nav-tooltip">Tech Stack</span>
+        </a>
+      </nav>
+
+      <div class="header-right">
+        <!-- Accessibility Theme Toggle Button -->
+        <button id="themeToggleBtn" class="btn-theme-toggle" aria-label="Toggle High-Contrast / Dark Mode" title="Toggle Light / Dark Theme">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+
+        <!-- Live Workbench Header Button -->
+        <a href="#workbench-section" class="btn-header-workbench">
+          <span class="pulse-dot-sm"></span>
+          <span>Open AI Workbench</span>
+        </a>
+        <!-- CPCL Monogram -->
+        <div class="nav-cpcl-group">
+          <img src="assets/cpcl_mark_clean.png" alt="CPCL Logo" class="nav-cpcl-mark">
+          <div class="nav-cpcl-text">
+            <span class="nav-cpcl-code">CPCL</span>
+            <span class="nav-cpcl-name">Chennai Petroleum Corporation Limited</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. LARGE IMMERSIVE LANDING PAGE HERO SECTION -->
+  <section class="landing-hero" id="landingHero">
+    <!-- Subtle Blueprint Overlay Texture -->
+    <div class="hero-grid-overlay" aria-hidden="true"></div>
+
+    <div class="hero-content-wrapper">
+      <div class="hero-text-block">
+        
+        <!-- Eyebrow Pill -->
+        <div class="hero-eyebrow-pill">
+          <span class="pulse-indicator"></span>
+          <span class="eyebrow-text">SMART INDIA HACKATHON 2026 &bull; PROBLEM STATEMENT PS 26099</span>
+        </div>
+
+        <!-- Main Eye-Catching Title -->
+        <h1 class="hero-main-title">
+          AI-Driven Standardization &amp; Harmonization of Material Codes Across CPSEs
+        </h1>
+
+        <!-- High-Impact Subtitle -->
+        <p class="hero-subtitle">
+          <strong>National Unified Material Master (NUMM):</strong> An enterprise AI platform for discovering, standardizing, and harmonizing functionally equivalent materials across CPSEs without disrupting legacy SAP/ERP operations.
+        </p>
+
+        <!-- Action CTAs -->
+        <div class="hero-actions-row">
+          <a href="#workbench-section" class="btn-hero-primary" id="btnLaunchWorkbenchHero">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Launch Live AI Workbench</span>
+          </a>
+          <a href="#problem-section" class="btn-hero-secondary" id="btnExploreBlueprint">
+            <span>Explore Solution Blueprint</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          </a>
+          <a href="#hitl-section" class="btn-hero-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>HITL Governance Demo</span>
+          </a>
+        </div>
+
+        <!-- Live Metrics Glass Strip (Dynamically Populated from REST API) -->
+        <div class="hero-stats-glass-strip">
+          <div class="h-stat-item">
+            <span class="h-stat-num" id="heroStatAnalysed">128,450+</span>
+            <span class="h-stat-lbl">Materials Analysed</span>
+          </div>
+          <div class="h-stat-sep"></div>
+          <div class="h-stat-item">
+            <span class="h-stat-num" id="heroStatDuplicates">9,342</span>
+            <span class="h-stat-lbl">Potential Duplicates</span>
+          </div>
+          <div class="h-stat-sep"></div>
+          <div class="h-stat-item">
+            <span class="h-stat-num" id="heroStatConfidence">96.4%</span>
+            <span class="h-stat-lbl">AI Match Confidence</span>
+          </div>
+          <div class="h-stat-sep"></div>
+          <div class="h-stat-item">
+            <span class="h-stat-num" id="heroStatSavings">₹96.3 Cr</span>
+            <span class="h-stat-lbl">Working Capital Unlocked</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Scroll Down Prompt (Animated) -->
+    <a href="#problem-section" class="scroll-down-cue" aria-label="Scroll down to details">
+      <span class="scroll-text">Scroll Down for Details</span>
+      <div class="scroll-mouse-icon">
+        <div class="mouse-wheel"></div>
+      </div>
+      <svg class="chevron-down" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </a>
+  </section>
+
+  <!-- 2. MAIN DETAILS CONTENT CONTAINER -->
+  <main class="details-main-container" id="detailsMain">
+
+    <!-- 01. THE PROBLEM SECTION -->
+    <section class="content-section" id="problem-section">
+      <div class="section-header-row">
+        <div class="sec-title-group">
+          <span class="sec-counter">01</span>
+          <div>
+            <h2 class="sec-heading">THE PROBLEM</h2>
+            <h3 class="sec-subheading underline-teal">Fragmented CPSE Material Data</h3>
+          </div>
+        </div>
+        <span class="sec-badge-tag">Cross-CPSE Industrial Challenge</span>
+      </div>
+
+      <div class="problem-content-grid">
+        <!-- Left Narrative Column -->
+        <div class="problem-text-card">
+          <p class="problem-lead-p">
+            CPSEs across Oil &amp; Gas, Power, Steel, Mining &amp; Heavy Engineering maintain vast, isolated material master databases with inconsistent item codes, varying naming conventions, disparate technical specifications, non-standard units of measurement (UOM), and heterogeneous ERP/SAP systems.
+          </p>
+          <div class="problem-quote-callout">
+            <span class="quote-bar"></span>
+            <p>&ldquo;Functionally identical physical components appear as completely unrelated records across CPSE inventories, paralyzing cross-enterprise discovery and bulk procurement synergies.&rdquo;</p>
+          </div>
+        </div>
+
+        <!-- Right: 3 Sample CPSE Cards -->
+        <div class="problem-samples-card">
+          <div class="samples-title-bar">
+            <span>Example: The Same Material Recorded Differently Across CPSEs</span>
+            <span class="tag-illustrative">Illustrative Example</span>
+          </div>
+
+          <div class="cpse-cards-trio">
+            <!-- CPSE A -->
+            <div class="cpse-card">
+              <div class="cpse-card-header">
+                <span class="c-badge c-navy">CPSE A (Refining)</span>
+                <span class="c-erp">SAP S/4HANA</span>
+              </div>
+              <div class="c-code-wrap">
+                <span class="c-code-lbl">MATERIAL CODE</span>
+                <code class="c-code">MAT-10452</code>
+              </div>
+              <p class="c-desc">&ldquo;SS PIPE 2 IN SCH 40&rdquo;</p>
+              <div class="c-tags">
+                <span>Imperial Units (2 IN)</span>
+                <span>Abbr. "SS"</span>
+              </div>
+            </div>
+
+            <!-- CPSE B -->
+            <div class="cpse-card">
+              <div class="cpse-card-header">
+                <span class="c-badge c-teal">CPSE B (Petrochem)</span>
+                <span class="c-erp">Oracle ERP</span>
+              </div>
+              <div class="c-code-wrap">
+                <span class="c-code-lbl">MATERIAL CODE</span>
+                <code class="c-code">M-77821</code>
+              </div>
+              <p class="c-desc">&ldquo;STAINLESS STEEL PIPE, 50mm, SCH40&rdquo;</p>
+              <div class="c-tags">
+                <span>Metric Units (50mm)</span>
+                <span>Expanded Name</span>
+              </div>
+            </div>
+
+            <!-- CPSE C -->
+            <div class="cpse-card">
+              <div class="cpse-card-header">
+                <span class="c-badge c-cyan">CPSE C (Energy)</span>
+                <span class="c-erp">In-House ERP</span>
+              </div>
+              <div class="c-code-wrap">
+                <span class="c-code-lbl">MATERIAL CODE</span>
+                <code class="c-code">RM-2941</code>
+              </div>
+              <p class="c-desc">&ldquo;SS SEAMLESS PIPE DN50 SCH 40&rdquo;</p>
+              <div class="c-tags">
+                <span>Nominal Dia (DN50)</span>
+                <span>Process "Seamless"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resulting Consequences Banner -->
+      <div class="consequences-card">
+        <div class="consequences-top">
+          <div class="alert-icon-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div>
+            <h4 class="consequences-heading">Resulting Consequences &bull; The Enterprise Cost of Disconnection</h4>
+            <p class="consequences-sub">Uncoordinated master data compounds operational friction at national scale.</p>
+          </div>
+        </div>
+
+        <div class="consequences-grid">
+          <div class="consequence-item">
+            <span class="ci-dot">&bull;</span>
+            <div class="ci-content">
+              <strong>Duplicate Material Masters</strong>
+              <span>Multiple redundant entries created across independent CPSE ERP systems.</span>
+            </div>
+          </div>
+          <div class="consequence-item">
+            <span class="ci-dot">&bull;</span>
+            <div class="ci-content">
+              <strong>Difficult Material Discovery &amp; Search</strong>
+              <span>Inability to locate equivalent spares across sister enterprises during emergencies.</span>
+            </div>
+          </div>
+          <div class="consequence-item">
+            <span class="ci-dot">&bull;</span>
+            <div class="ci-content">
+              <strong>Inconsistent Data &amp; Poor Data Quality</strong>
+              <span>Conflicting specifications, non-standard units, and missing metallurgical attributes.</span>
+            </div>
+          </div>
+          <div class="consequence-item">
+            <span class="ci-dot">&bull;</span>
+            <div class="ci-content">
+              <strong>Fragmented Procurement Visibility</strong>
+              <span>Missed bulk pooling opportunities, redundant tenders, and higher working capital lockup.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02. THE INTELLIGENCE SECTION (5-STAGE PIPELINE) -->
+    <section class="content-section" id="intelligence-section">
+      <div class="section-header-row">
+        <div class="sec-title-group">
+          <span class="sec-counter">02</span>
+          <div>
+            <h2 class="sec-heading">THE INTELLIGENCE</h2>
+            <h3 class="sec-subheading underline-teal">Our AI-Powered Solution</h3>
+          </div>
+        </div>
+        <span class="sec-badge-tag tag-ai">Autonomous Neural Pipeline</span>
+      </div>
+
+      <!-- Platform Hero Callout -->
+      <div class="platform-callout-card">
+        <div class="pcc-content">
+          <h4 class="pcc-title">National Unified Material Master (NUMM)</h4>
+          <p class="pcc-desc">
+            An AI-powered platform for discovering, standardizing, and harmonizing equivalent materials across CPSEs. AI recommends &bull; Human expert validates &bull; Full traceability maintained.
+          </p>
+        </div>
+        <div class="pcc-badges">
+          <span class="pcc-pill">NLP Entity Extraction</span>
+          <span class="pcc-pill">High-Dimensional Embeddings</span>
+          <span class="pcc-pill">Cosine Vector Search</span>
+        </div>
+      </div>
+
+      <!-- 5-Stage Animated Pipeline -->
+      <div class="pipeline-container">
+        <!-- Step 1: INGEST -->
+        <div class="pipe-node-card">
+          <div class="pipe-number-badge">1</div>
+          <div class="pipe-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/>
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+            </svg>
+          </div>
+          <h5 class="pipe-step-title">INGEST</h5>
+          <p class="pipe-step-detail">Ingest material data from diverse ERP/SAP, legacy databases &amp; historical procurement sources</p>
+          <span class="pipe-tag">Multi-Source</span>
+        </div>
+
+        <div class="pipe-flow-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+
+        <!-- Step 2: UNDERSTAND -->
+        <div class="pipe-node-card">
+          <div class="pipe-number-badge">2</div>
+          <div class="pipe-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a8 8 0 0 0-8 8c0 3 2 5.5 5 7v3a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-3c3-1.5 5-4 5-7a8 8 0 0 0-8-8z"/>
+              <line x1="9" y1="21" x2="15" y2="21"/>
+            </svg>
+          </div>
+          <h5 class="pipe-step-title">UNDERSTAND</h5>
+          <p class="pipe-step-detail">NLP &amp; technical attribute extraction to normalize dimensions (2" = 50mm = DN50), grades, standards &amp; UOM</p>
+          <span class="pipe-tag">Industrial NLP</span>
+        </div>
+
+        <div class="pipe-flow-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+
+        <!-- Step 3: MATCH -->
+        <div class="pipe-node-card node-highlight-match">
+          <div class="pipe-number-badge badge-match">3</div>
+          <div class="pipe-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+          </div>
+          <h5 class="pipe-step-title">MATCH</h5>
+          <p class="pipe-step-detail">Semantic embeddings &amp; entity matching: classifies Identical, Duplicate, Near-Duplicate &amp; Functionally Equivalent</p>
+          <span class="pipe-tag tag-confidence">94% &ndash; 96% Match</span>
+        </div>
+
+        <div class="pipe-flow-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+
+        <!-- Step 4: STANDARDIZE -->
+        <div class="pipe-node-card">
+          <div class="pipe-number-badge">4</div>
+          <div class="pipe-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </div>
+          <h5 class="pipe-step-title">STANDARDIZE</h5>
+          <p class="pipe-step-detail">Normalize to national standard schema, canonical engineering taxonomy &amp; unified ISO/ASTM units</p>
+          <span class="pipe-tag">Canonical Schema</span>
+        </div>
+
+        <div class="pipe-flow-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+
+        <!-- Step 5: UNIFY -->
+        <div class="pipe-node-card node-highlight-unify">
+          <div class="pipe-number-badge badge-unify">5</div>
+          <div class="pipe-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h5 class="pipe-step-title">UNIFY</h5>
+          <p class="pipe-step-detail">Create single unified master record with full bidirectional traceability to local CPSE codes</p>
+          <span class="pipe-tag tag-success">Universal Code</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03. LIVE INDUSTRIAL AI WORKBENCH & DEMO SUITE (NEW JURY-READY WORKBENCH) -->
+    <section class="content-section" id="workbench-section">
+      <div class="section-header-row">
+        <div class="sec-title-group">
+          <span class="sec-counter">03</span>
+          <div>
+            <h2 class="sec-heading">LIVE AI WORKBENCH</h2>
+            <h3 class="sec-subheading underline-teal">Cross-CPSE Discovery, Ingestion &amp; Harmonization Engine</h3>
+          </div>
+        </div>
+        <div class="wb-header-badges">
+          <span class="sec-badge-tag tag-ai">Live REST API Connected</span>
+          <span class="live-pulse-badge"><span class="pulse-dot"></span> Active Engine</span>
+        </div>
+      </div>
+
+      <!-- Workbench Tab Navigation Controls -->
+      <div class="wb-nav-tabs" role="tablist">
+        <button class="wb-tab-btn active" data-tab="tab-search" role="tab" aria-selected="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>1. Material Discovery</span>
+        </button>
+        <button class="wb-tab-btn" data-tab="tab-ai-extract" role="tab" aria-selected="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 3 2 5.5 5 7v3a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-3c3-1.5 5-4 5-7a8 8 0 0 0-8-8z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
+          <span>2. AI Ingestion &amp; NLP</span>
+        </button>
+        <button class="wb-tab-btn" data-tab="tab-hitl-queue" role="tab" aria-selected="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+          <span>3. HITL Queue (<span id="wbQueueBadgeCount">4</span>)</span>
+        </button>
+        <button class="wb-tab-btn" data-tab="tab-roi-calculator" role="tab" aria-selected="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>4. Capital &amp; ROI</span>
+        </button>
+        <button class="wb-tab-btn" data-tab="tab-erp-export" role="tab" aria-selected="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>5. ERP Sync &amp; Export</span>
+        </button>
+      </div>
+
+      <!-- Tab Content Panels -->
+      <div class="wb-tabs-container">
+
+        <!-- TAB 1: CROSS-CPSE MATERIAL DISCOVERY -->
+        <div class="wb-tab-pane active" id="tab-search">
+          <div class="search-lead-bar">
+            <div class="search-input-box">
+              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="materialSearchInput" placeholder="Search by description, standard, legacy code (e.g. 'pipe 2 inch', 'ball valve', 'MAT-10452')..." value="pipe 2 inch">
+              <button class="btn-search-exec" id="btnExecuteSearch">Search Catalog</button>
+            </div>
+          </div>
+
+          <!-- Quick Suggestion Chips -->
+          <div class="search-chips-row">
+            <span class="chip-label">Quick Queries:</span>
+            <button class="search-chip" data-query="SS PIPE 2 IN">SS Pipe 2" SCH 40</button>
+            <button class="search-chip" data-query="CS PIPE 4 IN">CS Pipe 4" SCH 80</button>
+            <button class="search-chip" data-query="BALL VALVE 50mm">Ball Valve 300# CF8M</button>
+            <button class="search-chip" data-query="SPIRAL WOUND GASKET">Spiral Wound Gasket 3"</button>
+            <button class="search-chip" data-query="FLANGE WNRF">Weld Neck Flange 6"</button>
+            <button class="search-chip" data-query="MAT-10452">Legacy Code MAT-10452</button>
+          </div>
+
+          <!-- Enterprise Filter Controls -->
+          <div class="filter-controls-row">
+            <span class="filter-lead-label">Filter Spares by CPSE:</span>
+            <div class="filter-buttons-group">
+              <button class="filter-btn active" data-filter="all">All Enterprises</button>
+              <button class="filter-btn" data-filter="CPCL">CPCL (Chennai)</button>
+              <button class="filter-btn" data-filter="IOCL">IOCL (Panipat/Mathura)</button>
+              <button class="filter-btn" data-filter="ONGC">ONGC (Offshore)</button>
+              <button class="filter-btn" data-filter="GAIL">GAIL (Pipelines)</button>
+              <button class="filter-btn" data-filter="HPCL">HPCL (Visakh/Mumbai)</button>
+            </div>
+          </div>
+
+          <!-- Live Search Results Container -->
+          <div id="searchResultsArea" class="search-results-area">
+            <!-- Dynamically populated via JS -->
+            <div class="loading-spinner-state">Loading live cross-CPSE catalog matches...</div>
+          </div>
+        </div>
+
+        <!-- TAB 2: AI INGESTION & NLP EXTRACTION WORKBENCH -->
+        <div class="wb-tab-pane" id="tab-ai-extract">
+          <div class="ai-workbench-grid">
+            <div class="ai-input-card">
+              <div class="card-head-compact">
+                <span class="chc-title">Raw Unstructured Legacy Specification</span>
+                <span class="chc-pill">Input Engine</span>
+              </div>
+              <p class="chc-desc">Paste messy material master entries from any CPSE ERP to inspect the neural entity extraction and canonical standardizer.</p>
+              
+              <div class="sample-preset-buttons">
+                <button class="btn-preset-text" data-text="SS PIPE 2 IN SCH 40 ASTM A312 TP304 SMLS BE">Sample 1: SS Pipe (Refinery)</button>
+                <button class="btn-preset-text" data-text="VALVE GATE 100MM CLASS 150 RF CAST CARBON STEEL A216-WCB">Sample 2: Gate Valve (Pipeline)</button>
+                <button class="btn-preset-text" data-text="SPIRAL WOUND GASKET 80MM NB 150 LBS SS316 W/ GRAPHITE FILLER">Sample 3: Gasket (Petrochem)</button>
+                <button class="btn-preset-text" data-text="WELDING NECK FLANGE 150 NB 300 LBS RF BORE SCH40 A-105">Sample 4: Flange (Offshore)</button>
+              </div>
+
+              <textarea id="aiRawInputText" class="ai-input-textarea" rows="4" placeholder="Enter raw material description...">SS PIPE 2 IN SCH 40 ASTM A312 TP304 SMLS BE</textarea>
+
+              <div class="ai-action-buttons-row">
+                <button class="btn-run-nlp" id="btnRunNlpExtract">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  <span>Run NLP Attribute Extraction</span>
+                </button>
+                <button class="btn-bulk-ingest" id="btnSimulateBulkIngest">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span>Simulate Bulk ERP Upload (Batch)</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Extraction Result Preview Box -->
+            <div class="ai-output-card" id="aiOutputCard">
+              <div class="card-head-compact">
+                <span class="chc-title">Normalized Canonical Attributes &amp; Universal Code</span>
+                <span class="chc-pill tag-live" id="nlpProcessingStatus">Master Indexed</span>
+              </div>
+
+              <!-- Professional Processing Sequence Stepper -->
+              <div class="nlp-stepper-box" id="nlpStepperBox">
+                <div class="stepper-step completed" id="step1">
+                  <span class="step-icon">&check;</span>
+                  <span class="step-label">Analyzing unstructured description</span>
+                </div>
+                <div class="stepper-step completed" id="step2">
+                  <span class="step-icon">&check;</span>
+                  <span class="step-label">Extracting attributes (Dimension, Metallurgy, Schedule)</span>
+                </div>
+                <div class="stepper-step completed" id="step3">
+                  <span class="step-icon">&check;</span>
+                  <span class="step-label">Searching CPSE master catalog &amp; vector similarity</span>
+                </div>
+                <div class="stepper-step completed" id="step4">
+                  <span class="step-icon">&check;</span>
+                  <span class="step-label">Canonical convergence verified</span>
+                </div>
+
+                <!-- Smooth Similarity Score Meter -->
+                <div class="similarity-fill-track">
+                  <div class="sim-meta-row">
+                    <span class="sim-label">AI Match Confidence</span>
+                    <strong class="sim-val" id="simScoreDisplay">96.4%</strong>
+                  </div>
+                  <div class="sim-meter-bg">
+                    <div class="sim-meter-bar" id="simMeterBar" style="width: 96.4%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="aiExtractionOutputBody">
+                <div class="nlp-stage-box">
+                  <span class="stage-tag">STAGE 1 &bull; CANONICAL DIMENSION</span>
+                  <div class="stage-val-row" id="extDimRow">
+                    <span class="val-pill pill-navy" id="extNominal">DN50</span>
+                    <span class="val-pill pill-teal" id="extImperial">2" (Imperial)</span>
+                    <span class="val-pill pill-cyan" id="extMetric">50.8mm (Metric)</span>
+                  </div>
+                </div>
+
+                <div class="nlp-stage-box">
+                  <span class="stage-tag">STAGE 2 &bull; METALLURGICAL ALLOY &amp; STANDARD</span>
+                  <div class="stage-val-row" id="extMetalRow">
+                    <span class="val-pill pill-teal" id="extMetal">SS 304 (Austenitic)</span>
+                    <span class="val-pill pill-navy" id="extStandard">ASME B36.19M / ASTM A312</span>
+                  </div>
+                </div>
+
+                <div class="nlp-stage-box">
+                  <span class="stage-tag">STAGE 3 &bull; PRESSURE RATING &amp; CONSTRUCTION</span>
+                  <div class="stage-val-row" id="extPressureRow">
+                    <span class="val-pill pill-cyan" id="extPressure">SCH 40</span>
+                    <span class="val-pill pill-subtle" id="extConstruction">Seamless (SMLS)</span>
+                  </div>
+                </div>
+
+                <div class="nlp-stage-box highlight-box">
+                  <span class="stage-tag">STAGE 4 &bull; GENERATED UNIFIED NATIONAL MASTER CODE</span>
+                  <div class="numm-code-display" id="extNummCodeDisplay">
+                    NUMM-PIP-SS304-DN050-S40-SMLS
+                  </div>
+                  <span class="numm-code-sub" id="extClusterStatus">&check; Clustered into National Standard Group CLUST-PIP-001</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: MULTI-ITEM HITL REVIEW QUEUE & LIVE AUDIT TRAIL -->
+        <div class="wb-tab-pane" id="tab-hitl-queue">
+          <div class="hitl-queue-header">
+            <div>
+              <h4 class="hq-title">Pending Engineering Validation Queue</h4>
+              <p class="hq-sub">Domain specialists inspect candidate matches. AI never auto-commits to master catalogs without human sign-off.</p>
+            </div>
+            <div class="hq-counter-pill">
+              <span id="queueItemsRemainingCount">4</span> items requiring review
+            </div>
+          </div>
+
+          <!-- Dynamic Queue Cards Container -->
+          <div id="dynamicHitlQueueList" class="dynamic-hitl-list">
+            <!-- Loaded dynamically from API -->
+            <div class="loading-spinner-state">Loading active validation queue...</div>
+          </div>
+
+          <!-- Live Audit Log Table Container -->
+          <div class="audit-log-container">
+            <div class="audit-log-header">
+              <div class="alh-left">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <h4 class="audit-log-title">Live Master Governance Audit Trail</h4>
+              </div>
+              <span class="audit-status-badge">Immutable &bull; PSU Compliance Compliant</span>
+            </div>
+
+            <div class="table-responsive">
+              <table class="audit-trail-table" id="auditTrailTable">
+                <thead>
+                  <tr>
+                    <th>Audit Ref</th>
+                    <th>Timestamp</th>
+                    <th>Harmonized Unified Code</th>
+                    <th>Source CPSE Legacy Codes</th>
+                    <th>Decision</th>
+                    <th>Reviewing Officer</th>
+                    <th>Sync Status</th>
+                  </tr>
+                </thead>
+                <tbody id="auditTrailBody">
+                  <!-- Populated dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: CROSS-CPSE INVENTORY POOLING & ROI CALCULATOR -->
+        <div class="wb-tab-pane" id="tab-roi-calculator">
+          <div class="roi-calc-grid">
+            <div class="roi-controls-card">
+              <h4 class="calc-title">National Procurement &amp; Inventory Consolidation Model</h4>
+              <p class="calc-desc">Adjust the cross-enterprise pooling target to model capital release across CPCL, IOCL, ONGC, GAIL, and HPCL.</p>
+
+              <div class="slider-control-group">
+                <div class="slider-label-row">
+                  <span>Target Duplication Consolidation Rate:</span>
+                  <span class="slider-val" id="sliderValDisplay">25%</span>
+                </div>
+                <input type="range" id="consolidationSlider" min="5" max="50" step="5" value="25" class="roi-slider">
+                <div class="slider-ticks-row">
+                  <span>5% (Conservative)</span>
+                  <span>25% (Target)</span>
+                  <span>50% (Maximized)</span>
+                </div>
+              </div>
+
+              <div class="calc-breakdown-box">
+                <div class="cb-item">
+                  <span class="cb-label">Annual Materials Ingested:</span>
+                  <span class="cb-num">128,450 line items</span>
+                </div>
+                <div class="cb-item">
+                  <span class="cb-label">Identified Duplicates Across CPSEs:</span>
+                  <span class="cb-num">9,342 duplicate records</span>
+                </div>
+                <div class="cb-item">
+                  <span class="cb-label">Average Carrying Cost Reduction:</span>
+                  <span class="cb-num">18.5% per duplicate line</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Projected ROI Cards -->
+            <div class="roi-metrics-grid">
+              <div class="roi-kpi-card">
+                <span class="kpi-label">Working Capital Unlocked</span>
+                <span class="kpi-num val-emerald" id="calcWorkingCapital">₹ 96.39 Cr</span>
+                <span class="kpi-note">Cash freed from redundant safety stock</span>
+              </div>
+              <div class="roi-kpi-card">
+                <span class="kpi-label">Redundant Tenders Eliminated</span>
+                <span class="kpi-num val-teal" id="calcTendersAvoided">2,640</span>
+                <span class="kpi-note">Administrative tendering cost avoided</span>
+              </div>
+              <div class="roi-kpi-card">
+                <span class="kpi-label">Emergency Downtime Hours Saved</span>
+                <span class="kpi-num val-blue" id="calcDowntimeSaved">16,996 hrs</span>
+                <span class="kpi-note">Via inter-CPSE rapid spare borrowing</span>
+              </div>
+              <div class="roi-kpi-card">
+                <span class="kpi-label">Average Procurement Cycle Cut</span>
+                <span class="kpi-num val-indigo">34 Days</span>
+                <span class="kpi-note">From 65 days down to 31 days</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cross-Enterprise Inventory Sharing Matrix -->
+          <div class="inter-cpse-matrix-card">
+            <h4 class="matrix-title">Cross-Enterprise Spares Availability &amp; Pooling Index</h4>
+            <div class="cpse-matrix-row">
+              <div class="cpse-stat-pill">
+                <span class="org-name">CPCL (Refining)</span>
+                <span class="org-stock">3,840 Spares Available</span>
+                <span class="org-share">89% Pooling Ready</span>
+              </div>
+              <div class="cpse-stat-pill">
+                <span class="org-name">IOCL (Petrochem)</span>
+                <span class="org-stock">8,410 Spares Available</span>
+                <span class="org-share">94% Pooling Ready</span>
+              </div>
+              <div class="cpse-stat-pill">
+                <span class="org-name">ONGC (Offshore)</span>
+                <span class="org-stock">2,150 Spares Available</span>
+                <span class="org-share">86% Pooling Ready</span>
+              </div>
+              <div class="cpse-stat-pill">
+                <span class="org-name">GAIL (Pipelines)</span>
+                <span class="org-stock">1,980 Spares Available</span>
+                <span class="org-share">91% Pooling Ready</span>
+              </div>
+              <div class="cpse-stat-pill">
+                <span class="org-name">HPCL (Downstream)</span>
+                <span class="org-stock">4,200 Spares Available</span>
+                <span class="org-share">93% Pooling Ready</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: ERP BRIDGE & EXPORT HUB -->
+        <div class="wb-tab-pane" id="tab-erp-export">
+          <div class="export-hub-container">
+            <div class="export-lead-row">
+              <div>
+                <h4 class="export-title">Bidirectional ERP Integration &amp; Catalog Exporter</h4>
+                <p class="export-sub">Zero disruption architecture: Plant operators keep their local ERP codes; the national bridge harmonizes discovery.</p>
+              </div>
+              <div class="export-actions-group">
+                <a href="/api/export/csv" class="btn-export-csv" id="btnDownloadCsv">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Export Master Catalog (CSV)</span>
+                </a>
+                <a href="/api/export/json" class="btn-export-json" id="btnDownloadJson">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                  <span>Export SAP &amp; Oracle Sync (JSON)</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="erp-sync-visual-card">
+              <div class="es-side">
+                <span class="es-badge es-sap">SAP S/4HANA (CPCL)</span>
+                <code class="es-code">MAT-10452</code>
+                <span class="es-desc">SS PIPE 2 IN SCH 40</span>
+              </div>
+              <div class="es-bridge-arrow">
+                <span class="es-label">Bidirectional OData / RFC</span>
+                <div class="bridge-line"></div>
+              </div>
+              <div class="es-center">
+                <span class="es-badge es-numm">NUMM NATIONAL MASTER</span>
+                <code class="es-numm-code">NUMM-PIP-SS304-DN050-S40-SMLS</code>
+                <span class="es-iso">ISO 8000 / ASME B36.19M</span>
+              </div>
+              <div class="es-bridge-arrow">
+                <span class="es-label">REST API &amp; Webhook</span>
+                <div class="bridge-line"></div>
+              </div>
+              <div class="es-side">
+                <span class="es-badge es-oracle">Oracle ERP Cloud (IOCL)</span>
+                <code class="es-code">M-77821</code>
+                <span class="es-desc">STAINLESS STEEL PIPE, 50mm, SCH40</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 04. HUMAN-IN-THE-LOOP & CODE MAPPING SECTION (PRESERVED OFFICIAL SIH SECTION) -->
+    <section class="content-section" id="hitl-section">
+      <div class="split-cards-row">
+        
+        <!-- Left: Human-in-the-Loop Governance -->
+        <div class="split-card-panel">
+          <div class="panel-header">
+            <div class="ph-title-wrap">
+              <svg class="ph-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <div>
+                <h3 class="panel-heading">HUMAN-IN-THE-LOOP GOVERNANCE</h3>
+                <span class="panel-sub">Controlled Enterprise Adoption Workflow</span>
+              </div>
+            </div>
+            <span class="panel-badge">Zero Silent Commits</span>
+          </div>
+
+          <div class="hitl-features-list">
+            <div class="hf-item">
+              <div class="hf-icon-circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              </div>
+              <div class="hf-text">
+                <strong>AI provides recommendations with confidence scores</strong>
+                <span>Algorithms recommend matches with mathematical proof; changes are never auto-committed to master catalogs.</span>
+              </div>
+            </div>
+
+            <div class="hf-item">
+              <div class="hf-icon-circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              </div>
+              <div class="hf-text">
+                <strong>Domain expert reviews, approves, or edits before updating</strong>
+                <span>Refinery materials specialists and procurement officers inspect attribute differences and authorize commits.</span>
+              </div>
+            </div>
+
+            <div class="hf-item">
+              <div class="hf-icon-circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              </div>
+              <div class="hf-text">
+                <strong>Full audit trail &amp; version history for governance</strong>
+                <span>Complete immutability, timestamped sign-offs, and compliance records required for PSU audits.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Review Card Simulation (Wired to Live Queue) -->
+          <div class="interactive-review-card">
+            <div class="irc-top">
+              <div class="irc-flag">
+                <span class="irc-live-dot"></span>
+                <span id="ircStatusText">Possible Equivalent Materials Detected</span>
+              </div>
+              <div class="irc-confidence">
+                <span class="conf-title">Match Confidence:</span>
+                <span class="conf-badge-pill" id="ircConfidenceBadge">96%</span>
+              </div>
+            </div>
+
+            <div class="irc-comparison-box">
+              <div class="irc-item">
+                <span class="irc-cpse-lbl" id="ircLabelA">CPSE A: MAT-10452</span>
+                <span class="irc-spec-text" id="ircSpecA">SS PIPE 2 IN SCH 40 &bull; ASTM A312 TP304</span>
+              </div>
+              <div class="irc-equiv-pill">EQUIVALENT TO</div>
+              <div class="irc-item">
+                <span class="irc-cpse-lbl" id="ircLabelB">CPSE B: M-77821</span>
+                <span class="irc-spec-text" id="ircSpecB">STAINLESS STEEL PIPE, 50mm, SCH40 &bull; TP304</span>
+              </div>
+            </div>
+
+            <div class="irc-reasoning" id="ircReasoningBox">
+              <strong>AI Rationale:</strong> Exact match on metallurgical grade (TP304), dimensional equivalence (2.00" = 50.8mm &approx; DN50), and pressure schedule (SCH40).
+            </div>
+
+            <div class="irc-actions-bar">
+              <button class="btn-irc btn-irc-approve" id="btnApproveDemo" type="button">&check; Approve Mapping</button>
+              <button class="btn-irc btn-irc-review" id="btnReviewDemo" type="button">&#128065; Review Details</button>
+              <button class="btn-irc btn-irc-reject" id="btnRejectDemo" type="button">&times; Reject</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Code Mapping & Traceability -->
+        <div class="split-card-panel">
+          <div class="panel-header">
+            <div class="ph-title-wrap">
+              <svg class="ph-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              <div>
+                <h3 class="panel-heading">Code Mapping &amp; Traceability</h3>
+                <span class="panel-sub">Zero Operational ERP Disruption</span>
+              </div>
+            </div>
+            <span class="panel-badge">Bidirectional Sync</span>
+          </div>
+
+          <div class="mapping-diagram-wrap">
+            <div class="legacy-codes-lead-bar">
+              <span>OLD CPSE CODES (Legacy Plant Systems)</span>
+            </div>
+
+            <div class="legacy-items-stack">
+              <div class="legacy-item-row">
+                <div class="lir-left">
+                  <span class="lir-org">CPSE A</span>
+                  <code class="lir-code">MAT-10452</code>
+                </div>
+                <span class="lir-name">SS PIPE 2 IN SCH 40</span>
+                <span class="lir-arrow">&rarr;</span>
+              </div>
+
+              <div class="legacy-item-row">
+                <div class="lir-left">
+                  <span class="lir-org">CPSE B</span>
+                  <code class="lir-code">M-77821</code>
+                </div>
+                <span class="lir-name">STAINLESS STEEL PIPE, 50mm, SCH40</span>
+                <span class="lir-arrow">&rarr;</span>
+              </div>
+
+              <div class="legacy-item-row">
+                <div class="lir-left">
+                  <span class="lir-org">CPSE C</span>
+                  <code class="lir-code">RM-2941</code>
+                </div>
+                <span class="lir-name">SS SEAMLESS PIPE DN50 SCH 40</span>
+                <span class="lir-arrow">&rarr;</span>
+              </div>
+            </div>
+
+            <div class="mapping-converge-indicator">
+              <div class="converge-line"></div>
+              <div class="converge-circle">&darr;</div>
+              <div class="converge-line"></div>
+            </div>
+
+            <!-- Unified National Code Card -->
+            <div class="unified-target-card">
+              <div class="utc-top">
+                <span class="utc-badge">UNIFIED NATIONAL CODE</span>
+                <span class="utc-status">&check; Active Universal Identity</span>
+              </div>
+              <code class="utc-code-val">NUMM-SS-PIP-050-S40</code>
+              <div class="utc-specs">
+                Standardized: SS Pipe &bull; DN50 &bull; SCH40 &bull; Seamless &bull; ASTM A312 TP304
+              </div>
+              <div class="utc-footer-tag">
+                &check; Bidirectional Traceability: Local ERP codes stay active; National code bridges cross-CPSE discovery.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 05. DASHBOARD & BENEFITS SECTION -->
+    <section class="content-section" id="dashboard-section">
+      <div class="split-cards-row">
+
+        <!-- Left: Live Platform Dashboard (Demo) -->
+        <div class="split-card-panel">
+          <div class="panel-header">
+            <div class="ph-title-wrap">
+              <svg class="ph-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              <div>
+                <h3 class="panel-heading">Live Platform Dashboard</h3>
+                <span class="panel-sub">Operational Master Data Intelligence</span>
+              </div>
+            </div>
+            <span class="panel-badge tag-demo">*Live Connected Database</span>
+          </div>
+
+          <div class="dashboard-2x2-grid">
+            <div class="dash-stat-box">
+              <div class="dsb-top">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                <span>Materials Analysed</span>
+              </div>
+              <div class="dsb-number" id="dashStatAnalysed">128,450</div>
+              <span class="dsb-footer-note">Ingested across 5 trial CPSE masters</span>
+            </div>
+
+            <div class="dash-stat-box">
+              <div class="dsb-top">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <span>Potential Duplicates Found</span>
+              </div>
+              <div class="dsb-number" id="dashStatDuplicates">9,342</div>
+              <span class="dsb-footer-note">Flagged via high-dimensional similarity</span>
+            </div>
+
+            <div class="dash-stat-box">
+              <div class="dsb-top">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Equivalent Groups Identified</span>
+              </div>
+              <div class="dsb-number" id="dashStatGroups">2,117</div>
+              <span class="dsb-footer-note">Harmonized into universal identity clusters</span>
+            </div>
+
+            <div class="dash-stat-box dsb-amber">
+              <div class="dsb-top">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                <span>Pending Expert Validation</span>
+              </div>
+              <div class="dsb-number val-amber" id="dashStatPending">4</div>
+              <span class="dsb-footer-note">In active engineering review queue</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Intended Benefits for CPSE Ecosystem -->
+        <div class="split-card-panel">
+          <div class="panel-header">
+            <div class="ph-title-wrap">
+              <svg class="ph-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <div>
+                <h3 class="panel-heading">Intended Benefits for CPSE Ecosystem</h3>
+                <span class="panel-sub">Measurable National Industrial Impact</span>
+              </div>
+            </div>
+            <span class="panel-badge">Strategic Value</span>
+          </div>
+
+          <div class="benefits-stack">
+            <div class="benefit-card-row">
+              <div class="bc-check-icon">&check;</div>
+              <div class="bc-body">
+                <h5 class="bc-title">Cost Optimization</h5>
+                <p class="bc-desc">Reduce duplicate inventory and surplus holding costs through cross-enterprise consolidation and stock sharing.</p>
+              </div>
+            </div>
+
+            <div class="benefit-card-row">
+              <div class="bc-check-icon">&check;</div>
+              <div class="bc-body">
+                <h5 class="bc-title">Operational Efficiency</h5>
+                <p class="bc-desc">Faster material search, immediate identification of interchangeable spares, and accelerated procurement cycle times.</p>
+              </div>
+            </div>
+
+            <div class="benefit-card-row">
+              <div class="bc-check-icon">&check;</div>
+              <div class="bc-body">
+                <h5 class="bc-title">Supply Chain Visibility</h5>
+                <p class="bc-desc">Unified visibility across CPSE inventories enabling collaborative demand aggregation and strategic bulk tendering.</p>
+              </div>
+            </div>
+
+            <div class="benefit-card-row">
+              <div class="bc-check-icon">&check;</div>
+              <div class="bc-body">
+                <h5 class="bc-title">Compliance &amp; Standardization</h5>
+                <p class="bc-desc">Single source of truth for statutory reporting, audit compliance, and adherence to national industrial standards (BIS/ISO).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 06. TECH STACK & STRATEGIC IMPACT HERO BANNER -->
+    <section class="content-section" id="tech-section">
+      <div class="bottom-hero-banner">
+        <div class="bhb-left">
+          <div class="bhb-tag">CORE VALUE PROPOSITION</div>
+          <h3 class="bhb-quote">
+            &ldquo;From fragmented material records <span class="bhb-arrow">&rarr;</span> to one intelligent material identity.&rdquo;
+          </h3>
+          <div class="bhb-action-pills">
+            <span>Standardize</span> &bull; 
+            <span>Discover</span> &bull; 
+            <span>Validate</span> &bull; 
+            <span>Harmonize</span> &bull; 
+            <span>Integrate</span>
+          </div>
+        </div>
+
+        <div class="bhb-right">
+          <div class="tech-stack-lead">ENTERPRISE TECH STACK:</div>
+          <div class="tech-capsules-grid">
+            <span class="tc-pill">NLP &amp; LLMs</span>
+            <span class="tc-pill">Semantic Vector Search</span>
+            <span class="tc-pill">Domain Embeddings</span>
+            <span class="tc-pill">Entity Matching</span>
+            <span class="tc-pill">Machine Learning</span>
+            <span class="tc-pill">Attribute Extraction</span>
+            <span class="tc-pill">Taxonomy Classification</span>
+            <span class="tc-pill">Confidence Scoring</span>
+            <span class="tc-pill">Human-in-the-Loop</span>
+            <span class="tc-pill">SAP/ERP Integration</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Institutional PSU & Government of India Footer -->
+  <footer class="site-global-footer" id="siteFooter">
+    <!-- Tri-Color National Accent Ribbon -->
+    <div class="national-tricolor-ribbon" aria-hidden="true"></div>
+
+    <div class="footer-primary-container">
+      
+      <!-- Top Institutional Branding Strip -->
+      <div class="footer-branding-strip">
+        <div class="fbs-left">
+          <div class="numm-platform-crest" aria-hidden="true">
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 3L42 13.5V34.5L24 45L6 34.5V13.5L24 3Z" fill="url(#crestGradFoot)" stroke="#38bdf8" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M24 12V24M24 24L34 30M24 24L14 30" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="24" cy="24" r="4.5" fill="#34d399" stroke="#ffffff" stroke-width="1.8"/>
+              <circle cx="24" cy="12" r="3" fill="#38bdf8"/>
+              <circle cx="34" cy="30" r="3" fill="#38bdf8"/>
+              <circle cx="14" cy="30" r="3" fill="#38bdf8"/>
+              <defs>
+                <linearGradient id="crestGradFoot" x1="6" y1="3" x2="42" y2="45" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#022c5e"/>
+                  <stop offset="0.5" stop-color="#00695c"/>
+                  <stop offset="1" stop-color="#041b37"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="fbs-gov-text">
+            <span class="fbs-india">NUMM HARMONIZATION PLATFORM &bull; SIH 2026</span>
+            <span class="fbs-ministry">National Unified Material Master for CPSEs</span>
+            <span class="fbs-collab">Problem Statement PS 26099 &bull; Ministry of Petroleum &amp; Natural Gas &amp; CPCL</span>
+          </div>
+        </div>
+
+        <div class="fbs-center">
+          <div class="sih-badge-container">
+            <span class="sih-tag-pill">SMART INDIA HACKATHON 2026</span>
+            <span class="sih-problem-code">PROBLEM STATEMENT PS 26099</span>
+            <span class="sih-theme">Theme: Smart Automation &bull; Industrial AI</span>
+          </div>
+        </div>
+
+        <div class="fbs-right">
+          <div class="fbs-cpcl-block">
+            <img src="assets/cpcl_mark_clean.png" alt="CPCL Mark" class="footer-cpcl-mark">
+            <div>
+              <span class="fbs-cpcl-code">CPCL</span>
+              <span class="fbs-cpcl-sub">Chennai Petroleum Corporation Limited</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4-Column Detailed Navigation & Institutional Content -->
+      <div class="footer-columns-grid">
+        
+        <!-- Column 1: Platform Overview -->
+        <div class="footer-col">
+          <h4 class="fcol-title">About NUMM Platform</h4>
+          <p class="fcol-desc">
+            The <strong>National Unified Material Master (NUMM)</strong> is an enterprise AI framework engineered to eliminate master data fragmentation across CPSEs in Oil &amp; Gas, Power, Steel, and Heavy Engineering.
+          </p>
+          <div class="fcol-highlight-box">
+            <span class="fcol-hl-tag">KEY ARCHITECTURAL PILLARS</span>
+            <span>Zero Silent Commits &bull; 100% Bidirectional Traceability &bull; Multi-ERP Interoperability</span>
+          </div>
+        </div>
+
+        <!-- Column 2: Architectural Pipeline & Modules -->
+        <div class="footer-col">
+          <h4 class="fcol-title">Architecture &amp; Modules</h4>
+          <ul class="fcol-nav-list">
+            <li><a href="#problem-section">&rarr; 01. The Problem: Data Fragmentation</a></li>
+            <li><a href="#intelligence-section">&rarr; 02. The Intelligence: 5-Stage Neural Pipeline</a></li>
+            <li><a href="#workbench-section">&rarr; 03. Live AI Ingestion &amp; Discovery Workbench</a></li>
+            <li><a href="#hitl-section">&rarr; 04. Human-in-the-Loop Governance</a></li>
+            <li><a href="#dashboard-section">&rarr; 05. Platform Dashboard &amp; Benefits</a></li>
+            <li><a href="#tech-section">&rarr; 06. Enterprise Machine Learning Stack</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Participating CPSEs & Systems -->
+        <div class="footer-col">
+          <h4 class="fcol-title">CPSE Ecosystem Integration</h4>
+          <div class="fcol-cpse-list">
+            <div class="fcol-cpse-item">
+              <span class="cpse-dot dot-cpcl"></span>
+              <div>
+                <strong>CPCL (Chennai Petroleum)</strong>
+                <span>SAP S/4HANA &bull; Manali Refinery</span>
+              </div>
+            </div>
+            <div class="fcol-cpse-item">
+              <span class="cpse-dot dot-iocl"></span>
+              <div>
+                <strong>IOCL (Indian Oil)</strong>
+                <span>Oracle Cloud &bull; Panipat &amp; Mathura</span>
+              </div>
+            </div>
+            <div class="fcol-cpse-item">
+              <span class="cpse-dot dot-ongc"></span>
+              <div>
+                <strong>ONGC (Oil &amp; Natural Gas)</strong>
+                <span>SAP ECC &bull; Offshore Assets &amp; Uran</span>
+              </div>
+            </div>
+            <div class="fcol-cpse-item">
+              <span class="cpse-dot dot-gail"></span>
+              <div>
+                <strong>GAIL (India Limited)</strong>
+                <span>SAP S/4HANA &bull; Pipeline Network</span>
+              </div>
+            </div>
+            <div class="fcol-cpse-item">
+              <span class="cpse-dot dot-hpcl"></span>
+              <div>
+                <strong>HPCL (Hindustan Petroleum)</strong>
+                <span>SAP S/4HANA &bull; Vizag &amp; Mumbai</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 4: Standards & Statutory Compliance -->
+        <div class="footer-col">
+          <h4 class="fcol-title">Standards &amp; Statutory Compliance</h4>
+          <ul class="fcol-standards-list">
+            <li><strong>ISO 8000:</strong> Master Data Quality &amp; Exchange Architecture</li>
+            <li><strong>ASME B36.10M / B36.19M:</strong> Seamless &amp; Welded Pipe Sizes</li>
+            <li><strong>ASME B16.5 &amp; B16.34:</strong> Flanges &amp; Valve Pressure Ratings</li>
+            <li><strong>ASTM A312 / A106 / A216:</strong> Metallurgical Specifications</li>
+            <li><strong>CVC Guidelines:</strong> Transparency in PSU Bulk Tendering</li>
+            <li><strong>GFR 2017:</strong> Public Procurement Synergies for CPSEs</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom Compliance Disclaimer & System Status Bar -->
+      <div class="footer-legal-bar">
+        <div class="flb-left">
+          <div class="flb-status-pill">
+            <span class="pulse-dot"></span>
+            <span>NUMM Engine v1.2 &bull; REST API Connected &bull; Zero Silent Commits Enforced</span>
+          </div>
+          <p class="flb-disclaimer">
+            <strong>Institutional Disclaimer:</strong> This interactive web platform is designed and developed exclusively as a competition prototype for the <strong>Smart India Hackathon (SIH 2026)</strong> under Problem Statement <strong>PS 26099</strong>, submitted by the <strong>Ministry of Petroleum &amp; Natural Gas (MoPNG)</strong> and <strong>Chennai Petroleum Corporation Limited (CPCL)</strong>. This prototype demonstrates algorithmic and architectural feasibility and is not an official public portal of the Government of India.
+          </p>
+        </div>
+
+        <div class="flb-right">
+          <span class="flb-copy">&copy; 2026 Smart India Hackathon &bull; Team NUMM</span>
+          <span class="flb-sub">Developed for MoPNG &amp; CPCL Industrial Evaluation</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

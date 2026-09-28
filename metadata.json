@@ -1,0 +1,8 @@
+{
+  "name": "NUMM - National Unified Material Master",
+  "description": "AI-Driven Standardization and Harmonization of Material Codes Across CPSEs for CPCL and MoPNG",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
