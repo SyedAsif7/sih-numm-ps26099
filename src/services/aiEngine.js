@@ -280,61 +280,139 @@ export function extractAttributes(rawText = "") {
   };
 }
 
+// Governing standard lookup helper
+export function getGoverningStandard(category = "", dimension = {}, metallurgy = {}) {
+  const cat = String(category).toLowerCase();
+  const meta = String(metallurgy?.family || metallurgy || "").toLowerCase();
+
+  if (cat.includes("valve")) {
+    return "ASME B16.34 / API 6D / ISO 10434";
+  } else if (cat.includes("pipe")) {
+    if (meta.includes("ss")) return "ASME B36.19M / ASTM A312";
+    if (meta.includes("alloy") || meta.includes("p11")) return "ASME B36.10M / ASTM A335";
+    return "ASME B36.10M / ASTM A106";
+  } else if (cat.includes("flange")) {
+    return "ASME B16.5 / MSS SP-44 / ASTM A105";
+  } else if (cat.includes("gasket")) {
+    return "ASME B16.20 / API 601 / BS 3381";
+  } else if (cat.includes("bearing")) {
+    return "ISO 15 / DIN 625-1 / ABMA Std 20";
+  } else if (cat.includes("motor")) {
+    return "IS 12615 / IEC 60034-30 (IE3 Efficiency)";
+  } else if (cat.includes("cable")) {
+    return "IS 7098 (Part 1 & 2) / IEC 60502-1";
+  }
+  return "BIS / ISO 8000 Master Data Standard";
+}
+
 /**
- * Calculate multi-dimensional cosine/weighted similarity between two items
+ * Material Knowledge Graph Generator
+ * Connects: Raw Input → Category → Subcategory → Metallurgy → Dimensions → Pressure → Standard → Legacy Codes → NUMM Common Code
  */
-export function calculateMatchConfidence(itemA, itemB) {
+export function buildMaterialKnowledgeGraph(attr = {}, rawText = "", cpseCodes = []) {
+  const category = attr.component?.category || "Industrial Spares";
+  const subCategory = attr.component?.subType || "Standard Component";
+  const metallurgy = attr.metallurgy?.label || attr.metallurgy?.family || "Standard Metallurgy";
+  const dimensionNominal = attr.dimension?.nominal || "DN50";
+  const dimensionImperial = attr.dimension?.imperial || '2"';
+  const dimensionMetric = attr.dimension?.metric || "50mm";
+  const pressureClass = attr.pressure?.label || "Class 150 (PN20)";
+  const standard = attr.standard || getGoverningStandard(category, attr.dimension, attr.metallurgy);
+  const commonCode = attr.nummCode || "NUMM-CANONICAL-RESOLVED";
+
+  const nodes = [
+    { id: "node-raw", label: rawText || "Input Specification", type: "input", icon: "📝", category: "Raw Text" },
+    { id: "node-cat", label: category, type: "category", icon: "📁", category: "Classification" },
+    { id: "node-sub", label: subCategory, type: "subcategory", icon: "⚙️", category: "Component Taxonomy" },
+    { id: "node-metal", label: metallurgy, type: "metallurgy", icon: "🔬", category: "Material Grade" },
+    { id: "node-dim", label: `${dimensionNominal} (${dimensionImperial} ↔ ${dimensionMetric})`, type: "dimension", icon: "📐", category: "Normalized Dimensions" },
+    { id: "node-pres", label: pressureClass, type: "pressure", icon: "⏱️", category: "Pressure Rating" },
+    { id: "node-std", label: standard, type: "standard", icon: "📜", category: "Governing Standard" },
+    { id: "node-legacy", label: cpseCodes.length ? cpseCodes.join(' • ') : "Cross-CPSE ERP Codes", type: "legacy", icon: "🏢", category: "Legacy ERP Identifiers" },
+    { id: "node-numm", label: commonCode, type: "common_code", icon: "🎯", category: "Unified Common Code" }
+  ];
+
+  const edges = [
+    { from: "node-raw", to: "node-cat", relation: "classified_under" },
+    { from: "node-cat", to: "node-sub", relation: "sub_type_of" },
+    { from: "node-sub", to: "node-metal", relation: "specified_alloy" },
+    { from: "node-metal", to: "node-dim", relation: "dimensional_bounds" },
+    { from: "node-dim", to: "node-pres", relation: "pressure_class" },
+    { from: "node-pres", to: "node-std", relation: "governed_by" },
+    { from: "node-std", to: "node-legacy", relation: "maps_legacy" },
+    { from: "node-legacy", to: "node-numm", relation: "unifies_into" }
+  ];
+
+  const traceSteps = [
+    { step: 1, type: "Raw Specification", val: rawText || "VLV BALL SS 2IN 150#" },
+    { step: 2, type: "Primary Category", val: category },
+    { step: 3, type: "Subcategory / Equipment", val: subCategory },
+    { step: 4, type: "Metallurgical Grade", val: metallurgy },
+    { step: 5, type: "Normalized Dimensions", val: `${dimensionNominal} (${dimensionImperial} ↔ ${dimensionMetric})` },
+    { step: 6, type: "Pressure Rating", val: pressureClass.split('(')[0].trim() || pressureClass },
+    { step: 7, type: "Technical Standard", val: standard.split('/')[0].trim() },
+    { step: 8, type: "Common Material Code", val: commonCode }
+  ];
+
+  const traceChain = traceSteps.map(s => s.val).join(" → ");
+
+  return {
+    nodes,
+    edges,
+    traceSteps,
+    traceChain,
+    rootSpec: rawText,
+    commonCode
+  };
+}
+
+// Configurable prototype routing thresholds (adjustable prototype rules)
+export const CONFIGURABLE_ROUTING_RULES = {
+  strongThreshold: 0.90, // >= 90%: Strong match (Auto-convergence recommendation)
+  reviewThreshold: 0.70  // 70% - 89%: Needs Review zone (Manual review & testing mandated)
+};
+
+/**
+ * Calculate multi-factor matching score:
+ * S_total = (0.20 * S_semantic) + (0.35 * S_technical) + (0.25 * S_unit) + (0.20 * S_category)
+ */
+export function calculateMatchConfidence(itemA, itemB, customThresholds = {}) {
   const attrA = itemA.extractedAttributes || extractAttributes(itemA.rawDescription || "");
   const attrB = itemB.extractedAttributes || extractAttributes(itemB.rawDescription || "");
 
-  let dimensionScore = 0.0;
-  let metallurgyScore = 0.0;
-  let pressureScore = 0.0;
-  let categoryScore = 0.0;
-
-  // Category comparison
-  const catA = attrA.component?.category || attrA.category || "";
-  const catB = attrB.component?.category || attrB.category || "";
-  const subA = attrA.component?.subType || "";
-  const subB = attrB.component?.subType || "";
-
-  if (catA.toLowerCase() === catB.toLowerCase()) {
-    categoryScore = (subA && subB && subA.toLowerCase() === subB.toLowerCase()) ? 1.0 : 0.95;
-  } else if (catA && catB && (catA.includes(catB) || catB.includes(catA))) {
-    categoryScore = 0.75;
-  }
-
-  // Dimension comparison (normalize to nominal DN)
-  const dnA = attrA.dimension?.nominal || "";
-  const dnB = attrB.dimension?.nominal || "";
-  let unitConversionApplied = false;
-
   const rawA = String(itemA.rawDescription || attrA.rawText || "");
   const rawB = String(itemB.rawDescription || attrB.rawText || "");
-  const isImperialA = /\b(\d+(?:\.\d+)?|\d+\/\d+)\s*(?:"|inch|in\b)/i.test(rawA);
-  const isMetricB = /\b(dn\s*\d+|\d+\s*mm|\d+\s*nb)\b/i.test(rawB);
-  const isMetricA = /\b(dn\s*\d+|\d+\s*mm|\d+\s*nb)\b/i.test(rawA);
-  const isImperialB = /\b(\d+(?:\.\d+)?|\d+\/\d+)\s*(?:"|inch|in\b)/i.test(rawB);
 
-  if (dnA && dnB && dnA === dnB && dnA !== "STD-N/A") {
-    if ((isImperialA && isMetricB) || (isMetricA && isImperialB)) {
-      dimensionScore = 0.96; // 96% correlation via ASME cross-unit mapping
-      unitConversionApplied = true;
-    } else {
-      dimensionScore = 1.0;
-    }
-  } else if (dnA === dnB) {
-    dimensionScore = 0.8;
-  } else {
-    dimensionScore = 0.0;
+  // 1. FACTOR 1: SEMANTIC DESCRIPTION SIMILARITY (Weight: 20%)
+  const tokensA = new Set(cleanAndExpandAbbreviations(rawA).toLowerCase().split(/\s+/).filter(w => w.length > 1));
+  const tokensB = new Set(cleanAndExpandAbbreviations(rawB).toLowerCase().split(/\s+/).filter(w => w.length > 1));
+  
+  let intersectionCount = 0;
+  tokensA.forEach(t => { if (tokensB.has(t)) intersectionCount++; });
+  const unionCount = new Set([...tokensA, ...tokensB]).size || 1;
+  const jaccard = intersectionCount / unionCount;
+  
+  // Semantic score boost for core equipment keyword match
+  const codeA = attrA.component?.code || "";
+  const codeB = attrB.component?.code || "";
+  let semanticScore = jaccard;
+  if (codeA && codeB && codeA === codeB) {
+    semanticScore = Math.min(1.0, 0.40 + jaccard * 0.60);
   }
+  // Formatting penalty reduction: Pipe vs space format variation normalized
+  if (rawA.includes('|') || rawB.includes('|')) {
+    semanticScore = Math.min(1.0, semanticScore + 0.10);
+  }
+  semanticScore = Math.round(semanticScore * 100) / 100;
 
+  // 2. FACTOR 2: TECHNICAL ATTRIBUTE MATCH (Weight: 35%)
   // Metallurgy comparison
   const metFamilyA = attrA.metallurgy?.family || "";
   const metFamilyB = attrB.metallurgy?.family || "";
   const metCodeA = attrA.metallurgy?.code || "";
   const metCodeB = attrB.metallurgy?.code || "";
 
+  let metallurgyScore = 0.20;
   if (metCodeA && metCodeB && metCodeA === metCodeB) {
     metallurgyScore = 1.0;
   } else if (
@@ -342,34 +420,152 @@ export function calculateMatchConfidence(itemA, itemB) {
     (metFamilyA.startsWith("CS") && metFamilyB.startsWith("CS"))
   ) {
     metallurgyScore = 0.95;
-  } else {
-    metallurgyScore = 0.2;
   }
 
   // Pressure comparison
   const presA = attrA.pressure?.key || "";
   const presB = attrB.pressure?.key || "";
+  let pressureScore = 0.40;
   if (presA && presB && presA === presB && presA !== "STD-RATING") {
     pressureScore = 1.0;
   } else if (presA === presB) {
-    pressureScore = 0.8;
-  } else {
-    pressureScore = 0.4;
+    pressureScore = 0.85;
   }
 
-  // Syntax & Delimiter variation factor
-  const hasPipesDelim = rawA.includes('|') || rawB.includes('|');
-  const syntaxScore = hasPipesDelim || unitConversionApplied ? 0.90 : 1.0;
+  // Construction form comparison
+  const constA = attrA.construction || "Standard";
+  const constB = attrB.construction || "Standard";
+  const constructionScore = (constA.toLowerCase() === constB.toLowerCase()) ? 1.0 : 0.70;
 
-  // Composite weighted score:
-  // Dimension (30%), Metallurgy (30%), Category (20%), Pressure (15%), Syntax (5%)
-  const confidence = (
-    dimensionScore * 0.30 +
-    metallurgyScore * 0.30 +
-    categoryScore * 0.20 +
-    pressureScore * 0.15 +
-    syntaxScore * 0.05
+  const technicalScore = Math.round(
+    (metallurgyScore * 0.50 + pressureScore * 0.35 + constructionScore * 0.15) * 100
+  ) / 100;
+
+  // 3. FACTOR 3: UNIT-NORMALIZED MATCH (Weight: 25%)
+  const dnA = attrA.dimension?.nominal || "";
+  const dnB = attrB.dimension?.nominal || "";
+  let unitConversionApplied = false;
+
+  const isImperialA = /\b(\d+(?:\.\d+)?|\d+\/\d+)\s*(?:"|inch|in\b)/i.test(rawA);
+  const isMetricB = /\b(dn\s*\d+|\d+\s*mm|\d+\s*nb)\b/i.test(rawB);
+  const isMetricA = /\b(dn\s*\d+|\d+\s*mm|\d+\s*nb)\b/i.test(rawA);
+  const isImperialB = /\b(\d+(?:\.\d+)?|\d+\/\d+)\s*(?:"|inch|in\b)/i.test(rawB);
+
+  let unitScore = 0.0;
+  if (dnA && dnB && dnA === dnB && dnA !== "STD-N/A") {
+    if ((isImperialA && isMetricB) || (isMetricA && isImperialB)) {
+      unitScore = 0.98; // 98% correlation via ASME B16.34 / B36.10M cross-unit conversion
+      unitConversionApplied = true;
+    } else {
+      unitScore = 1.0;
+    }
+  } else if (dnA === dnB) {
+    unitScore = 0.80;
+  } else {
+    unitScore = 0.0;
+  }
+
+  // 4. FACTOR 4: CATEGORY & TAXONOMY MATCH (Weight: 20%)
+  const catA = attrA.component?.category || attrA.category || "";
+  const catB = attrB.component?.category || attrB.category || "";
+  const subA = attrA.component?.subType || "";
+  const subB = attrB.component?.subType || "";
+
+  let categoryScore = 0.10;
+  if (catA.toLowerCase() === catB.toLowerCase()) {
+    categoryScore = (subA && subB && subA.toLowerCase() === subB.toLowerCase()) ? 1.0 : 0.90;
+  } else if (catA && catB && (catA.includes(catB) || catB.includes(catA))) {
+    categoryScore = 0.70;
+  }
+
+  // COMPOSITE MULTI-FACTOR SCORE (Exact weighted formula)
+  const W_SEM = 0.20;
+  const W_TECH = 0.35;
+  const W_UNIT = 0.25;
+  const W_CAT = 0.20;
+
+  const compositeConfidence = Math.min(
+    1.0,
+    Math.round(
+      (semanticScore * W_SEM + technicalScore * W_TECH + unitScore * W_UNIT + categoryScore * W_CAT) * 1000
+    ) / 1000
   );
+
+  // 3-TIER ROUTING LOGIC (Configurable prototype rules)
+  const strongThresh = customThresholds.strongThreshold || CONFIGURABLE_ROUTING_RULES.strongThreshold;
+  const reviewThresh = customThresholds.reviewThreshold || CONFIGURABLE_ROUTING_RULES.reviewThreshold;
+
+  let routingTier = "STRONG_MATCH";
+  let routingLabel = "Auto-Convergence (Strong Match)";
+  let routingBadgeClass = "route-strong";
+  let routingActionRecommendation = "APPROVE";
+  let routingDescription = "Strong physical match across all 4 pillars. Recommended for 1-click Common Code assignment.";
+
+  if (compositeConfidence >= strongThresh) {
+    routingTier = "STRONG_MATCH";
+    routingLabel = "Strong Match (≥90%)";
+    routingBadgeClass = "route-strong";
+    routingActionRecommendation = "APPROVE";
+    routingDescription = "High-confidence physical equivalence verified. Recommended for immediate master convergence.";
+  } else if (compositeConfidence >= reviewThresh) {
+    routingTier = "NEEDS_REVIEW";
+    routingLabel = "Needs Review Zone (70–89%)";
+    routingBadgeClass = "route-review";
+    routingActionRecommendation = "NEEDS_REVIEW";
+    routingDescription = "Uncertain candidate match. Parameter variance or dual certification check requires domain engineer sign-off & yard testing.";
+  } else {
+    routingTier = "UNLIKELY_MATCH";
+    routingLabel = "Unlikely Match (<70%)";
+    routingBadgeClass = "route-unlikely";
+    routingActionRecommendation = "REJECT";
+    routingDescription = "Significant attribute divergence detected. Distinct local master catalog records recommended.";
+  }
+
+  // Multi-factor mathematical breakdown
+  const multiFactorScore = {
+    compositeScore: compositeConfidence,
+    percentage: `${Math.round(compositeConfidence * 100)}%`,
+    weights: { semantic: W_SEM, technical: W_TECH, unit: W_UNIT, category: W_CAT },
+    pillars: [
+      {
+        id: "semantic",
+        name: "Semantic Description Similarity",
+        weight: "20%",
+        weightVal: W_SEM,
+        rawScore: semanticScore,
+        contribution: `${(semanticScore * W_SEM * 100).toFixed(1)}%`,
+        notes: `Jaccard token overlap & expanded terminology correlation.`
+      },
+      {
+        id: "technical",
+        name: "Technical Attribute Match",
+        weight: "35%",
+        weightVal: W_TECH,
+        rawScore: technicalScore,
+        contribution: `${(technicalScore * W_TECH * 100).toFixed(1)}%`,
+        notes: `Metallurgy (${metFamilyA || 'SS'}), Pressure (${presA || '150#'}), & Form (${constA}).`
+      },
+      {
+        id: "unit",
+        name: "Unit-Normalized Match",
+        weight: "25%",
+        weightVal: W_UNIT,
+        rawScore: unitScore,
+        contribution: `${(unitScore * W_UNIT * 100).toFixed(1)}%`,
+        notes: unitConversionApplied ? `2 inch (Imperial) ≈ DN50 (ISO 6708) normalized per ASME B16.34.` : `Direct unit alignment (${dnA}).`
+      },
+      {
+        id: "category",
+        name: "Category & Taxonomy Match",
+        weight: "20%",
+        weightVal: W_CAT,
+        rawScore: categoryScore,
+        contribution: `${(categoryScore * W_CAT * 100).toFixed(1)}%`,
+        notes: `Hierarchical classification (${catA} → ${subA || 'Component'}).`
+      }
+    ],
+    formula: `Score = (0.20 × ${semanticScore.toFixed(2)}) + (0.35 × ${technicalScore.toFixed(2)}) + (0.25 × ${unitScore.toFixed(2)}) + (0.20 × ${categoryScore.toFixed(2)}) = ${(compositeConfidence * 100).toFixed(1)}%`
+  };
 
   // Generate engineering rationale
   let rationale = "";
@@ -377,31 +573,33 @@ export function calculateMatchConfidence(itemA, itemB) {
   const dimBStr = attrB.dimension?.nominal || dnB;
   const dimNote = (dimAStr && dimBStr && dimAStr !== dimBStr) ? `${dimAStr} ≈ ${dimBStr}` : dnA;
 
-  if (confidence >= 0.90) {
+  if (routingTier === "STRONG_MATCH") {
     if (unitConversionApplied) {
-      rationale = `High-confidence physical equivalence (${Math.round(confidence * 100)}% Match): AI recognizes 2 inch ≈ DN50 (50mm nominal bore per ASME B16.34). Technical extraction verifies identical austenitic stainless steel metallurgy (SS) and ASME Class 150 pressure rating. Formatting difference (raw token vs pipe delimiter) resolved by NLP pre-processing. Recommended for assignment under a single Common Material Code.`;
+      rationale = `High-confidence physical equivalence (${multiFactorScore.percentage} Match): AI recognizes 2 inch ≈ DN50 (50mm nominal bore per ASME B16.34). Technical extraction verifies identical austenitic stainless steel metallurgy (SS) and ASME Class 150 pressure rating. Formatting difference (raw token vs pipe delimiter) resolved by NLP pre-processing. Recommended for assignment under a single Common Material Code.`;
     } else {
-      rationale = `High-confidence physical equivalence (${Math.round(confidence * 100)}% Match): Technical decomposition verifies ${dimNote}, metallurgy aligns (${attrA.metallurgy?.label || metCodeA}), and pressure rating aligns (${attrA.pressure?.label || presA}). Meets ASME/API/IS cross-interchangeability criteria.`;
+      rationale = `High-confidence physical equivalence (${multiFactorScore.percentage} Match): Technical decomposition verifies ${dimNote}, metallurgy aligns (${attrA.metallurgy?.label || metCodeA}), and pressure rating aligns (${attrA.pressure?.label || presA}). Meets ASME/API/IS cross-interchangeability criteria.`;
     }
-  } else if (confidence >= 0.75) {
-    rationale = `Potential functional equivalent (${Math.round(confidence * 100)}% Match): Geometric dimensions align (${dimNote}), but slight metallurgical or design variation requires engineering verification before inter-plant procurement pooling.`;
+  } else if (routingTier === "NEEDS_REVIEW") {
+    rationale = `Uncertain candidate match (${multiFactorScore.percentage} Match, Needs Review Zone): Geometric dimensions align (${dimNote}), but operating envelope, temperature tolerance, or dual-certification requires engineering review before physical inter-plant sharing.`;
   } else {
-    rationale = `Disparate industrial components (${Math.round(confidence * 100)}% Match): Significant variation detected in nominal dimensions or base metallurgy. Distinct master records recommended.`;
+    rationale = `Disparate industrial components (${multiFactorScore.percentage} Match, Unlikely): Significant variation detected in nominal dimensions or base metallurgy. Distinct master records recommended.`;
   }
 
-  // Dimensional status label with explicit engineering unit equivalence
+  // Build Knowledge Graphs for both items
+  const legacyA = itemA.legacyCode || (rawA.includes("CPCL") ? "CPCL-VLV-1042" : "REC-A");
+  const legacyB = itemB.legacyCode || (rawB.includes("IOCL") ? "IOCL-M-88210" : "REC-B");
+  const kgA = buildMaterialKnowledgeGraph(attrA, rawA, [legacyA]);
+  const kgB = buildMaterialKnowledgeGraph(attrB, rawB, [legacyB]);
+  const unifiedKG = buildMaterialKnowledgeGraph(attrA, `${rawA} ↔ ${rawB}`, [legacyA, legacyB]);
+
+  // Explainable AI (XAI) attribute comparison breakdown table
   let dimStatus = "DIMENSIONAL VARIATION";
-  if (dimensionScore >= 0.9) {
-    if (unitConversionApplied) {
-      dimStatus = `2 inch ≈ DN50 (ASME B16.34 / B36.10M)`;
-    } else {
-      dimStatus = `EXACT MATCH (${dnA})`;
-    }
-  } else if (dimensionScore >= 0.7) {
+  if (unitScore >= 0.95) {
+    dimStatus = unitConversionApplied ? `2 inch ≈ DN50 (ASME B16.34 / B36.10M)` : `EXACT MATCH (${dnA})`;
+  } else if (unitScore >= 0.70) {
     dimStatus = "COMPATIBLE GEOMETRY";
   }
 
-  // Explainable AI (XAI) attribute comparison breakdown
   const explainableBreakdown = [
     {
       attribute: "Component Category",
@@ -415,7 +613,7 @@ export function calculateMatchConfidence(itemA, itemB) {
       attribute: "Dimensional Normalization",
       valA: isImperialA ? `2IN (Imperial Bore)` : `${attrA.dimension?.nominal || 'DN50'}`,
       valB: isMetricB ? `DN50 (Nominal Metric / 50mm)` : `${attrB.dimension?.imperial || '2"'}`,
-      score: dimensionScore,
+      score: unitScore,
       status: unitConversionApplied ? "RESOLVED: 2 inch ≈ DN50" : dimStatus,
       type: unitConversionApplied ? "converted" : "match"
     },
@@ -439,23 +637,35 @@ export function calculateMatchConfidence(itemA, itemB) {
       attribute: "Syntax & Delimiter Parsing",
       valA: "Abbreviated tokens: 'VLV BALL SS 2IN 150#'",
       valB: "Pipe-delimited: 'Ball Valve | SS | DN50 | Cl 150'",
-      score: syntaxScore,
+      score: semanticScore,
       status: "RESOLVED (AI Tokenizer Normalized)",
       type: "converted"
     }
   ];
 
   return {
-    confidence: Math.round(confidence * 1000) / 1000,
-    percentage: `${Math.round(confidence * 100)}%`,
-    dimensionScore,
+    confidence: compositeConfidence,
+    percentage: multiFactorScore.percentage,
+    multiFactorScore,
+    routing: {
+      tier: routingTier,
+      label: routingLabel,
+      badgeClass: routingBadgeClass,
+      actionRecommendation: routingActionRecommendation,
+      description: routingDescription,
+      thresholds: { strong: strongThresh, review: reviewThresh }
+    },
+    dimensionScore: unitScore,
     metallurgyScore,
     categoryScore,
     pressureScore,
     rationale,
     explainableBreakdown,
+    knowledgeGraph: unifiedKG,
+    knowledgeGraphA: kgA,
+    knowledgeGraphB: kgB,
     proposedNummCode: attrA.nummCode || attrB.nummCode,
-    isEquivalent: confidence >= 0.85
+    isEquivalent: compositeConfidence >= reviewThresh
   };
 }
 

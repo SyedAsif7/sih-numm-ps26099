@@ -3845,3 +3845,496 @@ body.theme-dark .kpi-pulse-updated {
   color: #34d399 !important;
 }
 
+/* --------------------------------------------------------------------------
+   12. MULTI-FACTOR SCORING ENGINE, KNOWLEDGE GRAPH & 3-TIER ROUTING
+   -------------------------------------------------------------------------- */
+
+/* 12A. Multi-Factor 4-Pillar Scorecard */
+.pair-multifactor-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mf-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mf-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mf-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--teal-700);
+  text-transform: uppercase;
+}
+body.theme-dark .mf-eyebrow {
+  color: #2dd4bf;
+}
+
+.mf-heading {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  margin: 0;
+}
+body.theme-dark .mf-heading {
+  color: #f1f5f9;
+}
+
+/* 3-Tier Routing Badge */
+.mf-tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78125rem;
+  font-weight: 800;
+  transition: all 0.2s ease;
+}
+
+.tier-indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.route-strong, .mf-tier-badge.route-strong, .tier-badge-pill.route-strong {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+.route-strong .tier-indicator-dot, .mf-tier-badge.route-strong .tier-indicator-dot {
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.route-review, .mf-tier-badge.route-review, .tier-badge-pill.route-review {
+  background: #fefce8;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+}
+.route-review .tier-indicator-dot, .mf-tier-badge.route-review .tier-indicator-dot {
+  background: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+}
+
+.route-unlikely, .mf-tier-badge.route-unlikely, .tier-badge-pill.route-unlikely {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #ef4444;
+}
+.route-unlikely .tier-indicator-dot, .mf-tier-badge.route-unlikely .tier-indicator-dot {
+  background: #ef4444;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+}
+
+/* Mathematical Formula Strip */
+.mf-formula-box {
+  background: var(--bg-page);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mf-formula-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.mf-formula-code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--navy-900);
+}
+body.theme-dark .mf-formula-code {
+  color: #38bdf8;
+}
+
+/* 4 Pillars Grid */
+.mf-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+@media (max-width: 900px) {
+  .mf-pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 500px) {
+  .mf-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mf-pillar-item {
+  background: var(--bg-page);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.mf-pillar-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--teal-500);
+}
+
+.mf-p-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+.mf-p-name {
+  font-weight: 800;
+  color: var(--navy-900);
+}
+body.theme-dark .mf-p-name {
+  color: #f1f5f9;
+}
+.mf-p-weight {
+  font-weight: 700;
+  color: var(--teal-700);
+  background: var(--teal-50);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+body.theme-dark .mf-p-weight {
+  background: rgba(45, 212, 191, 0.15);
+  color: #2dd4bf;
+}
+
+.mf-p-score-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.mf-p-score {
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  font-weight: 900;
+  color: #065f46;
+}
+body.theme-dark .mf-p-score {
+  color: #34d399;
+}
+.mf-p-contrib {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.mf-p-meter-bg {
+  width: 100%;
+  height: 5px;
+  background: var(--border-subtle);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.mf-p-meter-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #0d9488, #10b981);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.mf-p-note {
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+/* 12B. Material Knowledge Graph Explorer */
+.pair-kg-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kg-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.kg-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kg-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #0369a1;
+  text-transform: uppercase;
+}
+body.theme-dark .kg-eyebrow {
+  color: #38bdf8;
+}
+
+.kg-heading {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  margin: 0;
+}
+body.theme-dark .kg-heading {
+  color: #f1f5f9;
+}
+
+.kg-subtitle {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Knowledge Graph Ontological Step Flow */
+.kg-trace-chain {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 14px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+
+.kg-node-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.78125rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.kg-node-step:hover, .kg-node-step.active {
+  border-color: var(--teal-600);
+  background: var(--teal-50);
+  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.15);
+}
+body.theme-dark .kg-node-step:hover, body.theme-dark .kg-node-step.active {
+  background: rgba(45, 212, 191, 0.12);
+}
+
+.kg-node-step .kg-step-num {
+  font-size: 0.625rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: var(--teal-600);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.kg-node-step .kg-node-val {
+  font-weight: 700;
+  color: var(--navy-900);
+}
+body.theme-dark .kg-node-step .kg-node-val {
+  color: #f1f5f9;
+}
+
+.kg-arrow-sep {
+  color: var(--teal-600);
+  font-weight: 900;
+  font-size: 0.8125rem;
+}
+
+/* Knowledge Graph Node Inspector */
+.kg-node-inspector {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid var(--teal-600);
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+body.theme-dark .kg-node-inspector {
+  background: #0f172a;
+  border-color: #334155;
+  border-left-color: #2dd4bf;
+}
+.kgi-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.kgi-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.kgi-label {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.kgi-value {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--navy-900);
+}
+body.theme-dark .kgi-value {
+  color: #f1f5f9;
+}
+.kgi-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+}
+.kgi-tag {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: var(--navy-900);
+}
+body.theme-dark .kgi-tag {
+  color: #38bdf8;
+}
+
+/* 12C. Tab 3 3-Tier Routing Zone Filter Controls */
+.hq-filter-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding: 8px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.hq-filter-label {
+  font-size: 0.78125rem;
+  font-weight: 800;
+  color: var(--navy-900);
+}
+body.theme-dark .hq-filter-label {
+  color: #cbd5e1;
+}
+
+.hq-filter-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hq-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.hq-filter-btn:hover {
+  background: var(--bg-subtle);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+.hq-filter-btn.active {
+  background: var(--teal-600);
+  border-color: var(--teal-700);
+  color: #ffffff;
+}
+.hq-filter-btn.active .hq-count-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.hq-count-badge {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  background: var(--bg-subtle);
+  color: var(--navy-900);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+/* Card Routing Zone Badges inside HITL items */
+.hqc-meta-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hqc-tier-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.6875rem;
+  font-weight: 800;
+}
+.hqc-formula-pill {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  background: var(--bg-page);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+

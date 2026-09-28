@@ -617,6 +617,87 @@
                 </p>
               </div>
 
+              <!-- Multi-Factor 4-Pillar Scoring & 3-Tier Routing Zone Card -->
+              <div class="pair-multifactor-card" id="pairMultiFactorCard">
+                <div class="mf-header-row">
+                  <div class="mf-title-group">
+                    <span class="mf-eyebrow">MULTI-FACTOR HARMONIZATION SCORING ENGINE</span>
+                    <h5 class="mf-heading">Transparent 4-Pillar Engineering Formulation</h5>
+                  </div>
+                  <div class="mf-tier-badge route-strong" id="pairTierBadge">
+                    <span class="tier-indicator-dot"></span>
+                    <span id="pairTierBadgeText">Auto-Convergence Zone (≥90%)</span>
+                  </div>
+                </div>
+
+                <!-- Mathematical Formula Bar -->
+                <div class="mf-formula-box">
+                  <span class="mf-formula-label">Governing Formula:</span>
+                  <code class="mf-formula-code" id="pairFormulaText">
+                    Score = (0.20 × S_semantic) + (0.35 × S_technical) + (0.25 × S_unit) + (0.20 × S_category)
+                  </code>
+                </div>
+
+                <!-- 4 Pillars Grid -->
+                <div class="mf-pillars-grid" id="pairPillarsGrid">
+                  <!-- Pillar 1: Semantic -->
+                  <div class="mf-pillar-item" id="pillarSemantic">
+                    <div class="mf-p-head">
+                      <span class="mf-p-name">1. Semantic Similarity</span>
+                      <span class="mf-p-weight">Weight: 20%</span>
+                    </div>
+                    <div class="mf-p-score-row">
+                      <span class="mf-p-score" id="pillarSemScore">94%</span>
+                      <span class="mf-p-contrib" id="pillarSemContrib">+18.8%</span>
+                    </div>
+                    <div class="mf-p-meter-bg"><div class="mf-p-meter-bar" id="pillarSemBar" style="width: 94%;"></div></div>
+                    <span class="mf-p-note" id="pillarSemNote">Jaccard token overlap &amp; expanded terminology.</span>
+                  </div>
+
+                  <!-- Pillar 2: Technical Specs -->
+                  <div class="mf-pillar-item" id="pillarTechnical">
+                    <div class="mf-p-head">
+                      <span class="mf-p-name">2. Technical Attributes</span>
+                      <span class="mf-p-weight">Weight: 35%</span>
+                    </div>
+                    <div class="mf-p-score-row">
+                      <span class="mf-p-score" id="pillarTechScore">100%</span>
+                      <span class="mf-p-contrib" id="pillarTechContrib">+35.0%</span>
+                    </div>
+                    <div class="mf-p-meter-bg"><div class="mf-p-meter-bar" id="pillarTechBar" style="width: 100%;"></div></div>
+                    <span class="mf-p-note" id="pillarTechNote">Metallurgy (Austenitic SS), Pressure (150#), &amp; Body.</span>
+                  </div>
+
+                  <!-- Pillar 3: Unit Normalization -->
+                  <div class="mf-pillar-item" id="pillarUnit">
+                    <div class="mf-p-head">
+                      <span class="mf-p-name">3. Unit-Normalized Match</span>
+                      <span class="mf-p-weight">Weight: 25%</span>
+                    </div>
+                    <div class="mf-p-score-row">
+                      <span class="mf-p-score" id="pillarUnitScore">98%</span>
+                      <span class="mf-p-contrib" id="pillarUnitContrib">+24.5%</span>
+                    </div>
+                    <div class="mf-p-meter-bg"><div class="mf-p-meter-bar" id="pillarUnitBar" style="width: 98%;"></div></div>
+                    <span class="mf-p-note" id="pillarUnitNote">2 inch (Imperial) ≈ DN50 (ISO 6708) per ASME B16.34.</span>
+                  </div>
+
+                  <!-- Pillar 4: Category & Taxonomy -->
+                  <div class="mf-pillar-item" id="pillarCategory">
+                    <div class="mf-p-head">
+                      <span class="mf-p-name">4. Category &amp; Taxonomy</span>
+                      <span class="mf-p-weight">Weight: 20%</span>
+                    </div>
+                    <div class="mf-p-score-row">
+                      <span class="mf-p-score" id="pillarCatScore">100%</span>
+                      <span class="mf-p-contrib" id="pillarCatContrib">+20.0%</span>
+                    </div>
+                    <div class="mf-p-meter-bg"><div class="mf-p-meter-bar" id="pillarCatBar" style="width: 100%;"></div></div>
+                    <span class="mf-p-note" id="pillarCatNote">Taxonomy: Valves &rarr; Ball Valve.</span>
+                  </div>
+                </div>
+              </div>
+
               <!-- Side-by-Side Attribute Comparison Table -->
               <table class="pair-attr-matrix-table" id="pairAttrTable">
                 <thead>
@@ -631,6 +712,37 @@
                   <!-- Populated dynamically via JS -->
                 </tbody>
               </table>
+
+              <!-- Material Knowledge Graph Explorer -->
+              <div class="pair-kg-card" id="pairKgCard">
+                <div class="kg-header-row">
+                  <div class="kg-title-group">
+                    <span class="kg-eyebrow">ONTOLOGICAL MASTER DATA RESOLUTION</span>
+                    <h5 class="kg-heading">Material Knowledge Graph Trace (Semantic &rarr; ASME/ISO &rarr; Common Code)</h5>
+                  </div>
+                  <span class="sec-badge-tag" style="background: #e0f2fe; color: #0369a1; border-color: #bae6fd;">8-Node Ontological Chain</span>
+                </div>
+
+                <p class="kg-subtitle">
+                  Beyond superficial string matching: The platform constructs a semantic knowledge graph linking raw descriptions to taxonomy, metallurgy grade, normalized geometry, governing engineering standards, and unified common material codes.
+                </p>
+
+                <!-- Knowledge Graph Interactive Trace Chain -->
+                <div class="kg-trace-chain" id="pairKgTraceChain">
+                  <!-- Nodes generated dynamically via JS -->
+                </div>
+
+                <!-- Node Inspection Callout -->
+                <div class="kg-node-inspector" id="kgNodeInspector">
+                  <div class="kgi-icon" id="kgiIcon">📜</div>
+                  <div class="kgi-content">
+                    <span class="kgi-label" id="kgiCategory">Governing Engineering Standard</span>
+                    <strong class="kgi-value" id="kgiTitle">ASME B16.34 / API 608</strong>
+                    <p class="kgi-desc" id="kgiDesc">Establishes dimensional tolerances, pressure-temperature ratings, and shell wall minimum thickness for flanged and threaded valves.</p>
+                  </div>
+                  <span class="kgi-tag" id="kgiType">Standard Authority</span>
+                </div>
+              </div>
 
               <!-- Step 3: Human-in-the-Loop Governance Action (Decision-Support) -->
               <div class="pair-hitl-gate-bar" id="pairHitlGateBar">
@@ -781,6 +893,29 @@
             </div>
             <div class="hq-counter-pill">
               <span id="queueItemsRemainingCount">4</span> items requiring review
+            </div>
+          </div>
+
+          <!-- 3-Tier Routing Zone Filter Controls -->
+          <div class="hq-filter-pills-row">
+            <span class="hq-filter-label">Filter by Routing Tier:</span>
+            <div class="hq-filter-buttons" id="hqFilterButtons">
+              <button class="hq-filter-btn active" data-tier="all">
+                <span>All Queue Items</span>
+                <span class="hq-count-badge" id="hqCountAll">4</span>
+              </button>
+              <button class="hq-filter-btn filter-strong" data-tier="STRONG_MATCH">
+                <span>Auto-Convergence (&ge;90%)</span>
+                <span class="hq-count-badge" id="hqCountStrong">1</span>
+              </button>
+              <button class="hq-filter-btn filter-review" data-tier="NEEDS_REVIEW">
+                <span>Needs Review Zone (70%&ndash;89%)</span>
+                <span class="hq-count-badge" id="hqCountReview">2</span>
+              </button>
+              <button class="hq-filter-btn filter-unlikely" data-tier="UNLIKELY_MATCH">
+                <span>Unlikely Match (&lt;70%)</span>
+                <span class="hq-count-badge" id="hqCountUnlikely">1</span>
+              </button>
             </div>
           </div>
 

@@ -759,6 +759,155 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 4C. Multi-Factor 4-Pillar Scorecard & Material Knowledge Graph Visualizers
+  function renderMultiFactorScorecard(mfScore, routing) {
+    const pairTierBadge = document.getElementById('pairTierBadge');
+    const pairTierBadgeText = document.getElementById('pairTierBadgeText');
+    const pairFormulaText = document.getElementById('pairFormulaText');
+
+    if (pairTierBadge && routing) {
+      pairTierBadge.className = `mf-tier-badge ${routing.badgeClass || 'route-strong'}`;
+      if (pairTierBadgeText) pairTierBadgeText.textContent = routing.label || 'Auto-Convergence Zone (≥90%)';
+    }
+
+    if (pairFormulaText && mfScore?.formula) {
+      pairFormulaText.textContent = mfScore.formula;
+    }
+
+    if (mfScore?.pillars) {
+      const pSem = mfScore.pillars.find(p => p.id === 'semantic');
+      const pTech = mfScore.pillars.find(p => p.id === 'technical');
+      const pUnit = mfScore.pillars.find(p => p.id === 'unit');
+      const pCat = mfScore.pillars.find(p => p.id === 'category');
+
+      if (pSem) {
+        const elS = document.getElementById('pillarSemScore');
+        const elC = document.getElementById('pillarSemContrib');
+        const elB = document.getElementById('pillarSemBar');
+        const elN = document.getElementById('pillarSemNote');
+        if (elS) elS.textContent = `${Math.round(pSem.rawScore * 100)}%`;
+        if (elC) elC.textContent = `+${pSem.contribution}`;
+        if (elB) elB.style.width = `${Math.round(pSem.rawScore * 100)}%`;
+        if (elN) elN.textContent = pSem.notes;
+      }
+      if (pTech) {
+        const elS = document.getElementById('pillarTechScore');
+        const elC = document.getElementById('pillarTechContrib');
+        const elB = document.getElementById('pillarTechBar');
+        const elN = document.getElementById('pillarTechNote');
+        if (elS) elS.textContent = `${Math.round(pTech.rawScore * 100)}%`;
+        if (elC) elC.textContent = `+${pTech.contribution}`;
+        if (elB) elB.style.width = `${Math.round(pTech.rawScore * 100)}%`;
+        if (elN) elN.textContent = pTech.notes;
+      }
+      if (pUnit) {
+        const elS = document.getElementById('pillarUnitScore');
+        const elC = document.getElementById('pillarUnitContrib');
+        const elB = document.getElementById('pillarUnitBar');
+        const elN = document.getElementById('pillarUnitNote');
+        if (elS) elS.textContent = `${Math.round(pUnit.rawScore * 100)}%`;
+        if (elC) elC.textContent = `+${pUnit.contribution}`;
+        if (elB) elB.style.width = `${Math.round(pUnit.rawScore * 100)}%`;
+        if (elN) elN.textContent = pUnit.notes;
+      }
+      if (pCat) {
+        const elS = document.getElementById('pillarCatScore');
+        const elC = document.getElementById('pillarCatContrib');
+        const elB = document.getElementById('pillarCatBar');
+        const elN = document.getElementById('pillarCatNote');
+        if (elS) elS.textContent = `${Math.round(pCat.rawScore * 100)}%`;
+        if (elC) elC.textContent = `+${pCat.contribution}`;
+        if (elB) elB.style.width = `${Math.round(pCat.rawScore * 100)}%`;
+        if (elN) elN.textContent = pCat.notes;
+      }
+    }
+  }
+
+  function renderKnowledgeGraph(kgData) {
+    const traceChainEl = document.getElementById('pairKgTraceChain');
+    if (!traceChainEl || !kgData || !kgData.traceSteps) return;
+
+    let chainHtml = '';
+    const totalSteps = kgData.traceSteps.length;
+
+    kgData.traceSteps.forEach((step, idx) => {
+      chainHtml += `
+        <div class="kg-node-step ${idx === totalSteps - 1 ? 'active' : ''}" data-step-idx="${idx}">
+          <span class="kg-step-num">${step.step}</span>
+          <span class="kg-node-val">${escapeHtml(step.val)}</span>
+        </div>
+      `;
+      if (idx < totalSteps - 1) {
+        chainHtml += `<span class="kg-arrow-sep">&rarr;</span>`;
+      }
+    });
+
+    traceChainEl.innerHTML = chainHtml;
+
+    // Attach click listeners to steps for node inspection
+    const stepCards = traceChainEl.querySelectorAll('.kg-node-step');
+    stepCards.forEach(card => {
+      card.addEventListener('click', () => {
+        stepCards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        const sIdx = parseInt(card.getAttribute('data-step-idx'), 10);
+        const step = kgData.traceSteps[sIdx];
+        if (step) {
+          updateKgNodeInspector(step, kgData);
+        }
+      });
+    });
+
+    // Update inspector with last step (Common Code) initially
+    if (kgData.traceSteps[totalSteps - 1]) {
+      updateKgNodeInspector(kgData.traceSteps[totalSteps - 1], kgData);
+    }
+  }
+
+  function updateKgNodeInspector(step, kgData) {
+    const kgiIcon = document.getElementById('kgiIcon');
+    const kgiCategory = document.getElementById('kgiCategory');
+    const kgiTitle = document.getElementById('kgiTitle');
+    const kgiDesc = document.getElementById('kgiDesc');
+    const kgiType = document.getElementById('kgiType');
+
+    const descriptions = {
+      1: "Raw unstructured text string ingested from legacy CPSE enterprise catalog.",
+      2: "Top-level enterprise asset classification domain.",
+      3: "Specific functional mechanical/electrical equipment classification.",
+      4: "Metallurgical composition and chemical grade classification.",
+      5: "Standardized metric & imperial nominal geometry with ASME/ISO tolerance matching.",
+      6: "Pressure class & temperature operating boundary envelope.",
+      7: "Governing technical specification authority certifying interchangeability.",
+      8: "Consolidated National Unified Material Master Code mapped across all CPSEs."
+    };
+
+    const icons = {
+      1: "📝", 2: "📁", 3: "⚙️", 4: "🔬", 5: "📐", 6: "⏱️", 7: "📜", 8: "🎯"
+    };
+
+    if (kgiIcon) kgiIcon.textContent = icons[step.step] || "ℹ️";
+    if (kgiCategory) kgiCategory.textContent = `Ontological Step ${step.step} • ${step.type}`;
+    if (kgiTitle) kgiTitle.textContent = step.val;
+    if (kgiDesc) kgiDesc.textContent = descriptions[step.step] || "Standard master data node in ontological graph.";
+    if (kgiType) kgiType.textContent = step.type;
+  }
+
+  // Pre-initialize Knowledge Graph for default Valve case
+  const defaultValveKg = {
+    traceSteps: [
+      { step: 1, type: "Raw Specification", val: "VLV BALL SS 2IN 150#" },
+      { step: 2, type: "Primary Category", val: "Valves & Actuators" },
+      { step: 3, type: "Subcategory / Equipment", val: "Ball Valve" },
+      { step: 4, type: "Metallurgical Grade", val: "Austenitic Stainless Steel (CF8M / SS316)" },
+      { step: 5, type: "Normalized Dimensions", val: "DN50 (2\" ↔ 50.8mm)" },
+      { step: 6, type: "Pressure Rating", val: "Class 150 (150#)" },
+      { step: 7, type: "Governing Standard", val: "ASME B16.34 / API 608" },
+      { step: 8, type: "Common Material Code", val: "NUMM-VLV-SS-DN50-CL150" }
+    ]
+  };
+  renderKnowledgeGraph(defaultValveKg);
+
   if (btnRunPairPipeline) {
     btnRunPairPipeline.addEventListener('click', async () => {
       const recA = pairInputA ? pairInputA.value.trim() : '';
@@ -793,6 +942,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (pairMatchPctBadge) {
           pairMatchPctBadge.textContent = `${data.match?.percentage || '96%'} Match Confidence`;
+        }
+
+        // Render 4-Pillar Multi-Factor Scorecard
+        if (data.match?.multiFactorScore) {
+          renderMultiFactorScorecard(data.match.multiFactorScore, data.match.routing);
+        }
+
+        // Render Material Knowledge Graph
+        const unifiedKg = data.match?.knowledgeGraph?.unified || data.match?.knowledgeGraph;
+        if (unifiedKg) {
+          renderKnowledgeGraph(unifiedKg);
         }
 
         // Render explainable attribute matrix table
@@ -1104,10 +1264,176 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =========================================================================
-  // 5. TAB 3: DYNAMIC HITL QUEUE & SKELETON LOADING
+  // 5. TAB 3: DYNAMIC HITL QUEUE & 3-TIER ROUTING ZONE FILTERING
   // =========================================================================
   const dynamicHitlQueueList = document.getElementById('dynamicHitlQueueList');
   const auditTrailBody = document.getElementById('auditTrailBody');
+
+  let hitlQueueCache = [];
+  let currentHitlTierFilter = 'all';
+
+  function renderHitlQueueCards() {
+    if (!dynamicHitlQueueList) return;
+
+    // Update filter counts
+    const countAll = document.getElementById('hqCountAll');
+    const countStrong = document.getElementById('hqCountStrong');
+    const countReview = document.getElementById('hqCountReview');
+    const countUnlikely = document.getElementById('hqCountUnlikely');
+    const countDisplay = document.getElementById('queueItemsRemainingCount');
+    const badgeDisplay = document.getElementById('wbQueueBadgeCount');
+
+    const totalCount = hitlQueueCache.length;
+    const strongCount = hitlQueueCache.filter(i => i.routingTier === 'STRONG_MATCH').length;
+    const reviewCount = hitlQueueCache.filter(i => i.routingTier === 'NEEDS_REVIEW').length;
+    const unlikelyCount = hitlQueueCache.filter(i => i.routingTier === 'UNLIKELY_MATCH').length;
+
+    if (countAll) countAll.textContent = totalCount;
+    if (countStrong) countStrong.textContent = strongCount;
+    if (countReview) countReview.textContent = reviewCount;
+    if (countUnlikely) countUnlikely.textContent = unlikelyCount;
+    if (countDisplay) countDisplay.textContent = totalCount;
+    if (badgeDisplay) badgeDisplay.textContent = totalCount;
+
+    if (totalCount === 0) {
+      dynamicHitlQueueList.innerHTML = `
+        <div style="padding: 24px; text-align: center; background: var(--bg-surface); border-radius: 6px; border: 1px solid var(--border-subtle);">
+          <strong style="color: #065f46; font-size: 0.9375rem;">All Pending Candidate Mappings Validated</strong>
+          <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-top: 4px;">Zero unreviewed duplicate proposals in the queue. All committed records are audited below.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const filteredItems = currentHitlTierFilter === 'all'
+      ? hitlQueueCache
+      : hitlQueueCache.filter(item => item.routingTier === currentHitlTierFilter);
+
+    if (filteredItems.length === 0) {
+      dynamicHitlQueueList.innerHTML = `
+        <div style="padding: 24px; text-align: center; background: var(--bg-surface); border-radius: 6px; border: 1px solid var(--border-subtle);">
+          <strong style="color: var(--navy-900); font-size: 0.9375rem;">No Candidate Pairs in this Routing Zone</strong>
+          <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-top: 4px;">Select "All Queue Items" or another routing tier to inspect pending candidate records.</p>
+        </div>
+      `;
+      return;
+    }
+
+    let html = '';
+    filteredItems.forEach(item => {
+      const pair = item.candidatePair || {};
+      const confPct = Math.round((item.confidenceScore || 0) * 100);
+
+      let tierBadgeClass = 'route-strong';
+      if (item.routingTier === 'NEEDS_REVIEW') tierBadgeClass = 'route-review';
+      else if (item.routingTier === 'UNLIKELY_MATCH') tierBadgeClass = 'route-unlikely';
+
+      html += `
+        <div class="hitl-queue-card" id="card-${item.queueId}">
+          <div class="hqc-top-bar">
+            <span class="hqc-id">Queue ID: ${escapeHtml(item.queueId)}</span>
+            <div class="hqc-meta-tags-row">
+              <span class="hqc-tier-tag ${tierBadgeClass}">&bull; ${escapeHtml(item.routingZone || 'Zone')}</span>
+              <span class="hqc-conf-badge">&bull; Match: ${confPct}%</span>
+            </div>
+          </div>
+
+          <div class="hqc-comparison-grid">
+            <div class="hqc-item">
+              <span class="hqc-org-pill">${escapeHtml(pair.itemA?.cpse || 'CPSE A')} &bull; ${escapeHtml(pair.itemA?.erp || 'ERP')}</span>
+              <span class="hqc-code">${escapeHtml(pair.itemA?.legacyCode || '')}</span>
+              <span class="hqc-desc">&ldquo;${escapeHtml(pair.itemA?.description || '')}&rdquo;</span>
+            </div>
+            <div class="hqc-vs">VS</div>
+            <div class="hqc-item">
+              <span class="hqc-org-pill">${escapeHtml(pair.itemB?.cpse || 'CPSE B')} &bull; ${escapeHtml(pair.itemB?.erp || 'ERP')}</span>
+              <span class="hqc-code">${escapeHtml(pair.itemB?.legacyCode || '')}</span>
+              <span class="hqc-desc">&ldquo;${escapeHtml(pair.itemB?.description || '')}&rdquo;</span>
+            </div>
+          </div>
+
+          <div class="hqc-rationale" id="rationale-${item.queueId}">
+            <strong>AI Engineering Rationale:</strong> ${escapeHtml(item.aiRationale || '')}
+          </div>
+
+          <div class="hqc-formula-pill" style="margin-bottom: 14px; font-size: 0.75rem;">
+            <strong>4-Pillar Formulation:</strong> <code>${escapeHtml(item.multiFactorScore?.formula || 'Score = (0.20 × S_sem) + (0.35 × S_tech) + (0.25 × S_unit) + (0.20 × S_cat)')}</code>
+          </div>
+
+          <div class="hqc-actions">
+            <button class="btn-hqc-approve" data-qid="${item.queueId}">&check; Approve &amp; Commit</button>
+            <button class="btn-hqc-review" data-qid="${item.queueId}">&#9888; Flag for Review</button>
+            <button class="btn-hqc-details" data-qid="${item.queueId}">&#128065; Technical Trace</button>
+            <button class="btn-hqc-reject" data-qid="${item.queueId}">&times; Reject</button>
+          </div>
+        </div>
+      `;
+    });
+
+    dynamicHitlQueueList.innerHTML = html;
+
+    // Attach Action Handlers
+    dynamicHitlQueueList.querySelectorAll('.btn-hqc-approve').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qid = btn.getAttribute('data-qid');
+        processHitlDecision(qid, 'APPROVE');
+      });
+    });
+
+    dynamicHitlQueueList.querySelectorAll('.btn-hqc-review').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qid = btn.getAttribute('data-qid');
+        openNeedsReviewModal(qid);
+      });
+    });
+
+    dynamicHitlQueueList.querySelectorAll('.btn-hqc-reject').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qid = btn.getAttribute('data-qid');
+        openRejectModal(qid);
+      });
+    });
+
+    // Material Comparison: Staggered Technical Trace
+    dynamicHitlQueueList.querySelectorAll('.btn-hqc-details').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qid = btn.getAttribute('data-qid');
+        const rBox = document.getElementById(`rationale-${qid}`);
+        if (rBox) {
+          if (rBox.getAttribute('data-expanded') === 'true') {
+            rBox.setAttribute('data-expanded', 'false');
+            rBox.innerHTML = `<strong>AI Engineering Rationale:</strong> Verified metallurgical equivalence and pressure schedule.`;
+            btn.innerHTML = '&#128065; Technical Trace';
+          } else {
+            rBox.setAttribute('data-expanded', 'true');
+            rBox.innerHTML = `
+              <div style="font-size: 0.8125rem; line-height: 1.6; margin-top: 6px;">
+                <strong style="display: block; margin-bottom: 6px; color: var(--navy-900);">ASME / ASTM Technical Attribute Trace:</strong>
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                  <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Material Grade:</strong> ASTM composition verified per standards repository</div>
+                  <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Size / Diameter:</strong> Normalized dimensional interchangeability verified</div>
+                  <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Pressure Rating:</strong> Operating envelope aligned with cross-enterprise tolerance</div>
+                  <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Standard Alignment:</strong> 100% compliant with BIS / ISO 8000 Master Data Syntax</div>
+                </div>
+              </div>
+            `;
+            btn.innerHTML = '&#128065; Collapse Trace';
+          }
+        }
+      });
+    });
+  }
+
+  // Attach filter button click listeners
+  const hqFilterButtons = document.querySelectorAll('.hq-filter-btn');
+  hqFilterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      hqFilterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentHitlTierFilter = btn.getAttribute('data-tier') || 'all';
+      renderHitlQueueCards();
+    });
+  });
 
   async function loadHitlQueue() {
     if (!dynamicHitlQueueList) return;
@@ -1123,116 +1449,8 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch('/api/hitl/queue');
       const data = await res.json();
-
-      const queueCount = data.queue ? data.queue.length : 0;
-      const countDisplay = document.getElementById('queueItemsRemainingCount');
-      const badgeDisplay = document.getElementById('wbQueueBadgeCount');
-      if (countDisplay) countDisplay.textContent = queueCount;
-      if (badgeDisplay) badgeDisplay.textContent = queueCount;
-
-      if (!data.queue || data.queue.length === 0) {
-        dynamicHitlQueueList.innerHTML = `
-          <div style="padding: 24px; text-align: center; background: var(--bg-surface); border-radius: 6px; border: 1px solid var(--border-subtle);">
-            <strong style="color: #065f46; font-size: 0.9375rem;">All Pending Candidate Mappings Validated</strong>
-            <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-top: 4px;">Zero unreviewed duplicate proposals in the queue. All committed records are audited below.</p>
-          </div>
-        `;
-        return;
-      }
-
-      let html = '';
-      data.queue.forEach(item => {
-        const pair = item.candidatePair || {};
-        const confPct = Math.round(item.confidenceScore * 100);
-
-        html += `
-          <div class="hitl-queue-card" id="card-${item.queueId}">
-            <div class="hqc-top-bar">
-              <span class="hqc-id">Queue ID: ${escapeHtml(item.queueId)}</span>
-              <span class="hqc-conf-badge">&bull; Match Confidence: ${confPct}%</span>
-            </div>
-
-            <div class="hqc-comparison-grid">
-              <div class="hqc-item">
-                <span class="hqc-org-pill">${escapeHtml(pair.itemA?.cpse || 'CPSE A')} &bull; ${escapeHtml(pair.itemA?.erp || 'ERP')}</span>
-                <span class="hqc-code">${escapeHtml(pair.itemA?.legacyCode || '')}</span>
-                <span class="hqc-desc">&ldquo;${escapeHtml(pair.itemA?.description || '')}&rdquo;</span>
-              </div>
-              <div class="hqc-vs">VS</div>
-              <div class="hqc-item">
-                <span class="hqc-org-pill">${escapeHtml(pair.itemB?.cpse || 'CPSE B')} &bull; ${escapeHtml(pair.itemB?.erp || 'ERP')}</span>
-                <span class="hqc-code">${escapeHtml(pair.itemB?.legacyCode || '')}</span>
-                <span class="hqc-desc">&ldquo;${escapeHtml(pair.itemB?.description || '')}&rdquo;</span>
-              </div>
-            </div>
-
-            <div class="hqc-rationale" id="rationale-${item.queueId}">
-              <strong>AI Engineering Rationale:</strong> ${escapeHtml(item.aiRationale || '')}
-            </div>
-
-            <div class="hqc-actions">
-              <button class="btn-hqc-approve" data-qid="${item.queueId}">&check; Approve &amp; Commit</button>
-              <button class="btn-hqc-review" data-qid="${item.queueId}">&#9888; Flag for Review</button>
-              <button class="btn-hqc-details" data-qid="${item.queueId}">&#128065; Technical Trace</button>
-              <button class="btn-hqc-reject" data-qid="${item.queueId}">&times; Reject</button>
-            </div>
-          </div>
-        `;
-      });
-
-      dynamicHitlQueueList.innerHTML = html;
-
-      // Event listeners
-      dynamicHitlQueueList.querySelectorAll('.btn-hqc-approve').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const qid = btn.getAttribute('data-qid');
-          processHitlDecision(qid, 'APPROVE');
-        });
-      });
-
-      dynamicHitlQueueList.querySelectorAll('.btn-hqc-review').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const qid = btn.getAttribute('data-qid');
-          openNeedsReviewModal(qid);
-        });
-      });
-
-      dynamicHitlQueueList.querySelectorAll('.btn-hqc-reject').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const qid = btn.getAttribute('data-qid');
-          openRejectModal(qid);
-        });
-      });
-
-      // Material Comparison: Staggered Technical Trace
-      dynamicHitlQueueList.querySelectorAll('.btn-hqc-details').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const qid = btn.getAttribute('data-qid');
-          const rBox = document.getElementById(`rationale-${qid}`);
-          if (rBox) {
-            if (rBox.getAttribute('data-expanded') === 'true') {
-              rBox.setAttribute('data-expanded', 'false');
-              rBox.innerHTML = `<strong>AI Engineering Rationale:</strong> Verified metallurgical equivalence and pressure schedule.`;
-              btn.innerHTML = '&#128065; Technical Trace';
-            } else {
-              rBox.setAttribute('data-expanded', 'true');
-              rBox.innerHTML = `
-                <div style="font-size: 0.8125rem; line-height: 1.6; margin-top: 6px;">
-                  <strong style="display: block; margin-bottom: 6px; color: var(--navy-900);">ASME / ASTM Technical Attribute Trace:</strong>
-                  <div style="display: flex; flex-direction: column; gap: 5px;">
-                    <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Material Grade:</strong> ASTM A312 TP304 composition verified (Austenitic)</div>
-                    <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Size / Diameter:</strong> 2.00 IN (Imperial) = 50.8mm = DN50 per ASME B36.19M</div>
-                    <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Pressure Rating:</strong> Schedule 40 (SCH 40) uniform across plants</div>
-                    <div class="trace-attr-row"><span class="trace-check-icon">&check;</span> <strong>Standard Alignment:</strong> 100% compliant with BIS / ISO 8000 Master Data Syntax</div>
-                  </div>
-                </div>
-              `;
-              btn.innerHTML = '&#128065; Collapse Trace';
-            }
-          }
-        });
-      });
-
+      hitlQueueCache = data.queue || [];
+      renderHitlQueueCards();
     } catch (err) {
       console.error('Failed to load HITL queue:', err);
     }

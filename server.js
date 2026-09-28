@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { catalogService } from './src/services/catalogService.js';
-import { extractAttributes, calculateMatchConfidence } from './src/services/aiEngine.js';
+import { extractAttributes, calculateMatchConfidence, buildMaterialKnowledgeGraph } from './src/services/aiEngine.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -77,24 +77,45 @@ app.post('/api/match', (req, res) => {
 // 4B. Interactive End-to-End Pair Harmonization Showcase
 app.post('/api/harmonize-pair', (req, res) => {
   try {
-    const { recordA, recordB, cpseA = "CPCL", cpseB = "IOCL" } = req.body;
+    const { recordA, recordB, cpseA = "CPCL", cpseB = "IOCL", customThresholds } = req.body;
     if (!recordA || !recordB) {
       return res.status(400).json({ error: "recordA and recordB required" });
     }
     const attrA = extractAttributes(recordA);
     const attrB = extractAttributes(recordB);
-    const comparison = calculateMatchConfidence({ extractedAttributes: attrA }, { extractedAttributes: attrB });
+    const comparison = calculateMatchConfidence(
+      { extractedAttributes: attrA, rawDescription: recordA, legacyCode: `${cpseA}-VLV-1042` },
+      { extractedAttributes: attrB, rawDescription: recordB, legacyCode: `${cpseB}-M-88210` },
+      customThresholds
+    );
     
     res.json({
       success: true,
-      recordA: { cpse: cpseA, raw: recordA, attributes: attrA },
-      recordB: { cpse: cpseB, raw: recordB, attributes: attrB },
+      recordA: { cpse: cpseA, raw: recordA, attributes: attrA, legacyCode: `${cpseA}-VLV-1042` },
+      recordB: { cpse: cpseB, raw: recordB, attributes: attrB, legacyCode: `${cpseB}-M-88210` },
       match: comparison,
       canonicalNummCode: attrA.nummCode || attrB.nummCode,
       suggestedMapping: [
-        { cpse: cpseA, legacyText: recordA, canonicalCode: attrA.nummCode || attrB.nummCode },
-        { cpse: cpseB, legacyText: recordB, canonicalCode: attrA.nummCode || attrB.nummCode }
+        { cpse: cpseA, legacyText: recordA, legacyCode: `${cpseA}-VLV-1042`, canonicalCode: attrA.nummCode || attrB.nummCode },
+        { cpse: cpseB, legacyText: recordB, legacyCode: `${cpseB}-M-88210`, canonicalCode: attrA.nummCode || attrB.nummCode }
       ]
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 4C. Material Knowledge Graph Query Endpoint
+app.get('/api/knowledge-graph', (req, res) => {
+  try {
+    const text = req.query.q || req.query.text || 'VLV BALL SS 2IN 150#';
+    const attr = extractAttributes(text);
+    const kg = buildMaterialKnowledgeGraph(attr, text, [req.query.cpse || 'CPCL-VLV-1042']);
+    res.json({
+      success: true,
+      query: text,
+      attributes: attr,
+      knowledgeGraph: kg
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
