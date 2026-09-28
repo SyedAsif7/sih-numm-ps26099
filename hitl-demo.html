@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HITL Governance Demo Video | National Unified Material Master (NUMM)</title>
+  <meta name="description" content="Watch the official Human-in-the-Loop (HITL) Decision-Support walkthrough video for SIH 2026 Problem Statement PS 26099 (MoPNG / CPCL).">
+  
+  <!-- Favicon & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Dedicated Video Showcase Page Styling */
+    .video-page-hero {
+      background: linear-gradient(180deg, #041b37 0%, #062347 100%);
+      color: #ffffff;
+      padding: 36px 24px 44px;
+      border-bottom: 2px solid var(--teal-600);
+    }
+    .video-hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .video-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      color: #94a3b8;
+    }
+    .video-breadcrumb a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .video-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    .video-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .video-main-heading {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      color: #ffffff;
+    }
+    .video-subtitle {
+      font-size: 1rem;
+      color: #cbd5e1;
+      max-width: 820px;
+      line-height: 1.55;
+    }
+    .video-main-container {
+      max-width: 1200px;
+      margin: -24px auto 60px;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .video-player-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 16px 40px rgba(4, 27, 55, 0.14);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    body.theme-dark .video-player-card {
+      background: #0a1b32;
+      border-color: #1e3a63;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+    .video-viewport-wrapper {
+      position: relative;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #020e1d;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+      aspect-ratio: 16 / 9;
+    }
+    .video-viewport-wrapper video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+    .video-chapters-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      background: var(--bg-page);
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+    }
+    .chapters-lead {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .chapter-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .chapter-btn:hover {
+      background: var(--teal-50);
+      border-color: var(--teal-600);
+      color: var(--teal-800);
+    }
+    .chapter-time {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--teal-600);
+      background: var(--bg-page);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    .video-actions-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .video-features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .video-features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .v-feature-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    body.theme-dark .v-feature-card {
+      background: #0a1b32;
+      border-color: #1e3a63;
+    }
+    .vfc-icon {
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+    .vfc-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      margin: 0;
+    }
+    body.theme-dark .vfc-title {
+      color: #f1f5f9;
+    }
+    .vfc-desc {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin: 0;
+    }
+    .btn-return-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .btn-return-home:hover {
+      background: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <header class="site-header">
+    <div class="header-container" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="header-left">
+        <a href="index.html" class="numm-platform-crest" aria-label="NUMM Home" style="text-decoration: none; color: inherit;">
+          <div class="numm-brand-wrapper">
+            <div class="nav-brand-title">
+              <span class="nbt-numm">NUMM</span>
+              <span class="nbt-pipe">|</span>
+              <span class="nbt-full">HITL Governance Video</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="sec-badge-tag" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);">
+          PS 26099 Video Walkthrough
+        </span>
+        <a href="index.html" class="btn-return-home">
+          &larr; Return to Live Platform
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Video Hero Header -->
+  <section class="video-page-hero">
+    <div class="video-hero-inner">
+      <div class="video-breadcrumb">
+        <a href="index.html">National Unified Material Master</a>
+        <span>&rsaquo;</span>
+        <a href="index.html#hitl-section">Human-in-the-Loop Governance</a>
+        <span>&rsaquo;</span>
+        <span style="color: #ffffff;">Video Demonstration</span>
+      </div>
+
+      <div class="video-title-row">
+        <div>
+          <div class="hero-eyebrow-pill" style="margin-bottom: 10px;">
+            <span class="pulse-indicator"></span>
+            <span class="eyebrow-text">SMART INDIA HACKATHON 2026 &bull; OFFICIAL VIDEO DEMO</span>
+          </div>
+          <h1 class="video-main-heading">
+            Human-in-the-Loop (HITL) Decision-Support Walkthrough
+          </h1>
+          <p class="video-subtitle">
+            Demonstrating how the NUMM platform ingests raw legacy descriptions from CPCL, IOCL, and ONGC, extracts standardized technical attributes, provides Explainable AI (XAI) engineering proof, and requires authorized Materials Officer sign-off before committing canonical codes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Video Container -->
+  <main class="video-main-container">
+    
+    <!-- Player Card -->
+    <div class="video-player-card">
+      <div class="video-viewport-wrapper">
+        <video id="hitlVideoPlayer" controls autoplay muted playsinline preload="auto" poster="assets/refinery_hero_wide.jpg">
+          <source src="assets/HITL%20Governance%20Demo.mp4" type="video/mp4">
+          <p style="color: #ffffff; padding: 20px;">Your browser does not support HTML5 video playback. Please download the video using the link below.</p>
+        </video>
+      </div>
+
+      <!-- Chapter Quick Jump Bar -->
+      <div class="video-chapters-bar">
+        <span class="chapters-lead">Jump to Stage:</span>
+        <button class="chapter-btn" data-time="0">
+          <span class="chapter-time">0:00</span>
+          <span>1. Heterogeneous CPSE Ingestion</span>
+        </button>
+        <button class="chapter-btn" data-time="20">
+          <span class="chapter-time">0:20</span>
+          <span>2. NLP Attribute Extraction (2" = DN50)</span>
+        </button>
+        <button class="chapter-btn" data-time="45">
+          <span class="chapter-time">0:45</span>
+          <span>3. Multi-Factor 4-Pillar Scoring</span>
+        </button>
+        <button class="chapter-btn" data-time="75">
+          <span class="chapter-time">1:15</span>
+          <span>4. Parichay SSO Officer Decision Gate</span>
+        </button>
+        <button class="chapter-btn" data-time="105">
+          <span class="chapter-time">1:45</span>
+          <span>5. Canonical Code &amp; ERP Sync Map</span>
+        </button>
+      </div>
+
+      <!-- Action Strip -->
+      <div class="video-actions-strip">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 0.8125rem; font-weight: 700; color: var(--navy-900);">Video File:</span>
+          <code style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--teal-700); background: var(--bg-subtle); padding: 3px 8px; border-radius: 4px;">
+            HITL Governance Demo.mp4 (6.4 MB)
+          </code>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <a href="index.html#workbench-section" class="btn-hero-primary" style="padding: 8px 16px; font-size: 0.8125rem;">
+            <span>⚡ Launch Live AI Workbench</span>
+          </a>
+          <a href="assets/HITL%20Governance%20Demo.mp4" download="HITL_Governance_Demo.mp4" class="btn-export-csv" style="padding: 8px 16px; font-size: 0.8125rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download Video</span>
+          </a>
+          <a href="SIH_2026_COMPETITION_DOSSIER.md" target="_blank" class="btn-hero-outline" style="padding: 8px 16px; font-size: 0.8125rem; color: var(--navy-900); border-color: var(--border-strong);">
+            <span>📄 Competition Dossier</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Core Pillars Explaining the Walkthrough -->
+    <div class="video-features-grid">
+      <div class="v-feature-card">
+        <div class="vfc-icon">⚖️</div>
+        <h3 class="vfc-title">Zero Silent Commits</h3>
+        <p class="vfc-desc">
+          Unlike black-box AI tools, NUMM enforces a strict <strong>Human-in-the-Loop (HITL)</strong> governance gate. AI algorithms generate confidence scores and explainable engineering breakdowns, but only authorized CPSE Materials Officers can approve catalog convergence.
+        </p>
+      </div>
+
+      <div class="v-feature-card">
+        <div class="vfc-icon">🛡️</div>
+        <h3 class="vfc-title">3-Tier Routing Protocol</h3>
+        <p class="vfc-desc">
+          Candidate matches are routed through 3 configurable zones: <strong>Auto-Convergence (≥90%)</strong> for 1-click approval, <strong>Needs Review (70%–89%)</strong> for dual-certified cases (e.g. ASTM A53 vs A106 temp envelope), and <strong>Unlikely Match (<70%)</strong> to block catalog pollution.
+        </p>
+      </div>
+
+      <div class="v-feature-card">
+        <div class="vfc-icon">🔄</div>
+        <h3 class="vfc-title">Zero ERP Disruption</h3>
+        <p class="vfc-desc">
+          CPCL, IOCL, and ONGC engineers do not discard their existing SAP or Oracle material numbers. NUMM builds a universal bidirectional cross-reference index so plants can discover and borrow spares across enterprises seamlessly.
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Interactive Chapter Controller Script -->
+  <script>
+    const player = document.getElementById('hitlVideoPlayer');
+    const chapterButtons = document.querySelectorAll('.chapter-btn');
+
+    chapterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetTime = parseFloat(btn.getAttribute('data-time'));
+        if (player && !isNaN(targetTime)) {
+          player.currentTime = targetTime;
+          player.play();
+          
+          chapterButtons.forEach(b => {
+            b.style.borderColor = 'var(--border-strong)';
+            b.style.background = 'var(--bg-surface)';
+          });
+          btn.style.borderColor = 'var(--teal-600)';
+          btn.style.background = 'var(--teal-50)';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

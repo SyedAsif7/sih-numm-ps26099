@@ -20,6 +20,11 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/assets', express.static(__dirname));
 app.use(express.static(__dirname));
 
+// Dedicated HITL Governance Demo Video Page
+app.get(['/hitl-demo', '/demo', '/video'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'hitl-demo.html'));
+});
+
 // ==========================================
 // REST API ENDPOINTS
 // ==========================================
