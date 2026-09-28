@@ -74,6 +74,33 @@ app.post('/api/match', (req, res) => {
   }
 });
 
+// 4B. Interactive End-to-End Pair Harmonization Showcase
+app.post('/api/harmonize-pair', (req, res) => {
+  try {
+    const { recordA, recordB, cpseA = "CPCL", cpseB = "IOCL" } = req.body;
+    if (!recordA || !recordB) {
+      return res.status(400).json({ error: "recordA and recordB required" });
+    }
+    const attrA = extractAttributes(recordA);
+    const attrB = extractAttributes(recordB);
+    const comparison = calculateMatchConfidence({ extractedAttributes: attrA }, { extractedAttributes: attrB });
+    
+    res.json({
+      success: true,
+      recordA: { cpse: cpseA, raw: recordA, attributes: attrA },
+      recordB: { cpse: cpseB, raw: recordB, attributes: attrB },
+      match: comparison,
+      canonicalNummCode: attrA.nummCode || attrB.nummCode,
+      suggestedMapping: [
+        { cpse: cpseA, legacyText: recordA, canonicalCode: attrA.nummCode || attrB.nummCode },
+        { cpse: cpseB, legacyText: recordB, canonicalCode: attrA.nummCode || attrB.nummCode }
+      ]
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // 5. Get active HITL queue
 app.get('/api/hitl/queue', (req, res) => {
   try {

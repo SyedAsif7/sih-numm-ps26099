@@ -55,6 +55,67 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('High-Contrast Dark Mode Activated', 'info', 2000);
       }
     });
+  // =========================================================================
+  // 0C. PARICHAY UNIFIED SSO OFFICER AUTHENTICATION SYSTEM
+  // =========================================================================
+  let currentOfficer = {
+    name: "Er. K. Ramanathan",
+    cpse: "CPCL",
+    role: "Chief Materials Manager (Refinery)"
+  };
+
+  const btnOfficerAuth = document.getElementById('btnOfficerAuth');
+  const modalOfficerAuthBackdrop = document.getElementById('modalOfficerAuthBackdrop');
+  const btnCloseOfficerModal = document.getElementById('btnCloseOfficerModal');
+  const btnConfirmOfficerSelect = document.getElementById('btnConfirmOfficerSelect');
+  const headerOfficerName = document.getElementById('headerOfficerName');
+  const personaSelectorList = document.getElementById('personaSelectorList');
+
+  if (btnOfficerAuth && modalOfficerAuthBackdrop) {
+    btnOfficerAuth.addEventListener('click', () => {
+      modalOfficerAuthBackdrop.classList.add('active');
+    });
+  }
+
+  if (btnCloseOfficerModal && modalOfficerAuthBackdrop) {
+    btnCloseOfficerModal.addEventListener('click', () => {
+      modalOfficerAuthBackdrop.classList.remove('active');
+    });
+  }
+
+  if (modalOfficerAuthBackdrop) {
+    modalOfficerAuthBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalOfficerAuthBackdrop) {
+        modalOfficerAuthBackdrop.classList.remove('active');
+      }
+    });
+  }
+
+  if (personaSelectorList) {
+    personaSelectorList.querySelectorAll('.persona-card').forEach(card => {
+      card.addEventListener('click', () => {
+        personaSelectorList.querySelectorAll('.persona-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+      });
+    });
+  }
+
+  if (btnConfirmOfficerSelect && modalOfficerAuthBackdrop) {
+    btnConfirmOfficerSelect.addEventListener('click', () => {
+      const selected = personaSelectorList ? personaSelectorList.querySelector('.persona-card.selected') : null;
+      if (selected) {
+        currentOfficer = {
+          name: selected.getAttribute('data-name'),
+          cpse: selected.getAttribute('data-cpse'),
+          role: selected.getAttribute('data-role')
+        };
+        if (headerOfficerName) {
+          headerOfficerName.textContent = `${currentOfficer.name} (${currentOfficer.cpse})`;
+        }
+        showToast(`SSO Session Switched: ${currentOfficer.name} [${currentOfficer.cpse}]`, 'success', 2500);
+      }
+      modalOfficerAuthBackdrop.classList.remove('active');
+    });
   }
 
   // =========================================================================
@@ -578,6 +639,240 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
+  // 4B. END-TO-END 2-RECORD LIVE HARMONIZATION SHOWCASE
+  // =========================================================================
+  const pairPresetCases = {
+    pipes: {
+      cpseA: "CPCL",
+      recordA: "PIPE CS SMLS SCH 40 2 INCH ASTM A106 GR B",
+      cpseB: "IOCL",
+      recordB: '2" NB CS SEAMLESS PIPE SCH40 ASTM A53/A106B SMLS'
+    },
+    valves: {
+      cpseA: "CPCL",
+      recordA: "BALL VALVE 2 IN 300# FLANGED RF CF8M API 600",
+      cpseB: "ONGC",
+      recordB: "50MM NB SS316 BALL VALVE CL300 ASME B16.34 FLG BODY CF8M"
+    },
+    bearings: {
+      cpseA: "HPCL",
+      recordA: "DEEP GROOVE BALL BEARING 6205-2RS1 SKF 25X52X15MM C3",
+      cpseB: "CPCL",
+      recordB: "BEARING RADIAL BALL 25MM BORE 52MM OD RUBBER SEALED 6205"
+    },
+    motors: {
+      cpseA: "IOCL",
+      recordA: "3 PHASE INDUCTION MOTOR 15KW 415V 1450RPM 4 POLE FOOT MTD IE3",
+      cpseB: "CPCL",
+      recordB: "15 KW SQUIRREL CAGE INDUCTION MOTOR 415V 1500 RPM B3 FRAME TEFC"
+    },
+    cables: {
+      cpseA: "ONGC",
+      recordA: "XLPE POWER CABLE 3.5C X 185 SQ MM AL ARMOURED 1.1KV IS 7098",
+      cpseB: "GAIL",
+      recordB: "1100V 3.5 CORE 185SQMM ALUMINIUM CONDUCTOR ARMORED CABLE"
+    }
+  };
+
+  const pairPresetChips = document.getElementById('pairPresetChips');
+  const pairInputA = document.getElementById('pairInputA');
+  const pairInputB = document.getElementById('pairInputB');
+  const pairCpseA = document.getElementById('pairCpseA');
+  const pairCpseB = document.getElementById('pairCpseB');
+  const btnRunPairPipeline = document.getElementById('btnRunPairPipeline');
+  const pairResultsContainer = document.getElementById('pairResultsContainer');
+
+  const pairXaiRationaleText = document.getElementById('pairXaiRationaleText');
+  const pairMatchPctBadge = document.getElementById('pairMatchPctBadge');
+  const pairAttrTableBody = document.getElementById('pairAttrTableBody');
+  const pairCanonicalCodeDisplay = document.getElementById('pairCanonicalCodeDisplay');
+  const thHeaderA = document.getElementById('thHeaderA');
+  const thHeaderB = document.getElementById('thHeaderB');
+  const mapLabelA = document.getElementById('mapLabelA');
+  const mapLabelB = document.getElementById('mapLabelB');
+  const mapRawA = document.getElementById('mapRawA');
+  const mapRawB = document.getElementById('mapRawB');
+  const pairHitlGateBar = document.getElementById('pairHitlGateBar');
+
+  if (pairPresetChips) {
+    pairPresetChips.querySelectorAll('.chip-preset-case').forEach(chip => {
+      chip.addEventListener('click', () => {
+        pairPresetChips.querySelectorAll('.chip-preset-case').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+
+        const caseKey = chip.getAttribute('data-case');
+        const cData = pairPresetCases[caseKey];
+        if (cData) {
+          if (pairInputA) pairInputA.value = cData.recordA;
+          if (pairInputB) pairInputB.value = cData.recordB;
+          if (pairCpseA) pairCpseA.value = cData.cpseA;
+          if (pairCpseB) pairCpseB.value = cData.cpseB;
+          if (pairResultsContainer) pairResultsContainer.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  if (btnRunPairPipeline) {
+    btnRunPairPipeline.addEventListener('click', async () => {
+      const recA = pairInputA ? pairInputA.value.trim() : '';
+      const recB = pairInputB ? pairInputB.value.trim() : '';
+      const cA = pairCpseA ? pairCpseA.value : 'CPCL';
+      const cB = pairCpseB ? pairCpseB.value : 'IOCL';
+
+      if (!recA || !recB) {
+        showToast('Please enter descriptions for both CPSE records', 'alert');
+        return;
+      }
+
+      btnRunPairPipeline.disabled = true;
+      btnRunPairPipeline.innerHTML = `
+        <span class="pulse-dot-sm"></span>
+        <span>Standardizing attributes &amp; computing vector distance...</span>
+      `;
+
+      try {
+        const res = await fetch('/api/harmonize-pair', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ recordA: recA, recordB: recB, cpseA: cA, cpseB: cB })
+        });
+        const data = await res.json();
+
+        if (thHeaderA) thHeaderA.textContent = `Record A (${cA})`;
+        if (thHeaderB) thHeaderB.textContent = `Record B (${cB})`;
+
+        if (pairXaiRationaleText) {
+          pairXaiRationaleText.textContent = data.match?.rationale || 'Equivalence verified across dimensional, metallurgy, and pressure attributes.';
+        }
+        if (pairMatchPctBadge) {
+          pairMatchPctBadge.textContent = `${data.match?.percentage || '96%'} Match Confidence`;
+        }
+
+        // Render explainable attribute matrix table
+        if (pairAttrTableBody && data.match?.explainableBreakdown) {
+          let rowsHtml = '';
+          data.match.explainableBreakdown.forEach((row, idx) => {
+            const isMatch = row.score >= 0.85;
+            const badgeColor = isMatch ? '#065f46' : '#854d0e';
+            const badgeBg = isMatch ? '#ecfdf5' : '#fefce8';
+            const badgeBorder = isMatch ? '#10b981' : '#f59e0b';
+            const checkIcon = isMatch ? '&check;' : '&bull;';
+
+            rowsHtml += `
+              <tr class="trace-attr-row" style="animation-delay: ${idx * 60}ms;">
+                <td><strong>${escapeHtml(row.attribute)}</strong></td>
+                <td><code style="font-family: var(--font-mono); font-size: 0.78125rem;">${escapeHtml(row.valA)}</code></td>
+                <td><code style="font-family: var(--font-mono); font-size: 0.78125rem;">${escapeHtml(row.valB)}</code></td>
+                <td>
+                  <span style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; font-size: 0.6875rem; font-weight: 800; background: ${badgeBg}; color: ${badgeColor}; border: 1px solid ${badgeBorder};">
+                    ${checkIcon} ${escapeHtml(row.status)}
+                  </span>
+                </td>
+              </tr>
+            `;
+          });
+          pairAttrTableBody.innerHTML = rowsHtml;
+        }
+
+        // Canonical Code & Mapping Summary
+        if (pairCanonicalCodeDisplay) {
+          pairCanonicalCodeDisplay.textContent = data.canonicalNummCode;
+        }
+        if (mapLabelA) mapLabelA.textContent = `${cA} (Local ERP):`;
+        if (mapLabelB) mapLabelB.textContent = `${cB} (Local ERP):`;
+        if (mapRawA) mapRawA.textContent = `"${recA}"`;
+        if (mapRawB) mapRawB.textContent = `"${recB}"`;
+
+        // Reset HITL gate bar
+        if (pairHitlGateBar) {
+          pairHitlGateBar.style.background = '#fefce8';
+          pairHitlGateBar.style.borderColor = '#fef08a';
+          pairHitlGateBar.innerHTML = `
+            <div>
+              <strong style="color: #854d0e; font-size: 0.875rem;">Human Review Checkpoint (HITL Governance):</strong>
+              <p style="color: #713f12; font-size: 0.78125rem; margin: 2px 0 0 0;">
+                Reviewer: <strong>${escapeHtml(currentOfficer.name)}</strong> (${escapeHtml(currentOfficer.role)}). Sign-off required to commit into National Master Catalog.
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-hqc-approve" id="btnApprovePairDemo" style="padding: 8px 16px;">&check; Approve &amp; Assign Common Code</button>
+              <button class="btn-hqc-reject" id="btnRejectPairDemo" style="padding: 8px 16px;">&times; Flag / Reject</button>
+            </div>
+          `;
+
+          // Re-attach approve/reject handlers
+          document.getElementById('btnApprovePairDemo')?.addEventListener('click', () => {
+            handlePairApproval(data);
+          });
+          document.getElementById('btnRejectPairDemo')?.addEventListener('click', () => {
+            showToast('Pair flagged for Engineering Material Review committee', 'alert', 3000);
+            pairHitlGateBar.innerHTML = `
+              <div style="color: #991b1b; font-weight: 700; font-size: 0.875rem;">
+                &times; Flagged for manual metallurgical testing by ${escapeHtml(currentOfficer.name)}. Record isolated from auto-convergence.
+              </div>
+            `;
+          });
+        }
+
+        if (pairResultsContainer) {
+          pairResultsContainer.style.display = 'flex';
+          pairResultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        showToast(`✓ AI Harmonization Complete: ${data.canonicalNummCode}`, 'success', 3000);
+
+      } catch (err) {
+        showToast('Harmonization error: ' + err.message, 'alert');
+      } finally {
+        btnRunPairPipeline.disabled = false;
+        btnRunPairPipeline.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>Execute End-to-End AI Harmonization Pipeline</span>
+        `;
+      }
+    });
+  }
+
+  async function handlePairApproval(data) {
+    if (!data) return;
+    try {
+      const res = await fetch('/api/hitl/action', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          queueId: "PAIR-DEMO-" + Math.floor(1000 + Math.random() * 9000),
+          action: "APPROVE",
+          notes: `Verified physical equivalence between ${data.recordA.cpse} and ${data.recordB.cpse}. Committing canonical mapping.`,
+          officer: `${currentOfficer.name} (${currentOfficer.role}, ${currentOfficer.cpse})`
+        })
+      });
+      const result = await res.json();
+
+      if (pairHitlGateBar) {
+        pairHitlGateBar.style.background = '#ecfdf5';
+        pairHitlGateBar.style.borderColor = '#6ee7b7';
+        pairHitlGateBar.innerHTML = `
+          <div style="color: #065f46; font-size: 0.875rem;">
+            <strong>&check; Harmonization Committed to National Catalog &amp; ERP Sync Table</strong>
+            <p style="margin: 2px 0 0 0; font-size: 0.78125rem;">
+              Audit Reference: <strong style="font-family: var(--font-mono);">${result.auditRef || 'VAL-2026-LIVE'}</strong> &bull; Signed by <strong>${escapeHtml(currentOfficer.name)}</strong> at ${new Date().toLocaleTimeString()} IST.
+            </p>
+          </div>
+          <span class="sec-badge-tag" style="background: #d1fae5; color: #065f46; border-color: #34d399;">100% Synchronized</span>
+        `;
+      }
+
+      showToast(`✓ Master Code Committed: ${data.canonicalNummCode} (Audit: ${result.auditRef || 'VAL-2026-LIVE'})`, 'success', 4000);
+      loadHitlQueue();
+      loadAnalytics();
+
+    } catch (err) {
+      showToast('Approval error: ' + err.message, 'alert');
+    }
+  }
+
+  // =========================================================================
   // 5. TAB 3: DYNAMIC HITL QUEUE & SKELETON LOADING
   // =========================================================================
   const dynamicHitlQueueList = document.getElementById('dynamicHitlQueueList');
@@ -712,7 +1007,7 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({
           queueId,
           action,
-          officer: "Er. S. Venkatraman (Chief Materials Officer, CPCL)"
+          officer: `${currentOfficer.name} (${currentOfficer.role}, ${currentOfficer.cpse})`
         })
       });
       const result = await res.json();

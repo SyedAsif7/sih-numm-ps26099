@@ -105,6 +105,13 @@
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </button>
 
+        <!-- Parichay CPSE Officer Auth Pill -->
+        <button id="btnOfficerAuth" class="btn-officer-auth" aria-label="CPSE Officer Authentication" title="Parichay Unified SSO Officer Session">
+          <span class="auth-dot auth-dot-active"></span>
+          <span class="auth-name" id="headerOfficerName">Er. K. Ramanathan (CPCL)</span>
+          <span class="auth-role-tag">SSO Verified</span>
+        </button>
+
         <!-- Live Workbench Header Button -->
         <a href="#workbench-section" class="btn-header-workbench">
           <span class="pulse-dot-sm"></span>
@@ -539,6 +546,126 @@
 
         <!-- TAB 2: AI INGESTION & NLP EXTRACTION WORKBENCH -->
         <div class="wb-tab-pane" id="tab-ai-extract">
+
+          <!-- 1. END-TO-END 2-RECORD LIVE HARMONIZATION SHOWCASE (CORE USER FLOW) -->
+          <div class="pair-harmonizer-box" id="pairHarmonizerBox">
+            <div class="pair-header-row">
+              <div>
+                <h4 class="pair-title-h4">⚡ End-to-End Live Material Harmonization Showcase</h4>
+                <p class="pair-title-sub">Select an actual industrial case study or enter two differently written CPSE specifications. The AI pipeline cleans data, normalizes attributes, explains the match, seeks human review, and maps to a unified common code.</p>
+              </div>
+              <span class="sec-badge-tag" style="background: #ecfdf5; color: #065f46; border-color: #a7f3d0;">Core Journey</span>
+            </div>
+
+            <!-- 5 Actual Industrial Category Presets -->
+            <div class="pair-preset-chips" id="pairPresetChips">
+              <button class="chip-preset-case active" data-case="pipes">Case 1: Pipes (ASTM A106 vs A53/B36.10M)</button>
+              <button class="chip-preset-case" data-case="valves">Case 2: Valves (API 600 vs ASME B16.34)</button>
+              <button class="chip-preset-case" data-case="bearings">Case 3: Bearings (SKF 6205-2RS vs 25x52x15)</button>
+              <button class="chip-preset-case" data-case="motors">Case 4: Motors (15kW IE3 vs 20HP B3)</button>
+              <button class="chip-preset-case" data-case="cables">Case 5: Cables (1.1kV 3.5Cx185 vs 1100V)</button>
+            </div>
+
+            <!-- Two Side-by-Side Entity Inputs -->
+            <div class="pair-inputs-grid">
+              <div class="pair-input-col">
+                <div class="pair-col-label">
+                  <span>CPSE Source Record A:</span>
+                  <select id="pairCpseA" class="pair-cpse-select">
+                    <option value="CPCL" selected>CPCL (Manali Refinery - SAP S/4HANA)</option>
+                    <option value="IOCL">IOCL (Panipat Complex - Oracle ERP)</option>
+                    <option value="ONGC">ONGC (Hazira Plant - SAP ECC)</option>
+                    <option value="GAIL">GAIL (Pata Complex - SAP S/4HANA)</option>
+                    <option value="HPCL">HPCL (Visakh Refinery - SAP S/4HANA)</option>
+                  </select>
+                </div>
+                <textarea id="pairInputA" class="pair-textarea" rows="3" placeholder="Enter raw material description for Entity A...">PIPE CS SMLS SCH 40 2 INCH ASTM A106 GR B</textarea>
+              </div>
+
+              <div class="pair-input-col">
+                <div class="pair-col-label">
+                  <span>CPSE Source Record B:</span>
+                  <select id="pairCpseB" class="pair-cpse-select">
+                    <option value="CPCL">CPCL (Manali Refinery - SAP S/4HANA)</option>
+                    <option value="IOCL" selected>IOCL (Panipat Complex - Oracle ERP)</option>
+                    <option value="ONGC">ONGC (Hazira Plant - SAP ECC)</option>
+                    <option value="GAIL">GAIL (Pata Complex - SAP S/4HANA)</option>
+                    <option value="HPCL">HPCL (Visakh Refinery - SAP S/4HANA)</option>
+                  </select>
+                </div>
+                <textarea id="pairInputB" class="pair-textarea" rows="3" placeholder="Enter raw material description for Entity B...">2" NB CS SEAMLESS PIPE SCH40 ASTM A53/A106B SMLS</textarea>
+              </div>
+            </div>
+
+            <button class="btn-run-pair-pipeline" id="btnRunPairPipeline">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Execute End-to-End AI Harmonization Pipeline</span>
+            </button>
+
+            <!-- Results Showcase Container (Hidden until executed) -->
+            <div class="pair-results-container" id="pairResultsContainer">
+
+              <!-- Step 1 & 2: Attribute Comparison & XAI Rationale -->
+              <div class="pair-xai-card" id="pairXaiCard">
+                <div class="pair-xai-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>Explainable AI (XAI) Engineering Rationale</span>
+                  <span class="chc-pill tag-live" id="pairMatchPctBadge">100% Match Confidence</span>
+                </div>
+                <p class="pair-xai-desc" id="pairXaiRationaleText">
+                  High-confidence physical equivalence: Dimension matches (DN50 / 2" NB per ASME B36.10M), metallurgy aligns (ASTM A106 Gr B dual-certified with A53 Gr B), and pressure class matches (SCH 40).
+                </p>
+              </div>
+
+              <!-- Side-by-Side Attribute Comparison Table -->
+              <table class="pair-attr-matrix-table" id="pairAttrTable">
+                <thead>
+                  <tr>
+                    <th style="width: 25%;">Standard Attribute</th>
+                    <th style="width: 32%;" id="thHeaderA">Record A (CPCL)</th>
+                    <th style="width: 32%;" id="thHeaderB">Record B (IOCL)</th>
+                    <th style="width: 11%;">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="pairAttrTableBody">
+                  <!-- Populated dynamically via JS -->
+                </tbody>
+              </table>
+
+              <!-- Step 3: Human-in-the-Loop Governance Action -->
+              <div class="pair-hitl-gate-bar" id="pairHitlGateBar">
+                <div>
+                  <strong style="color: #854d0e; font-size: 0.875rem;">Human Review Checkpoint (HITL Governance):</strong>
+                  <p style="color: #713f12; font-size: 0.78125rem; margin: 2px 0 0 0;" id="pairHitlReviewerNotice">Sign-off required before committing to National Catalog and ERP sync tables.</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn-hqc-approve" id="btnApprovePairDemo" style="padding: 8px 16px;">&check; Approve &amp; Assign Common Code</button>
+                  <button class="btn-hqc-reject" id="btnRejectPairDemo" style="padding: 8px 16px;">&times; Flag / Reject</button>
+                </div>
+              </div>
+
+              <!-- Step 4: Canonical Common Code & Bidirectional ERP Mapping -->
+              <div class="pair-mapping-summary" id="pairMappingSummary">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <strong style="color: var(--navy-900); font-size: 0.875rem;">Assigned National Unified Material Code (NUMM) &amp; ERP Sync Map:</strong>
+                  <span class="numm-code-display" id="pairCanonicalCodeDisplay" style="font-size: 0.875rem; padding: 4px 10px;">NUMM-PIP-CS106B-DN50-SCH40</span>
+                </div>
+                <div class="mapping-row">
+                  <span style="font-weight: 700; color: #0284c7;" id="mapLabelA">CPCL (SAP S/4HANA):</span>
+                  <span style="font-family: var(--font-mono); color: var(--text-secondary);" id="mapRawA">"PIPE CS SMLS SCH 40 2 INCH ASTM A106 GR B"</span>
+                  <span style="color: #059669; font-weight: 800;">&rarr; Mapped 100%</span>
+                </div>
+                <div class="mapping-row">
+                  <span style="font-weight: 700; color: #d97706;" id="mapLabelB">IOCL (Oracle ERP):</span>
+                  <span style="font-family: var(--font-mono); color: var(--text-secondary);" id="mapRawB">"2" NB CS SEAMLESS PIPE SCH40 ASTM A53/A106B"</span>
+                  <span style="color: #059669; font-weight: 800;">&rarr; Mapped 100%</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 2. BATCH & SINGLE SPECIFICATION WORKBENCH -->
           <div class="ai-workbench-grid">
             <div class="ai-input-card">
               <div class="card-head-compact">
@@ -831,6 +958,66 @@
                 <code class="es-code">M-77821</code>
                 <span class="es-desc">STAINLESS STEEL PIPE, 50mm, SCH40</span>
               </div>
+            </div>
+
+            <!-- Live REST API & Integration Reference Table -->
+            <div style="margin-top: 24px; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h4 style="font-size: 0.9375rem; font-weight: 800; color: var(--navy-900); margin: 0;">⚡ Enterprise Integration Endpoints (REST &amp; OData Bridge)</h4>
+                <span class="sec-badge-tag" style="background: #f0fdf4; color: #166534; border-color: #bbf7d0;">SAP S/4HANA &bull; Oracle &bull; Maximo Ready</span>
+              </div>
+              <p style="font-size: 0.8125rem; color: var(--text-secondary); margin: 0 0 16px 0;">
+                Participating central public sector enterprises connect existing ERP instances without altering internal material numbers. The NUMM Gateway delivers real-time catalog replication and audit sync:
+              </p>
+
+              <table class="pair-attr-matrix-table" style="font-size: 0.78125rem;">
+                <thead>
+                  <tr>
+                    <th style="width: 14%;">Method &bull; Path</th>
+                    <th style="width: 32%;">Interface Description</th>
+                    <th style="width: 34%;">ERP Target System &amp; Protocol</th>
+                    <th style="width: 20%;">Compliance Standard</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong style="color: #0284c7;">POST</strong> <code>/api/harmonize-pair</code></td>
+                    <td>Real-time NLP normalization, similarity scoring &amp; XAI rationale</td>
+                    <td>Bidirectional Middleware &bull; JSON REST</td>
+                    <td>ISO 8000-110 Master Data</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: #0284c7;">POST</strong> <code>/api/extract</code></td>
+                    <td>Extracts metallurgy, schedule, dimensions from raw text</td>
+                    <td>SAP BAPI / RFC Wrapper &bull; OData v4</td>
+                    <td>ASME B36.10M / ASTM A106</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: #059669;">GET</strong> <code>/api/search?q=...</code></td>
+                    <td>Cross-enterprise inventory lookup &amp; duplicate clustering</td>
+                    <td>Procurement Portal / GeM Integration</td>
+                    <td>GFR 2017 &bull; CVC Guidelines</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: #0284c7;">POST</strong> <code>/api/hitl/action</code></td>
+                    <td>Chief Materials Officer approval with immutable audit ref</td>
+                    <td>SAP Workflow / Parichay SSO Gateway</td>
+                    <td>Immutable PSU Audit Trail</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: #059669;">GET</strong> <code>/api/export/csv</code></td>
+                    <td>Full synchronized material master file download</td>
+                    <td>SAP S/4HANA IDoc (MATMAS05 segment)</td>
+                    <td>Standard CSV / Flat File</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: #059669;">GET</strong> <code>/api/export/json</code></td>
+                    <td>Hierarchical schema with CPSE legacy code cross-walk</td>
+                    <td>Oracle Cloud ERP FBDI / REST Ingestion</td>
+                    <td>JSON Schema Draft 7</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -1299,6 +1486,62 @@
 
     </div>
   </footer>
+
+  <!-- Parichay CPSE Officer Single Sign-On (SSO) Modal -->
+  <div class="modal-backdrop" id="modalOfficerAuthBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalOfficerTitle">
+    <div class="gov-auth-modal">
+      <div class="gov-modal-header">
+        <div class="gov-modal-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div>
+            <h3 id="modalOfficerTitle">Parichay Unified SSO &bull; Officer Authentication</h3>
+            <p>Ministry of Petroleum &amp; Natural Gas &bull; Master Data Governance Access</p>
+          </div>
+        </div>
+        <button class="btn-close-modal" id="btnCloseOfficerModal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="gov-modal-body">
+        <p style="font-size: 0.8125rem; color: #475569; margin: 0;">
+          Select an authorized PSU Materials Officer persona to simulate human-in-the-loop audit sign-offs across participating CPSEs:
+        </p>
+
+        <div class="persona-selector-list" id="personaSelectorList">
+          <div class="persona-card selected" data-name="Er. K. Ramanathan" data-cpse="CPCL" data-role="Chief Materials Manager (Refinery)">
+            <div class="persona-info">
+              <span class="persona-name">Er. K. Ramanathan</span>
+              <span class="persona-role">Chief Materials Manager &bull; CPCL Manali Refinery</span>
+            </div>
+            <span class="persona-badge">CPCL Active</span>
+          </div>
+
+          <div class="persona-card" data-name="Smt. P. Sharma" data-cpse="IOCL" data-role="DGM Procurement &amp; Contracts">
+            <div class="persona-info">
+              <span class="persona-name">Smt. P. Sharma</span>
+              <span class="persona-role">DGM Procurement &amp; Contracts &bull; IOCL Corporate</span>
+            </div>
+            <span class="persona-badge">IOCL Active</span>
+          </div>
+
+          <div class="persona-card" data-name="Er. V. Deshmukh" data-cpse="ONGC" data-role="Superintending Materials Officer">
+            <div class="persona-info">
+              <span class="persona-name">Er. V. Deshmukh</span>
+              <span class="persona-role">Superintending Materials Officer &bull; ONGC Offshore Asset</span>
+            </div>
+            <span class="persona-badge">ONGC Active</span>
+          </div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 10px 12px; font-size: 0.75rem; color: #64748b;">
+          <strong>Auditable Governance Policy:</strong> Every approval or rejection in the Human-in-the-Loop Queue generates a tamper-evident cryptographic reference stamped with the active officer credentials.
+        </div>
+      </div>
+
+      <div class="gov-modal-footer">
+        <button class="btn-gov-confirm" id="btnConfirmOfficerSelect">Authorize &amp; Continue Session</button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

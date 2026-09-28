@@ -337,6 +337,162 @@ export const INITIAL_MATERIALS = [
     unitCostINR: 7600,
     status: "Harmonized",
     auditRef: "VAL-2024-112"
+  },
+
+  // --- Cluster 6: Rotary Equipment Bearings (Deep Groove 6205-2RS) ---
+  {
+    id: "MAT-HPCL-BRG-205",
+    cpse: "HPCL",
+    cpseFullName: "Hindustan Petroleum Corporation Limited",
+    plant: "Visakh Refinery, Visakhapatnam",
+    erpSystem: "SAP S/4HANA",
+    legacyCode: "HP-BRG-6205-2RS",
+    rawDescription: "DEEP GROOVE BALL BEARING 6205-2RS1 SKF 25X52X15MM C3",
+    category: "Bearings",
+    extractedAttributes: {
+      dimension: { nominal: "ID25-OD52-W15", metric: "25x52x15 mm", imperial: '0.98x2.05x0.59"' },
+      metallurgy: "High Carbon Chromium Steel (100Cr6 / SAE 52100)",
+      pressureClass: "Rubber Contact Sealed (2RS1)",
+      construction: "Single Row Deep Groove, C3 Internal Clearance",
+      endConnection: "Radial Cylindrical Bore",
+      standard: "ISO 15 / DIN 625-1",
+      uom: "NOS"
+    },
+    nummCode: "NUMM-BRG-DGBB-ID25-OD52-W15-2RS",
+    clusterId: "CLUST-BRG-006",
+    stockQuantity: 180,
+    unitCostINR: 520,
+    status: "Harmonized",
+    auditRef: "VAL-2024-128"
+  },
+  {
+    id: "MAT-CPCL-BRG-118",
+    cpse: "CPCL",
+    cpseFullName: "Chennai Petroleum Corporation Limited",
+    plant: "Manali Refinery, Chennai",
+    erpSystem: "SAP S/4HANA",
+    legacyCode: "CP-BRG-6205-DDU",
+    rawDescription: "BEARING RADIAL BALL 25MM BORE 52MM OD RUBBER SEALED 6205",
+    category: "Bearings",
+    extractedAttributes: {
+      dimension: { nominal: "ID25-OD52-W15", metric: "25x52x15 mm", imperial: '0.98x2.05x0.59"' },
+      metallurgy: "SAE 52100 Bearing Steel",
+      pressureClass: "Dual Rubber Sealed (DDU / 2RS)",
+      construction: "Single Row Deep Groove",
+      endConnection: "25mm Shaft Bore",
+      standard: "ISO 15 / JIS B 1521",
+      uom: "NOS"
+    },
+    nummCode: "NUMM-BRG-DGBB-ID25-OD52-W15-2RS",
+    clusterId: "CLUST-BRG-006",
+    stockQuantity: 240,
+    unitCostINR: 495,
+    status: "Harmonized",
+    auditRef: "VAL-2024-128"
+  },
+
+  // --- Cluster 7: Industrial Electric Motors (15 kW 415V 4-Pole) ---
+  {
+    id: "MAT-IOCL-MOT-415",
+    cpse: "IOCL",
+    cpseFullName: "Indian Oil Corporation Limited",
+    plant: "Koyali Refinery, Gujarat",
+    erpSystem: "Oracle ERP Cloud",
+    legacyCode: "IOC-MOT-15KW-4P",
+    rawDescription: "3 PHASE INDUCTION MOTOR 15KW 415V 1450RPM 4 POLE FOOT MTD IE3",
+    category: "Motors & Drives",
+    extractedAttributes: {
+      dimension: { nominal: "15KW-4P", metric: "15 kW (1450 RPM)", imperial: "20 HP" },
+      metallurgy: "Cast Iron Frame / Electrolytic Copper Windings",
+      pressureClass: "415V / 50Hz / 3-Phase",
+      construction: "Foot Mounted (B3), TEFC Enclosure, IE3 Premium",
+      endConnection: "Shaft Dia 42mm",
+      standard: "IS 12615 / IEC 60034-30",
+      uom: "NOS"
+    },
+    nummCode: "NUMM-MOT-SQCG-15KW-415V-4P-B3",
+    clusterId: "CLUST-MOT-007",
+    stockQuantity: 14,
+    unitCostINR: 58000,
+    status: "Harmonized",
+    auditRef: "VAL-2024-142"
+  },
+  {
+    id: "MAT-CPCL-MOT-889",
+    cpse: "CPCL",
+    cpseFullName: "Chennai Petroleum Corporation Limited",
+    plant: "Manali Refinery, Chennai",
+    erpSystem: "SAP S/4HANA",
+    legacyCode: "CP-MOT-20HP-B3",
+    rawDescription: "15 KW SQUIRREL CAGE INDUCTION MOTOR 415V 1500 RPM B3 FRAME TEFC",
+    category: "Motors & Drives",
+    extractedAttributes: {
+      dimension: { nominal: "15KW-4P", metric: "15 kW (1500 Synchronous RPM)", imperial: "20 HP" },
+      metallurgy: "Cast Iron Stator / Copper Rotors",
+      pressureClass: "415V / 50 Hz",
+      construction: "Squirrel Cage Induction, B3 Foot Mounted",
+      endConnection: "Direct Coupled 42mm Shaft",
+      standard: "IS 325 / IEC 60034",
+      uom: "NOS"
+    },
+    nummCode: "NUMM-MOT-SQCG-15KW-415V-4P-B3",
+    clusterId: "CLUST-MOT-007",
+    stockQuantity: 9,
+    unitCostINR: 59500,
+    status: "Harmonized",
+    auditRef: "VAL-2024-142"
+  },
+
+  // --- Cluster 8: Industrial Armoured Power Cables (1.1kV 3.5C x 185 sq mm) ---
+  {
+    id: "MAT-ONGC-CBL-185",
+    cpse: "ONGC",
+    cpseFullName: "Oil and Natural Gas Corporation",
+    plant: "Hazira Gas Processing Plant",
+    erpSystem: "In-House ERP / SAP ECC",
+    legacyCode: "ON-CBL-3.5C-185",
+    rawDescription: "XLPE POWER CABLE 3.5C X 185 SQ MM AL ARMOURED 1.1KV IS 7098",
+    category: "Cables & Electrical",
+    extractedAttributes: {
+      dimension: { nominal: "3.5Cx185", metric: "3.5 Core x 185 sq mm", imperial: "350 kcmil equiv" },
+      metallurgy: "Stranded Compacted Aluminium Conductor / Galvanized Steel Strip Armoured",
+      pressureClass: "1.1 kV (1100V Grade)",
+      construction: "Cross-Linked Polyethylene (XLPE) Insulated, PVC Outer Sheathed",
+      endConnection: "Lug Terminal Connection",
+      standard: "IS 7098 (Part 1) / IEC 60502",
+      uom: "MTR"
+    },
+    nummCode: "NUMM-CBL-XLPE-AL-3.5CX185-1.1KV",
+    clusterId: "CLUST-CBL-008",
+    stockQuantity: 1450,
+    unitCostINR: 1120,
+    status: "Harmonized",
+    auditRef: "VAL-2024-165"
+  },
+  {
+    id: "MAT-GAIL-CBL-702",
+    cpse: "GAIL",
+    cpseFullName: "GAIL (India) Limited",
+    plant: "Vijaipur Compressor Station",
+    erpSystem: "SAP S/4HANA",
+    legacyCode: "GL-CBL-185-1100",
+    rawDescription: "1100V 3.5 CORE 185SQMM ALUMINIUM CONDUCTOR ARMORED CABLE",
+    category: "Cables & Electrical",
+    extractedAttributes: {
+      dimension: { nominal: "3.5Cx185", metric: "185 sq mm x 3.5 Core", imperial: "350 kcmil equiv" },
+      metallurgy: "Grade H4 Aluminium Conductors / Strip Armoured",
+      pressureClass: "1100 V Grade",
+      construction: "XLPE Insulated Heavy Duty Power Cable",
+      endConnection: "Cable Gland Compression",
+      standard: "IS 7098 / IS 8130",
+      uom: "MTR"
+    },
+    nummCode: "NUMM-CBL-XLPE-AL-3.5CX185-1.1KV",
+    clusterId: "CLUST-CBL-008",
+    stockQuantity: 920,
+    unitCostINR: 1090,
+    status: "Harmonized",
+    auditRef: "VAL-2024-165"
   }
 ];
 
@@ -456,6 +612,35 @@ export const INITIAL_HITL_QUEUE = [
       metallurgy: { itemA: "ASTM A53 Grade B", itemB: "ASTM A106 Grade B", match: "NEAR-MATCH (Dual Certified Check Required)", score: 0.72 },
       schedule: { itemA: "SCH 40", itemB: "SCH 40", match: "EXACT MATCH", score: 1.0 },
       construction: { itemA: "Seamless", itemB: "Seamless", match: "EXACT MATCH", score: 1.0 }
+    }
+  },
+  {
+    queueId: "HITL-REQ-2024-1002",
+    candidatePair: {
+      itemA: {
+        cpse: "HPCL (Refining)",
+        legacyCode: "HP-BRG-6205-2RS",
+        erp: "SAP S/4HANA",
+        description: "DEEP GROOVE BALL BEARING 6205-2RS1 SKF 25X52X15MM C3",
+        plant: "Visakh Refinery"
+      },
+      itemB: {
+        cpse: "CPCL (Refining)",
+        legacyCode: "CP-BRG-6205-DDU",
+        erp: "SAP S/4HANA",
+        description: "BEARING RADIAL BALL 25MM BORE 52MM OD RUBBER SEALED 6205",
+        plant: "Manali Refinery"
+      }
+    },
+    proposedNummCode: "NUMM-BRG-DGBB-ID25-OD52-W15-2RS",
+    confidenceScore: 0.948,
+    status: "PENDING",
+    aiRationale: "Geometric dimensional match: Bore 25mm, OD 52mm, Width 15mm. Both specify synthetic rubber contact seals (2RS1 == DDU). Standard ISO 15 / DIN 625-1 interchangeability verified.",
+    attributeComparison: {
+      dimension: { itemA: "25x52x15mm", itemB: "25x52x15mm (Bore 25/OD 52)", match: "EXACT MATCH", score: 1.0 },
+      metallurgy: { itemA: "SAE 52100 / 100Cr6", itemB: "Bearing Steel SAE 52100", match: "EXACT MATCH", score: 1.0 },
+      schedule: { itemA: "Rubber Seal 2RS1", itemB: "Rubber Sealed DDU", match: "EQUIVALENT SEAL", score: 0.92 },
+      construction: { itemA: "Single Row Ball", itemB: "Radial Ball", match: "EXACT MATCH", score: 1.0 }
     }
   }
 ];

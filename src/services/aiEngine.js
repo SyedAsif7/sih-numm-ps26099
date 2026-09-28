@@ -55,6 +55,24 @@ const METALLURGY_RULES = [
     standardCode: "A53B",
     label: "Carbon Steel Standard Pipe (ASTM A53 Gr B)",
     regex: /\b(a53[\s-]*b|astm\s*a53)\b/i
+  },
+  {
+    family: "CHROME-STL",
+    standardCode: "100CR6",
+    label: "High-Carbon Chromium Bearing Steel (SAE 52100 / 100Cr6)",
+    regex: /\b(bearing\s*steel|100cr6|sae\s*52100|chrome\s*steel|6205|6308)\b/i
+  },
+  {
+    family: "CI-FRAME",
+    standardCode: "CI-FC200",
+    label: "Cast Iron Frame / Copper Windings (IE3 Efficiency)",
+    regex: /\b(cast\s*iron\s*frame|squirrel\s*cage|induction\s*motor|tefc|flameproof|b3\s*frame)\b/i
+  },
+  {
+    family: "AL-XLPE",
+    standardCode: "AL-XLPE",
+    label: "Aluminium Conductor / XLPE Insulated (IS 7098)",
+    regex: /\b(al\s*armoured|aluminium|xlpe|cu\s*armoured|copper\s*conductor)\b/i
   }
 ];
 
@@ -66,7 +84,10 @@ const PRESSURE_RULES = [
   { key: "CL150", label: "Class 150", regex: /\b(150#|class\s*150|150\s*lbs|cl[\s.]*150|pn\s*20)\b/i },
   { key: "CL300", label: "Class 300", regex: /\b(300#|class\s*300|300\s*lbs|cl[\s.]*300|pn\s*50)\b/i },
   { key: "CL600", label: "Class 600", regex: /\b(600#|class\s*600|600\s*lbs|cl[\s.]*600|pn\s*100)\b/i },
-  { key: "CL800", label: "Class 800", regex: /\b(800#|class\s*800|800\s*lbs)\b/i }
+  { key: "CL800", label: "Class 800", regex: /\b(800#|class\s*800|800\s*lbs)\b/i },
+  { key: "2RS", label: "Rubber Contact Sealed (2RS / DDU)", regex: /\b(2rs|2rs1|ddu|rubber\s*seal|sealed)\b/i },
+  { key: "415V", label: "415V / 50Hz / 3-Phase", regex: /\b(415\s*v|415\s*volt|415v)\b/i },
+  { key: "1.1KV", label: "1.1 kV (1100V Grade)", regex: /\b(1\.1\s*kv|1100\s*v|1100v|3\.3\s*kv)\b/i }
 ];
 
 // Component Type & Category dictionary
@@ -78,7 +99,10 @@ const COMPONENT_RULES = [
   { category: "Valves", code: "VLV", subType: "Check Valve", regex: /\b(check\s*valve|nrvalve|nrv)\b/i },
   { category: "Flanges", code: "FLG", subType: "Weld Neck Flange", regex: /\b(flange|wnrf|sorf|welding\s*neck)\b/i },
   { category: "Gaskets & Seals", code: "GSK", subType: "Spiral Wound Gasket", regex: /\b(gasket|spiral\s*wound|spw)\b/i },
-  { category: "Pumps & Seals", code: "PMP", subType: "Mechanical Seal", regex: /\b(mech\s*seal|mechanical\s*seal|cartridge\s*seal)\b/i }
+  { category: "Pumps & Seals", code: "PMP", subType: "Mechanical Seal", regex: /\b(mech\s*seal|mechanical\s*seal|cartridge\s*seal)\b/i },
+  { category: "Bearings", code: "BRG", subType: "Deep Groove Ball Bearing", regex: /\b(bearing|brg|ball\s*bearing|deep\s*groove|roller\s*bearing|6205|6308)\b/i },
+  { category: "Motors & Drives", code: "MOT", subType: "3-Phase Induction Motor", regex: /\b(motor|induction\s*motor|squirrel\s*cage|flameproof\s*motor)\b/i },
+  { category: "Cables & Electrical", code: "CBL", subType: "Armoured Power Cable", regex: /\b(cable|cbl|power\s*cable|control\s*cable|xlpe)\b/i }
 ];
 
 /**
@@ -89,16 +113,39 @@ export function extractAttributes(rawText = "") {
 
   // 1. Dimension Extraction
   let dimension = null;
-  for (const item of DIMENSION_MAP) {
-    if (item.regex.test(text)) {
-      dimension = {
-        nominal: item.dn,
-        imperial: item.imperial,
-        metric: item.metric
-      };
-      break;
+
+  // 1A. Rotary Equipment / Bearing Dimension
+  if (/\b(6205|25x52x15|25\s*mm\s*bore)\b/i.test(text)) {
+    dimension = { nominal: "ID25-OD52-W15", metric: "25x52x15 mm", imperial: '0.98x2.05x0.59"' };
+  } else if (/\b(6308|40x90x23)\b/i.test(text)) {
+    dimension = { nominal: "ID40-OD90-W23", metric: "40x90x23 mm", imperial: '1.57x3.54x0.91"' };
+  }
+  // 1B. Electric Motor Rating
+  else if (/\b(15\s*kw|20\s*hp)\b/i.test(text)) {
+    dimension = { nominal: "15KW-4P", metric: "15 kW (1450-1500 RPM)", imperial: "20 HP" };
+  } else if (/\b(45\s*kw|60\s*hp)\b/i.test(text)) {
+    dimension = { nominal: "45KW-4P", metric: "45 kW (1480 RPM)", imperial: "60 HP" };
+  }
+  // 1C. Industrial Power Cable Cross-Section
+  else if (/\b(3\.5\s*c(?:ore)?\s*x?\s*185|185\s*sq\s*mm)\b/i.test(text)) {
+    dimension = { nominal: "3.5Cx185", metric: "3.5C x 185 sq mm", imperial: "350 kcmil equiv" };
+  } else if (/\b(4\s*c(?:ore)?\s*x?\s*16|16\s*sq\s*mm)\b/i.test(text)) {
+    dimension = { nominal: "4Cx16", metric: "4C x 16 sq mm", imperial: "6 AWG equiv" };
+  }
+  // 1D. Standard Piping, Flange, Valve & Gasket Dimensions
+  else {
+    for (const item of DIMENSION_MAP) {
+      if (item.regex.test(text)) {
+        dimension = {
+          nominal: item.dn,
+          imperial: item.imperial,
+          metric: item.metric
+        };
+        break;
+      }
     }
   }
+
   if (!dimension) {
     // Fallback extraction
     const match = text.match(/\b(\d+(\.\d+)?)\s*(?:mm|inch|"|in\b)/i);
@@ -256,6 +303,38 @@ export function calculateMatchConfidence(itemA, itemB) {
     rationale = `Disparate industrial components: Significant variation detected in nominal dimensions or base metallurgy. Distinct master records recommended.`;
   }
 
+  // Explainable AI (XAI) attribute comparison breakdown
+  const explainableBreakdown = [
+    {
+      attribute: "Component Category",
+      valA: catA || "Standard Industrial Asset",
+      valB: catB || "Standard Industrial Asset",
+      score: categoryScore,
+      status: categoryScore >= 0.9 ? "EXACT MATCH" : (categoryScore >= 0.7 ? "COMPATIBLE CLASS" : "MISMATCH")
+    },
+    {
+      attribute: "Dimensional Normalization",
+      valA: `${attrA.dimension?.nominal || 'N/A'} (${attrA.dimension?.metric || ''})`,
+      valB: `${attrB.dimension?.nominal || 'N/A'} (${attrB.dimension?.metric || ''})`,
+      score: dimensionScore,
+      status: dimensionScore >= 0.9 ? "EXACT MATCH" : (dimensionScore >= 0.7 ? "COMPATIBLE" : "DIMENSIONAL VARIATION")
+    },
+    {
+      attribute: "Metallurgical Equivalence",
+      valA: attrA.metallurgy?.label || metCodeA || "Standard",
+      valB: attrB.metallurgy?.label || metCodeB || "Standard",
+      score: metallurgyScore,
+      status: metallurgyScore >= 0.9 ? "EXACT MATCH" : (metallurgyScore >= 0.7 ? "DUAL-CERTIFIED EQUIVALENT" : "DIFFERENT ALLOY")
+    },
+    {
+      attribute: "Pressure / Rating Class",
+      valA: presA || attrA.pressure?.label || "Standard Class",
+      valB: presB || attrB.pressure?.label || "Standard Class",
+      score: pressureScore,
+      status: pressureScore >= 0.9 ? "EXACT MATCH" : "FUNCTIONALLY COMPATIBLE"
+    }
+  ];
+
   return {
     confidence: Math.round(confidence * 1000) / 1000,
     percentage: `${Math.round(confidence * 100)}%`,
@@ -264,6 +343,8 @@ export function calculateMatchConfidence(itemA, itemB) {
     categoryScore,
     pressureScore,
     rationale,
+    explainableBreakdown,
+    proposedNummCode: attrA.nummCode || attrB.nummCode,
     isEquivalent: confidence >= 0.85
   };
 }
