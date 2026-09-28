@@ -25,6 +25,16 @@ app.get(['/hitl-demo', '/demo', '/video'], (req, res) => {
   res.sendFile(path.join(__dirname, 'hitl-demo.html'));
 });
 
+// Competition Dossier PDF Download & Web View
+app.get(['/download/dossier-pdf', '/api/export/dossier-pdf', '/dossier.pdf'], (req, res) => {
+  const pdfPath = path.join(__dirname, 'SIH_2026_COMPETITION_DOSSIER.pdf');
+  res.download(pdfPath, 'SIH_2026_COMPETITION_DOSSIER_PS26099.pdf');
+});
+
+app.get(['/dossier', '/dossier.html'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'dossier_print.html'));
+});
+
 // ==========================================
 // REST API ENDPOINTS
 // ==========================================
