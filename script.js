@@ -55,13 +55,16 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('High-Contrast Dark Mode Activated', 'info', 2000);
       }
     });
+  }
+
   // =========================================================================
-  // 0C. PARICHAY UNIFIED SSO OFFICER AUTHENTICATION SYSTEM
+  // 0C. PARICHAY UNIFIED SSO OFFICER AUTHENTICATION SYSTEM & RBAC
   // =========================================================================
   let currentOfficer = {
     name: "Er. K. Ramanathan",
     cpse: "CPCL",
-    role: "Chief Materials Manager (Refinery)"
+    role: "Reviewer / Approver",
+    designation: "Chief Materials Manager • CPCL Manali Refinery"
   };
 
   const btnOfficerAuth = document.getElementById('btnOfficerAuth');
@@ -69,7 +72,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCloseOfficerModal = document.getElementById('btnCloseOfficerModal');
   const btnConfirmOfficerSelect = document.getElementById('btnConfirmOfficerSelect');
   const headerOfficerName = document.getElementById('headerOfficerName');
+  const headerOfficerRole = document.getElementById('headerOfficerRole');
   const personaSelectorList = document.getElementById('personaSelectorList');
+
+  // RBAC Permission Check Utility
+  function checkOfficerPermission(actionType = 'APPROVE') {
+    if (actionType === 'APPROVE') {
+      if (currentOfficer.role === 'Material Officer') {
+        showToast(`Role Restricted: ${currentOfficer.name} holds 'Material Officer' credentials. Final master data commit requires 'Reviewer / Approver' or 'Platform Admin' sign-off. Switch persona in header.`, 'alert', 4500);
+        return false;
+      }
+    }
+    return true;
+  }
 
   if (btnOfficerAuth && modalOfficerAuthBackdrop) {
     btnOfficerAuth.addEventListener('click', () => {
@@ -107,12 +122,16 @@ document.addEventListener('DOMContentLoaded', () => {
         currentOfficer = {
           name: selected.getAttribute('data-name'),
           cpse: selected.getAttribute('data-cpse'),
-          role: selected.getAttribute('data-role')
+          role: selected.getAttribute('data-role') || "Reviewer / Approver",
+          designation: selected.getAttribute('data-designation') || selected.getAttribute('data-role')
         };
         if (headerOfficerName) {
           headerOfficerName.textContent = `${currentOfficer.name} (${currentOfficer.cpse})`;
         }
-        showToast(`SSO Session Switched: ${currentOfficer.name} [${currentOfficer.cpse}]`, 'success', 2500);
+        if (headerOfficerRole) {
+          headerOfficerRole.textContent = currentOfficer.role;
+        }
+        showToast(`SSO Session Switched: ${currentOfficer.name} [${currentOfficer.role}]`, 'success', 2500);
       }
       modalOfficerAuthBackdrop.classList.remove('active');
     });
@@ -642,17 +661,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4B. END-TO-END 2-RECORD LIVE HARMONIZATION SHOWCASE
   // =========================================================================
   const pairPresetCases = {
+    valves: {
+      cpseA: "CPCL",
+      recordA: 'SS BALL VLV 2" 150#',
+      cpseB: "IOCL",
+      recordB: 'Ball Valve, Stainless Steel, DN50, Class 150'
+    },
     pipes: {
       cpseA: "CPCL",
       recordA: "PIPE CS SMLS SCH 40 2 INCH ASTM A106 GR B",
       cpseB: "IOCL",
       recordB: '2" NB CS SEAMLESS PIPE SCH40 ASTM A53/A106B SMLS'
-    },
-    valves: {
-      cpseA: "CPCL",
-      recordA: "BALL VALVE 2 IN 300# FLANGED RF CF8M API 600",
-      cpseB: "ONGC",
-      recordB: "50MM NB SS316 BALL VALVE CL300 ASME B16.34 FLG BODY CF8M"
     },
     bearings: {
       cpseA: "HPCL",
@@ -806,12 +825,21 @@ document.addEventListener('DOMContentLoaded', () => {
             handlePairApproval(data);
           });
           document.getElementById('btnRejectPairDemo')?.addEventListener('click', () => {
-            showToast('Pair flagged for Engineering Material Review committee', 'alert', 3000);
-            pairHitlGateBar.innerHTML = `
-              <div style="color: #991b1b; font-weight: 700; font-size: 0.875rem;">
-                &times; Flagged for manual metallurgical testing by ${escapeHtml(currentOfficer.name)}. Record isolated from auto-convergence.
-              </div>
-            `;
+            openRejectModal("PAIR-DEMO-VALVE", (reason) => {
+              if (pairHitlGateBar) {
+                pairHitlGateBar.style.background = '#fff1f2';
+                pairHitlGateBar.style.borderColor = '#fecdd3';
+                pairHitlGateBar.innerHTML = `
+                  <div style="color: #9f1239; font-size: 0.875rem;">
+                    <strong>&times; Candidate Pair Flagged for Engineering Review</strong>
+                    <p style="margin: 2px 0 0 0; font-size: 0.78125rem;">
+                      Reason: <em>"${escapeHtml(reason)}"</em> &bull; Flagged by <strong>${escapeHtml(currentOfficer.name)}</strong> (${escapeHtml(currentOfficer.role)}).
+                    </p>
+                  </div>
+                  <span class="sec-badge-tag" style="background: #ffe4e6; color: #9f1239; border-color: #fda4af;">Flagged for Review</span>
+                `;
+              }
+            });
           });
         }
 
@@ -836,6 +864,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function handlePairApproval(data) {
     if (!data) return;
+    if (!checkOfficerPermission('APPROVE')) return;
+
     try {
       const res = await fetch('/api/hitl/action', {
         method: 'POST',
@@ -843,7 +873,7 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({
           queueId: "PAIR-DEMO-" + Math.floor(1000 + Math.random() * 9000),
           action: "APPROVE",
-          notes: `Verified physical equivalence between ${data.recordA.cpse} and ${data.recordB.cpse}. Committing canonical mapping.`,
+          notes: `Verified physical equivalence between ${data.recordA.cpse} and ${data.recordB.cpse}. Assigned ${data.canonicalNummCode}.`,
           officer: `${currentOfficer.name} (${currentOfficer.role}, ${currentOfficer.cpse})`
         })
       });
@@ -863,7 +893,34 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
       }
 
-      showToast(`✓ Master Code Committed: ${data.canonicalNummCode} (Audit: ${result.auditRef || 'VAL-2026-LIVE'})`, 'success', 4000);
+      // Visual decrement on potential duplicates KPI counter
+      const heroDuplicates = document.getElementById('heroStatDuplicates');
+      const dashDuplicates = document.getElementById('dashStatDuplicates');
+      const heroSavings = document.getElementById('heroStatSavings');
+      const calcWorkingCapital = document.getElementById('calcWorkingCapital');
+
+      if (heroDuplicates) {
+        const cur = parseInt(heroDuplicates.textContent.replace(/[^0-9]/g, '')) || 9342;
+        heroDuplicates.textContent = (cur - 1).toLocaleString();
+        heroDuplicates.classList.add('kpi-pulse-updated');
+        setTimeout(() => heroDuplicates.classList.remove('kpi-pulse-updated'), 1400);
+      }
+      if (dashDuplicates) {
+        const cur = parseInt(dashDuplicates.textContent.replace(/[^0-9]/g, '')) || 9342;
+        dashDuplicates.textContent = (cur - 1).toLocaleString();
+        dashDuplicates.classList.add('kpi-pulse-updated');
+        setTimeout(() => dashDuplicates.classList.remove('kpi-pulse-updated'), 1400);
+      }
+      if (heroSavings) {
+        heroSavings.textContent = '₹97.24 Cr';
+        heroSavings.classList.add('kpi-pulse-updated');
+        setTimeout(() => heroSavings.classList.remove('kpi-pulse-updated'), 1400);
+      }
+      if (calcWorkingCapital) {
+        calcWorkingCapital.textContent = '₹ 97.24 Cr';
+      }
+
+      showToast(`✓ Master Code Committed: ${data.canonicalNummCode}. Duplicate reduced (9,342 → 9,341). ₹85 Lakhs capital unlocked!`, 'success', 4000);
       loadHitlQueue();
       loadAnalytics();
 
@@ -961,7 +1018,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dynamicHitlQueueList.querySelectorAll('.btn-hqc-reject').forEach(btn => {
         btn.addEventListener('click', () => {
           const qid = btn.getAttribute('data-qid');
-          processHitlDecision(qid, 'REJECT');
+          openRejectModal(qid);
         });
       });
 
@@ -999,7 +1056,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  async function processHitlDecision(queueId, action) {
+  // Rejection & Flagging Modal Controller
+  let pendingRejectItem = null;
+
+  const modalRejectFeedbackBackdrop = document.getElementById('modalRejectFeedbackBackdrop');
+  const btnCloseRejectModal = document.getElementById('btnCloseRejectModal');
+  const btnConfirmRejectAction = document.getElementById('btnConfirmRejectAction');
+  const rejectCustomNotes = document.getElementById('rejectCustomNotes');
+
+  function openRejectModal(queueId, callback) {
+    pendingRejectItem = { queueId, callback };
+    if (modalRejectFeedbackBackdrop) {
+      modalRejectFeedbackBackdrop.style.display = 'flex';
+      modalRejectFeedbackBackdrop.classList.add('active');
+    }
+  }
+
+  function closeRejectModal() {
+    pendingRejectItem = null;
+    if (modalRejectFeedbackBackdrop) {
+      modalRejectFeedbackBackdrop.style.display = 'none';
+      modalRejectFeedbackBackdrop.classList.remove('active');
+    }
+    if (rejectCustomNotes) rejectCustomNotes.value = '';
+  }
+
+  if (btnCloseRejectModal) {
+    btnCloseRejectModal.addEventListener('click', closeRejectModal);
+  }
+  if (modalRejectFeedbackBackdrop) {
+    modalRejectFeedbackBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalRejectFeedbackBackdrop) closeRejectModal();
+    });
+  }
+
+  if (btnConfirmRejectAction) {
+    btnConfirmRejectAction.addEventListener('click', async () => {
+      if (!pendingRejectItem) return;
+      const selectedRadio = document.querySelector('input[name="rejectReason"]:checked');
+      let reasonText = selectedRadio ? selectedRadio.value : "Operational parameter mismatch";
+      const customNotes = rejectCustomNotes ? rejectCustomNotes.value.trim() : "";
+      if (customNotes) {
+        reasonText = reasonText === "CUSTOM" ? customNotes : `${reasonText} [Note: ${customNotes}]`;
+      }
+
+      const { queueId, callback } = pendingRejectItem;
+      closeRejectModal();
+
+      await processHitlDecision(queueId, 'REJECT', reasonText);
+      if (callback) callback(reasonText);
+    });
+  }
+
+  async function processHitlDecision(queueId, action, notes = '') {
+    if (action === 'APPROVE' && !checkOfficerPermission('APPROVE')) return;
+
     try {
       const res = await fetch('/api/hitl/action', {
         method: 'POST',
@@ -1007,6 +1118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({
           queueId,
           action,
+          notes,
           officer: `${currentOfficer.name} (${currentOfficer.role}, ${currentOfficer.cpse})`
         })
       });
@@ -1015,8 +1127,35 @@ document.addEventListener('DOMContentLoaded', () => {
       if (result.success) {
         if (action === 'APPROVE') {
           showToast(`✓ Approved: ${result.auditRef} committed to Unified Catalog`, 'success', 3000);
+
+          // Decrement duplicate counter smoothly
+          const heroDuplicates = document.getElementById('heroStatDuplicates');
+          const dashDuplicates = document.getElementById('dashStatDuplicates');
+          const heroSavings = document.getElementById('heroStatSavings');
+          const calcWorkingCapital = document.getElementById('calcWorkingCapital');
+
+          if (heroDuplicates) {
+            const cur = parseInt(heroDuplicates.textContent.replace(/[^0-9]/g, '')) || 9342;
+            heroDuplicates.textContent = (cur - 1).toLocaleString();
+            heroDuplicates.classList.add('kpi-pulse-updated');
+            setTimeout(() => heroDuplicates.classList.remove('kpi-pulse-updated'), 1400);
+          }
+          if (dashDuplicates) {
+            const cur = parseInt(dashDuplicates.textContent.replace(/[^0-9]/g, '')) || 9342;
+            dashDuplicates.textContent = (cur - 1).toLocaleString();
+            dashDuplicates.classList.add('kpi-pulse-updated');
+            setTimeout(() => dashDuplicates.classList.remove('kpi-pulse-updated'), 1400);
+          }
+          if (heroSavings) {
+            heroSavings.textContent = '₹97.24 Cr';
+            heroSavings.classList.add('kpi-pulse-updated');
+            setTimeout(() => heroSavings.classList.remove('kpi-pulse-updated'), 1400);
+          }
+          if (calcWorkingCapital) {
+            calcWorkingCapital.textContent = '₹ 97.24 Cr';
+          }
         } else {
-          showToast(`✗ Flagged: ${queueId} marked for inspection`, 'alert', 3000);
+          showToast(`✗ Flagged: ${queueId} marked for review with note: "${notes || 'Parameter variation'}"`, 'alert', 3500);
         }
 
         const card = document.getElementById(`card-${queueId}`);
@@ -1029,7 +1168,13 @@ document.addEventListener('DOMContentLoaded', () => {
             loadAuditTrail();
             loadAnalytics();
           }, 200);
+        } else {
+          loadHitlQueue();
+          loadAuditTrail();
+          loadAnalytics();
         }
+      } else {
+        showToast(result.error || 'Action error', 'alert');
       }
     } catch (err) {
       showToast('Action error: ' + err.message, 'alert');

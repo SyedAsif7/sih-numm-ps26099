@@ -3810,3 +3810,15 @@ body.theme-dark .dsb-number {
     gap: 30px !important;
   }
 }
+
+/* KPI Dynamic Counter Update State */
+.kpi-pulse-updated {
+  color: #059669 !important;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+  transform: scale(1.06);
+}
+body.theme-dark .kpi-pulse-updated {
+  color: #34d399 !important;
+}
+

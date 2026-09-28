@@ -171,6 +171,18 @@ app.get('/api/export/csv', (req, res) => {
   }
 });
 
+// 10B. Export Executive Harmonization Reduction Report as CSV
+app.get('/api/export/harmonization-report', (req, res) => {
+  try {
+    const csvContent = catalogService.exportHarmonizationReportCsv();
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="NUMM_Harmonization_Reduction_Report.csv"');
+    res.status(200).send(csvContent);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // 11. Export harmonized catalog as JSON (SAP / Oracle bridge)
 app.get('/api/export/json', (req, res) => {
   try {
