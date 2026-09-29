@@ -214,6 +214,63 @@
       background: rgba(255, 255, 255, 0.22);
       color: #ffffff;
     }
+    
+    @media (max-width: 768px) {
+      .video-page-hero {
+        padding: 24px 16px 36px;
+      }
+      .video-main-heading {
+        font-size: 1.5rem;
+      }
+      .video-subtitle {
+        font-size: 0.875rem;
+      }
+      .video-main-container {
+        padding: 0 16px;
+        margin: -16px auto 40px;
+        gap: 20px;
+      }
+      .video-player-card {
+        padding: 14px;
+        border-radius: 12px;
+      }
+      .video-chapters-bar {
+        padding: 10px 12px;
+      }
+      .chapter-btn {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+    @media (max-width: 560px) {
+      .site-header .header-container {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px;
+      }
+      .site-header .header-container > div:last-child {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .btn-return-home {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+      }
+      .sec-badge-tag {
+        display: none;
+      }
+      .video-actions-strip {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .video-actions-strip a,
+      .video-actions-strip button {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>

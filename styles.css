@@ -4341,4 +4341,472 @@ body.theme-dark .hq-filter-label {
   border-radius: 4px;
 }
 
+/* ==========================================================================
+   13. COMPREHENSIVE MOBILE RESPONSIVENESS & TOUCH OPTIMIZATION
+   ========================================================================== */
+
+/* Universal Touch & Viewport Normalization */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 12px;
+}
+
+/* 13A. TABLETS & COMPACT LAPTOPS (<= 900px) */
+@media (max-width: 900px) {
+  .header-container {
+    padding: 8px 16px;
+    gap: 10px;
+  }
+  
+  .nav-cpcl-text {
+    display: none;
+  }
+  
+  .roi-calc-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .export-lead-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  
+  .export-actions-group {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+/* 13B. STANDARD TABLETS & LANDSCAPE PHONES (<= 768px) */
+@media (max-width: 768px) {
+  .landing-hero {
+    min-height: auto;
+    padding: 36px 16px 72px 16px;
+    background-position: center;
+  }
+  
+  .hero-main-title {
+    font-size: clamp(1.75rem, 5.5vw, 2.5rem);
+    letter-spacing: -0.5px;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  
+  .hero-stats-glass-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+    padding: 14px;
+  }
+  
+  .details-main-container {
+    padding: 0 14px;
+    gap: 32px;
+  }
+  
+  .section-header-block {
+    padding: 20px 16px;
+  }
+  
+  .section-title {
+    font-size: 1.45rem;
+  }
+  
+  /* Horizontal swipeable tabs with native feel */
+  .wb-nav-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding: 4px;
+    margin-bottom: 18px;
+  }
+  .wb-nav-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .wb-tab-btn {
+    flex-shrink: 0;
+    padding: 7px 12px;
+    font-size: 0.8125rem;
+  }
+  
+  /* Compact officer session pill */
+  .btn-officer-auth {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+  .btn-officer-auth .auth-role-tag {
+    display: none;
+  }
+  .nav-attribution-sub {
+    display: none;
+  }
+  
+  /* Horizontal table preservation */
+  .pair-attr-matrix-table,
+  .cross-cpse-table,
+  .audit-trail-table {
+    min-width: 540px;
+  }
+  
+  /* ERP Bridge Visualizer vertical layout */
+  .erp-sync-visual-card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 18px;
+    gap: 14px;
+    text-align: center;
+  }
+  .es-side, .es-center {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+  .es-bridge-arrow {
+    transform: rotate(90deg);
+    margin: 8px auto;
+  }
+  .bridge-line {
+    width: 40px;
+  }
+  
+  /* Cross-enterprise inventory matrix */
+  .cpse-matrix-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cpse-stat-pill {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* 13C. PHABLETS & LARGE SMARTPHONES (<= 640px) */
+@media (max-width: 640px) {
+  /* Header items */
+  .btn-header-workbench {
+    display: none;
+  }
+  
+  .nav-mopng {
+    font-size: 0.8125rem;
+  }
+  
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    padding: 3px 6px;
+    margin-top: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .nav-icon-link {
+    width: 34px;
+    height: 34px;
+  }
+  
+  /* Hero buttons full-width stack */
+  .hero-actions-row {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 10px;
+  }
+  .btn-hero-primary,
+  .btn-hero-secondary,
+  .btn-hero-outline {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding: 12px 16px;
+    font-size: 0.875rem;
+  }
+  
+  /* Search Box */
+  .search-input-box {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+    gap: 10px;
+  }
+  .search-input-box input {
+    width: 100%;
+    padding: 6px 0;
+  }
+  .btn-search-exec {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  /* Pairwise Comparison and Multi-Factor Card */
+  .mf-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .mf-formula-box {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    padding: 6px 10px;
+  }
+  .mf-formula-code {
+    font-size: 0.75rem;
+  }
+  
+  /* Knowledge Graph Inspector */
+  .kg-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .kg-node-inspector {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .kgi-tag {
+    align-self: flex-start;
+  }
+  .kg-trace-chain {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 6px 2px;
+  }
+  
+  /* Mapping Row Breakdown */
+  .mapping-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    word-break: break-word;
+  }
+  .pair-mapping-summary > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  /* Decision Checkpoint Action Bar */
+  .pair-hitl-gate-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .pair-hitl-gate-bar > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  .pair-hitl-gate-bar button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* HITL Queue Card */
+  .hitl-queue-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .hq-filter-pills-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .hq-filter-buttons {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+  .hq-filter-btn {
+    flex-shrink: 0;
+  }
+  
+  .hqc-top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .hqc-match-badge {
+    align-self: flex-start;
+  }
+  .hqc-diff-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .hqc-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .btn-hitl-approve,
+  .btn-hitl-reject,
+  .btn-hitl-flag {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Video Banner Link */
+  .hitl-video-banner-link {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 8px;
+  }
+  
+  /* Export buttons */
+  .export-actions-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+  .btn-export-csv,
+  .btn-export-json {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* Single Spec Input Card buttons */
+  .ai-action-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .btn-run-nlp,
+  .btn-bulk-ingest {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Comparison Box in Section 2 */
+  .irc-comparison-box {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    text-align: left;
+  }
+  .irc-arrow-col {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+  }
+}
+
+/* 13D. COMPACT PHONES (<= 480px) */
+@media (max-width: 480px) {
+  .hero-eyebrow-pill {
+    padding: 4px 10px;
+    font-size: 0.6875rem;
+  }
+  .eyebrow-text {
+    font-size: 0.65rem;
+  }
+  
+  .hero-stats-glass-strip {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    text-align: center;
+  }
+  .h-stat-item {
+    align-items: center;
+  }
+  
+  .header-container {
+    padding: 6px 12px;
+  }
+  
+  .btn-officer-auth {
+    max-width: 130px;
+    padding: 4px 8px;
+  }
+  .auth-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 90px;
+  }
+  
+  .nav-cpcl-group {
+    padding: 4px 6px;
+  }
+  .nav-cpcl-mark {
+    height: 26px;
+  }
+  
+  /* Modals */
+  .gov-auth-modal {
+    width: calc(100% - 16px);
+    max-height: 88vh;
+    border-radius: 8px;
+  }
+  .gov-modal-header {
+    padding: 12px 14px;
+  }
+  .gov-modal-body {
+    padding: 14px;
+    gap: 12px;
+  }
+  .persona-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .persona-badge {
+    align-self: flex-start;
+  }
+  
+  /* ROI Metrics */
+  .roi-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  /* Stage Pills */
+  .stage-val-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .val-pill {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* 13E. ULTRA-COMPACT SMARTPHONES (<= 360px) */
+@media (max-width: 360px) {
+  .nav-mopng {
+    font-size: 0.75rem;
+  }
+  .hero-main-title {
+    font-size: 1.5rem;
+  }
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+  .wb-tab-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+}
+
+
 

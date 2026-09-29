@@ -699,19 +699,21 @@
               </div>
 
               <!-- Side-by-Side Attribute Comparison Table -->
-              <table class="pair-attr-matrix-table" id="pairAttrTable">
-                <thead>
-                  <tr>
-                    <th style="width: 25%;">Standard Attribute</th>
-                    <th style="width: 32%;" id="thHeaderA">Record A (CPCL)</th>
-                    <th style="width: 32%;" id="thHeaderB">Record B (IOCL)</th>
-                    <th style="width: 11%;">Status</th>
-                  </tr>
-                </thead>
-                <tbody id="pairAttrTableBody">
-                  <!-- Populated dynamically via JS -->
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="pair-attr-matrix-table" id="pairAttrTable">
+                  <thead>
+                    <tr>
+                      <th style="width: 25%;">Standard Attribute</th>
+                      <th style="width: 32%;" id="thHeaderA">Record A (CPCL)</th>
+                      <th style="width: 32%;" id="thHeaderB">Record B (IOCL)</th>
+                      <th style="width: 11%;">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pairAttrTableBody">
+                    <!-- Populated dynamically via JS -->
+                  </tbody>
+                </table>
+              </div>
 
               <!-- Material Knowledge Graph Explorer -->
               <div class="pair-kg-card" id="pairKgCard">
@@ -1110,54 +1112,56 @@
                 Participating central public sector enterprises connect existing ERP instances without altering internal material numbers. The NUMM Gateway delivers real-time catalog replication and audit sync:
               </p>
 
-              <table class="pair-attr-matrix-table" style="font-size: 0.78125rem;">
-                <thead>
-                  <tr>
-                    <th style="width: 14%;">Method &bull; Path</th>
-                    <th style="width: 32%;">Interface Description</th>
-                    <th style="width: 34%;">ERP Target System &amp; Protocol</th>
-                    <th style="width: 20%;">Compliance Standard</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong style="color: #0284c7;">POST</strong> <code>/api/harmonize-pair</code></td>
-                    <td>Real-time NLP normalization, similarity scoring &amp; XAI rationale</td>
-                    <td>Bidirectional Middleware &bull; JSON REST</td>
-                    <td>ISO 8000-110 Master Data</td>
-                  </tr>
-                  <tr>
-                    <td><strong style="color: #0284c7;">POST</strong> <code>/api/extract</code></td>
-                    <td>Extracts metallurgy, schedule, dimensions from raw text</td>
-                    <td>SAP BAPI / RFC Wrapper &bull; OData v4</td>
-                    <td>ASME B36.10M / ASTM A106</td>
-                  </tr>
-                  <tr>
-                    <td><strong style="color: #059669;">GET</strong> <code>/api/search?q=...</code></td>
-                    <td>Cross-enterprise inventory lookup &amp; duplicate clustering</td>
-                    <td>Procurement Portal / GeM Integration</td>
-                    <td>GFR 2017 &bull; CVC Guidelines</td>
-                  </tr>
-                  <tr>
-                    <td><strong style="color: #0284c7;">POST</strong> <code>/api/hitl/action</code></td>
-                    <td>Chief Materials Officer approval with immutable audit ref</td>
-                    <td>SAP Workflow / Parichay SSO Gateway</td>
-                    <td>Immutable PSU Audit Trail</td>
-                  </tr>
-                  <tr>
-                    <td><strong style="color: #059669;">GET</strong> <code>/api/export/csv</code></td>
-                    <td>Full synchronized material master file download</td>
-                    <td>SAP S/4HANA IDoc (MATMAS05 segment)</td>
-                    <td>Standard CSV / Flat File</td>
-                  </tr>
-                  <tr>
-                    <td><strong style="color: #059669;">GET</strong> <code>/api/export/json</code></td>
-                    <td>Hierarchical schema with CPSE legacy code cross-walk</td>
-                    <td>Oracle Cloud ERP FBDI / REST Ingestion</td>
-                    <td>JSON Schema Draft 7</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="pair-attr-matrix-table" style="font-size: 0.78125rem;">
+                  <thead>
+                    <tr>
+                      <th style="width: 14%;">Method &bull; Path</th>
+                      <th style="width: 32%;">Interface Description</th>
+                      <th style="width: 34%;">ERP Target System &amp; Protocol</th>
+                      <th style="width: 20%;">Compliance Standard</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong style="color: #0284c7;">POST</strong> <code>/api/harmonize-pair</code></td>
+                      <td>Real-time NLP normalization, similarity scoring &amp; XAI rationale</td>
+                      <td>Bidirectional Middleware &bull; JSON REST</td>
+                      <td>ISO 8000-110 Master Data</td>
+                    </tr>
+                    <tr>
+                      <td><strong style="color: #0284c7;">POST</strong> <code>/api/extract</code></td>
+                      <td>Extracts metallurgy, schedule, dimensions from raw text</td>
+                      <td>SAP BAPI / RFC Wrapper &bull; OData v4</td>
+                      <td>ASME B36.10M / ASTM A106</td>
+                    </tr>
+                    <tr>
+                      <td><strong style="color: #059669;">GET</strong> <code>/api/search?q=...</code></td>
+                      <td>Cross-enterprise inventory lookup &amp; duplicate clustering</td>
+                      <td>Procurement Portal / GeM Integration</td>
+                      <td>GFR 2017 &bull; CVC Guidelines</td>
+                    </tr>
+                    <tr>
+                      <td><strong style="color: #0284c7;">POST</strong> <code>/api/hitl/action</code></td>
+                      <td>Chief Materials Officer approval with immutable audit ref</td>
+                      <td>SAP Workflow / Parichay SSO Gateway</td>
+                      <td>Immutable PSU Audit Trail</td>
+                    </tr>
+                    <tr>
+                      <td><strong style="color: #059669;">GET</strong> <code>/api/export/csv</code></td>
+                      <td>Full synchronized material master file download</td>
+                      <td>SAP S/4HANA IDoc (MATMAS05 segment)</td>
+                      <td>Standard CSV / Flat File</td>
+                    </tr>
+                    <tr>
+                      <td><strong style="color: #059669;">GET</strong> <code>/api/export/json</code></td>
+                      <td>Hierarchical schema with CPSE legacy code cross-walk</td>
+                      <td>Oracle Cloud ERP FBDI / REST Ingestion</td>
+                      <td>JSON Schema Draft 7</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
