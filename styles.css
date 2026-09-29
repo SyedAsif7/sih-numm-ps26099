@@ -3221,6 +3221,8 @@ body.theme-dark .dsb-number {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
 /* --------------------------------------------------------------------------
    10C. ENTERPRISE ANIMATION SYSTEM & PURPOSEFUL MOTION
    -------------------------------------------------------------------------- */
@@ -3390,6 +3392,8 @@ body.theme-dark .dsb-number {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
 /* --------------------------------------------------------------------------
    10D. OFFICER AUTHENTICATION & SINGLE SIGN-ON (PARICHAY SSO)
    -------------------------------------------------------------------------- */

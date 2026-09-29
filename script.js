@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnOfficerAuth && modalOfficerAuthBackdrop) {
     btnOfficerAuth.addEventListener('click', () => {
+      modalOfficerAuthBackdrop.style.display = 'flex';
       modalOfficerAuthBackdrop.classList.add('active');
     });
   }
@@ -95,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnCloseOfficerModal && modalOfficerAuthBackdrop) {
     btnCloseOfficerModal.addEventListener('click', () => {
       modalOfficerAuthBackdrop.classList.remove('active');
+      modalOfficerAuthBackdrop.style.display = 'none';
     });
   }
 
@@ -102,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modalOfficerAuthBackdrop.addEventListener('click', (e) => {
       if (e.target === modalOfficerAuthBackdrop) {
         modalOfficerAuthBackdrop.classList.remove('active');
+        modalOfficerAuthBackdrop.style.display = 'none';
       }
     });
   }
@@ -134,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast(`SSO Session Switched: ${currentOfficer.name} [${currentOfficer.role}]`, 'success', 2500);
       }
       modalOfficerAuthBackdrop.classList.remove('active');
+      modalOfficerAuthBackdrop.style.display = 'none';
     });
   }
 
